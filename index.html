@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>🎾 Padel Events Calendar</title>
+<link rel="stylesheet" href="/assets/style.v1.css">
+
+<body>
+  <div class="container">
+    <h1>🎾 Create your personal Padel Events Calendar - test v3</h1>
+    <p>Select one or more Bangkok Padel Clubs</p>
+    <div id="clubBox" class="chips"></div>
+
+    <p>Select Padel level</p>
+    <div class="level-filter">
+      <button class="level-btn" data-range="0-2">Beginner 0–2</button>
+      <button class="level-btn" data-range="2-3">Low-Inter 2–3</button>
+      <button class="level-btn" data-range="3-4">Mid-Inter 3–4</button>
+      <button class="level-btn" data-range="4-5">High-Inter 4–5</button>
+    </div>
+
+    <div class="filter-bar">
+      <button id="btnPreview">Filter Padel events</button>
+      <span id="status"></span>
+    </div>
+
+    <div id="previewHeader" style="display:none">
+      <strong id="matchCount"></strong> matches based on filter:
+      <span id="filterSummary"></span>
+    </div>
+
+    <div id="previewWrap" style="display:none">
+      <table>
+        <thead><tr><th>Event</th><th>Date</th><th>Club</th><th>Level</th><th>Add to calendar</th></tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+
+    <footer class="footer">
+      <div>Last update: <strong id="lastUpdated">—</strong></div>
+      <div>
+        <a href="mailto:mouthaan.dylan@gmail.com?subject=Padel%20Calendar%20Suggestion" class="btn-link">💡 Suggestion</a>
+        <a href="mailto:mouthaan.dylan@gmail.com?subject=Padel%20Calendar%20Issue" class="btn-link">⚠️ Report issue</a>
+      </div>
+    </footer>
+  </div>
+
+<script>
+const API='https://script.google.com/macros/s/AKfycbwgIl9UntPvaiuLYqczS_PUXSaycq7mNCIBGhbjObDrsPjowctV-Y6RG8pUAAFlC1jC9A/exec';
+const qs=s=>document.querySelector(s);
+const selectedLevels=[];
+
+document.addEventListener('click',e=>{
+  const b=e.target.closest('.level-btn'); if(!b) return;
+  const r=b.dataset.range; b.classList.toggle('active');
+  const i=selectedLevels.indexOf(r);
+  if(i>=0) selectedLevels.splice(i,1); else selectedLevels.push(r);
+});
+
+async function loadClubs(){
+  const box=qs('#clubBox'); box.textContent='Loading...';
+  const res=await fetch(API+'?action=filters'); const {clubs}=await res.json();
+  box.innerHTML=clubs.map(c=>`<label class="chip"><input type="checkbox" value="${c.value}">${c.label}</label>`).join('');
+}
+
+async function onFilter(){
+  const clubs=[...document.querySelectorAll('#clubBox input:checked')].map(x=>x.value);
+  qs('#status').textContent='Loading...';
+  const url=API+`?action=preview&clubs=${clubs.join(',')}&levels=${selectedLevels.join(',')}`;
+  const res=await fetch(url); const {total,sample}=await res.json();
+  qs('#matchCount').textContent=total; qs('#filterSummary').textContent='All clubs · All levels';
+  qs('#previewHeader').style.display='block'; qs('#previewWrap').style.display='block';
+  const tb=qs('#tbody'); tb.innerHTML='';
+  sample.forEach(ev=>{
+    const s=new Date(ev.start), e=new Date(ev.end);
+    const day=new Intl.DateTimeFormat(undefined,{weekday:'short'}).format(s);
+    const date=new Intl.DateTimeFormat(undefined,{day:'2-digit',month:'short'}).format(s);
+    const t=(d)=>new Intl.DateTimeFormat(undefined,{hour:'2-digit',minute:'2-digit',hour12:false}).format(d).replace(/\s/g,'');
+    const details=[ev.club && `📍 ${ev.club}`, ev.level && `🥇 ${ev.level}`].filter(Boolean).join(' · ');
+    const gcal=(ev)=>{
+      const toUTC=(iso)=>{const d=new Date(iso);return `${d.getUTCFullYear()}${String(d.getUTCMonth()+1).padStart(2,'0')}${String(d.getUTCDate()).padStart(2,'0')}T${String(d.getUTCHours()).padStart(2,'0')}${String(d.getUTCMinutes()).padStart(2,'0')}00Z`};
+      return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(ev.title)}&dates=${toUTC(ev.start)}/${toUTC(ev.end)}&details=${encodeURIComponent(details)}&location=${encodeURIComponent(ev.club||'')}`;
+    };
+    tb.innerHTML+=`<tr>
+      <td>${ev.title}</td>
+      <td>${day} ${date} ${t(s)}–${t(e)}</td>
+      <td>${ev.club}</td>
+      <td>${ev.level||''}</td>
+      <td><a href="${gcal(ev)}" target="_blank" rel="noopener">Google</a></td>
+    </tr>`;
+  });
+  qs('#status').textContent='';
+}
+
+qs('#btnPreview').onclick=onFilter;
+loadClubs();
+</script>
+</body>
+</html>
