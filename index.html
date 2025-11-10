@@ -95,9 +95,9 @@ async function loadClubs(){
 
 // Fetch events from API
 async function fetchEvents(clubs,levels){
-  const clubsParam=clubs.length?clubs.join(','):'all';
-  const levelsParam=levels.length?levels.join(','):'all';
-  const url=API+`?action=preview&clubs=${clubsParam}&levels=${levelsParam}`;
+  let url=API+'?action=preview';
+  if(clubs.length>0) url+=`&clubs=${clubs.join(',')}`;
+  if(levels.length>0) url+=`&levels=${levels.join(',')}`;
   const res=await fetch(url);
   if(!res.ok) throw new Error('API request failed');
   const data=await res.json();
