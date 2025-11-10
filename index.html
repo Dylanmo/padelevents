@@ -157,14 +157,16 @@ function buildFilterSummary(clubs,levels){
 // Render events grouped by club
 function renderEvents(data,summaryText){
   const {total,sample}=data;
-  qs('#matchCount').textContent=`${total} events`;
-  qs('#filterSummary').textContent=summaryText;
-  qs('#previewHeader').style.display='block';
   
   if(!sample||sample.length===0){
+    qs('#previewHeader').style.display='none';
     qs('#eventsWrap').innerHTML='<div class="empty-state"><p>No events found. Try adjusting your filters.</p></div>';
     return;
   }
+  
+  qs('#matchCount').textContent=`${total} events`;
+  qs('#filterSummary').textContent=summaryText;
+  qs('#previewHeader').style.display='block';
   
   // Group by club
   const grouped={};
@@ -211,7 +213,6 @@ function renderEventCard(ev){
     <div class="event-datetime">${day} ${date} • ${tStart}–${tEnd}</div>
     <div class="event-details">
       ${ev.club?`<span class="detail-item">📍 Club: ${ev.club}</span>`:''}
-      ${ev.category?`<span class="detail-item">🎾 Category: ${ev.category}</span>`:''}
       ${ev.level?`<span class="detail-item">🥇 Padel level: ${ev.level}</span>`:''}
     </div>
     <div class="event-actions">
@@ -250,10 +251,9 @@ function generateGoogleCalendarLink(ev){
   };
   const details=[
     ev.club&&`📍 Club: ${ev.club}`,
-    ev.category&&`🎾 Category: ${ev.category}`,
     ev.level&&`🥇 Padel level: ${ev.level}`
-  ].filter(Boolean).join(' · ');
-  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(ev.title)}&dates=${toBangkokCalendarFormat(ev.start)}/${toBangkokCalendarFormat(ev.end)}&details=${encodeURIComponent(details)}&location=${encodeURIComponent(ev.club||'')}&ctz=Asia/Bangkok`;
+  ].filter(Boolean).join('%0A');
+  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(ev.title)}&dates=${toBangkokCalendarFormat(ev.start)}/${toBangkokCalendarFormat(ev.end)}&details=${details}&location=${encodeURIComponent(ev.club||'')}&ctz=Asia/Bangkok`;
 }
 
 // Generate ICS file content
@@ -278,7 +278,6 @@ function generateICS(ev){
   const uid=`${ev.title.replace(/\s+/g,'-')}-${Date.now()}@padelevents.com`;
   const description=[
     ev.club&&`Club: ${ev.club}`,
-    ev.category&&`Category: ${ev.category}`,
     ev.level&&`Padel level: ${ev.level}`
   ].filter(Boolean).join('\\n');
   
@@ -289,8 +288,7 @@ function generateICS(ev){
     now:now,
     uid:uid,
     description:description,
-    location:ev.club||'',
-    category:ev.category||''
+    location:ev.club||''
   };
 }
 
@@ -337,8 +335,13 @@ END:VCALENDAR`;
 // Update last updated timestamp
 function updateLastUpdated(){
   const now=new Date();
-  const time=new Intl.DateTimeFormat(undefined,{hour:'2-digit',minute:'2-digit'}).format(now);
-  qs('#lastUpdated').textContent=time;
+  const formatted=new Intl.DateTimeFormat('en-GB',{
+    weekday:'short',day:'2-digit',month:'short',
+    hour:'2-digit',minute:'2-digit',hour12:false,
+    timeZone:'Asia/Bangkok'
+  }).format(now);
+  // Format: "Mon 10 Nov, 17:19" -> "Mon 10 Nov 17:19"
+  qs('#lastUpdated').textContent=formatted.replace(', ',' ');
 }
 
 // Initialize
