@@ -7,38 +7,43 @@
 
 <body>
   <div class="container">
-    <h1>🎾 Create your personal Padel Events Calendar - test v3</h1>
-    <p>Select one or more Bangkok Padel Clubs</p>
-    <div id="clubBox" class="chips"></div>
+    <h1>🎾 Padel Events Calendar</h1>
+    <p class="subtitle">Find and add padel events in Bangkok to your calendar</p>
 
-    <p>Select Padel level</p>
-    <div class="level-filter">
-      <button class="level-btn" data-range="0-2">Beginner 0–2</button>
-      <button class="level-btn" data-range="2-3">Low-Inter 2–3</button>
-      <button class="level-btn" data-range="3-4">Mid-Inter 3–4</button>
-      <button class="level-btn" data-range="4-5">High-Inter 4–5</button>
+    <div class="filters-section">
+      <div class="filter-group">
+        <p class="filter-label">Select Bangkok Padel Clubs</p>
+        <div id="clubBox" class="chips"></div>
+      </div>
+
+      <div class="filter-group">
+        <p class="filter-label">Select Padel Level</p>
+        <div class="level-filter">
+          <button class="level-btn" data-range="0-2" aria-label="Beginner level 0 to 2">Beginner 0–2</button>
+          <button class="level-btn" data-range="2-3" aria-label="Low intermediate level 2 to 3">Low-Inter 2–3</button>
+          <button class="level-btn" data-range="3-4" aria-label="Mid intermediate level 3 to 4">Mid-Inter 3–4</button>
+          <button class="level-btn" data-range="4-5" aria-label="High intermediate level 4 to 5">High-Inter 4–5</button>
+        </div>
+      </div>
+
+      <div class="filter-bar">
+        <button id="btnFilter" aria-label="Apply filters to events">Apply Filters</button>
+        <span id="status" role="status" aria-live="polite"></span>
+      </div>
     </div>
 
-    <div class="filter-bar">
-      <button id="btnPreview">Filter Padel events</button>
-      <span id="status"></span>
-    </div>
+    <div id="eventsSection">
+      <div id="previewHeader" style="display:none">
+        <strong id="matchCount"></strong>
+        <span id="filterSummary"></span>
+      </div>
 
-    <div id="previewHeader" style="display:none">
-      <strong id="matchCount"></strong> matches based on filter:
-      <span id="filterSummary"></span>
-    </div>
-
-    <div id="previewWrap" style="display:none">
-      <table>
-        <thead><tr><th>Event</th><th>Date</th><th>Club</th><th>Level</th><th>Add to calendar</th></tr></thead>
-        <tbody id="tbody"></tbody>
-      </table>
+      <div id="eventsWrap"></div>
     </div>
 
     <footer class="footer">
-      <div>Last update: <strong id="lastUpdated">—</strong></div>
-      <div>
+      <div>Last update: <strong id="lastUpdated">Loading...</strong></div>
+      <div class="footer-links">
         <a href="mailto:mouthaan.dylan@gmail.com?subject=Padel%20Calendar%20Suggestion" class="btn-link">💡 Suggestion</a>
         <a href="mailto:mouthaan.dylan@gmail.com?subject=Padel%20Calendar%20Issue" class="btn-link">⚠️ Report issue</a>
       </div>
@@ -48,52 +53,253 @@
 <script>
 const API='https://script.google.com/macros/s/AKfycbwgIl9UntPvaiuLYqczS_PUXSaycq7mNCIBGhbjObDrsPjowctV-Y6RG8pUAAFlC1jC9A/exec';
 const qs=s=>document.querySelector(s);
+const qsa=s=>document.querySelectorAll(s);
 const selectedLevels=[];
+let allClubs=[];
+let cachedEvents=null;
 
+// Level button toggle
 document.addEventListener('click',e=>{
-  const b=e.target.closest('.level-btn'); if(!b) return;
-  const r=b.dataset.range; b.classList.toggle('active');
+  const b=e.target.closest('.level-btn');
+  if(!b) return;
+  const r=b.dataset.range;
+  b.classList.toggle('active');
   const i=selectedLevels.indexOf(r);
   if(i>=0) selectedLevels.splice(i,1); else selectedLevels.push(r);
 });
 
+// Club checkbox change
+document.addEventListener('change',e=>{
+  if(e.target.matches('#clubBox input[type="checkbox"]')){
+    const label=e.target.closest('label');
+    if(e.target.checked) label.classList.add('checked');
+    else label.classList.remove('checked');
+  }
+});
+
+// Load clubs from API
 async function loadClubs(){
-  const box=qs('#clubBox'); box.textContent='Loading...';
-  const res=await fetch(API+'?action=filters'); const {clubs}=await res.json();
-  box.innerHTML=clubs.map(c=>`<label class="chip"><input type="checkbox" value="${c.value}">${c.label}</label>`).join('');
+  try{
+    const box=qs('#clubBox');
+    box.textContent='Loading clubs...';
+    const res=await fetch(API+'?action=filters');
+    if(!res.ok) throw new Error('Failed to load clubs');
+    const {clubs}=await res.json();
+    allClubs=clubs;
+    box.innerHTML=clubs.map(c=>`<label class="chip"><input type="checkbox" value="${c.value}" aria-label="Select ${c.label}"><span>${c.label}</span></label>`).join('');
+  }catch(err){
+    console.error('Error loading clubs:',err);
+    qs('#clubBox').innerHTML='<span class="error">Unable to load clubs. Please refresh.</span>';
+  }
 }
 
-async function onFilter(){
-  const clubs=[...document.querySelectorAll('#clubBox input:checked')].map(x=>x.value);
-  qs('#status').textContent='Loading...';
-  const url=API+`?action=preview&clubs=${clubs.join(',')}&levels=${selectedLevels.join(',')}`;
-  const res=await fetch(url); const {total,sample}=await res.json();
-  qs('#matchCount').textContent=total; qs('#filterSummary').textContent='All clubs · All levels';
-  qs('#previewHeader').style.display='block'; qs('#previewWrap').style.display='block';
-  const tb=qs('#tbody'); tb.innerHTML='';
+// Fetch events from API
+async function fetchEvents(clubs,levels){
+  const clubsParam=clubs.length?clubs.join(','):'all';
+  const levelsParam=levels.length?levels.join(','):'all';
+  const url=API+`?action=preview&clubs=${clubsParam}&levels=${levelsParam}`;
+  const res=await fetch(url);
+  if(!res.ok) throw new Error('API request failed');
+  const data=await res.json();
+  return data;
+}
+
+// Auto-load default events (2 weeks, all clubs)
+async function autoLoadEvents(){
+  try{
+    qs('#status').textContent='Loading upcoming events...';
+    const data=await fetchEvents([],[]);
+    cachedEvents=data;
+    renderEvents(data,'Upcoming events (next 2 weeks)');
+    updateLastUpdated();
+    qs('#status').textContent='';
+  }catch(err){
+    console.error('Error auto-loading events:',err);
+    qs('#status').innerHTML='<span class="error">⚠️ Unable to load events. Please try again.</span>';
+    if(cachedEvents) renderEvents(cachedEvents,'Cached events');
+  }
+}
+
+// Apply filters manually
+async function applyFilters(){
+  try{
+    const clubs=[...qsa('#clubBox input:checked')].map(x=>x.value);
+    qs('#status').textContent='Filtering events...';
+    const data=await fetchEvents(clubs,selectedLevels);
+    cachedEvents=data;
+    const summary=buildFilterSummary(clubs,selectedLevels);
+    renderEvents(data,summary);
+    updateLastUpdated();
+    qs('#status').textContent='';
+  }catch(err){
+    console.error('Error filtering events:',err);
+    qs('#status').innerHTML='<span class="error">⚠️ Unable to filter events. Please try again.</span>';
+    if(cachedEvents) renderEvents(cachedEvents,'Cached events');
+  }
+}
+
+// Build filter summary text
+function buildFilterSummary(clubs,levels){
+  const parts=[];
+  if(clubs.length===0)parts.push('All clubs');
+  else if(clubs.length===1){
+    const club=allClubs.find(c=>c.value===clubs[0]);
+    parts.push(club?club.label:clubs[0]);
+  }else parts.push(`${clubs.length} clubs`);
+  
+  if(levels.length===0)parts.push('All levels');
+  else if(levels.length===1)parts.push(`Level ${levels[0]}`);
+  else parts.push(`${levels.length} levels`);
+  
+  return parts.join(' • ');
+}
+
+// Render events grouped by club
+function renderEvents(data,summaryText){
+  const {total,sample}=data;
+  qs('#matchCount').textContent=`${total} events`;
+  qs('#filterSummary').textContent=summaryText;
+  qs('#previewHeader').style.display='block';
+  
+  if(!sample||sample.length===0){
+    qs('#eventsWrap').innerHTML='<div class="empty-state"><p>No events found. Try adjusting your filters.</p></div>';
+    return;
+  }
+  
+  // Group by club
+  const grouped={};
   sample.forEach(ev=>{
-    const s=new Date(ev.start), e=new Date(ev.end);
-    const day=new Intl.DateTimeFormat(undefined,{weekday:'short'}).format(s);
-    const date=new Intl.DateTimeFormat(undefined,{day:'2-digit',month:'short'}).format(s);
-    const t=(d)=>new Intl.DateTimeFormat(undefined,{hour:'2-digit',minute:'2-digit',hour12:false}).format(d).replace(/\s/g,'');
-    const details=[ev.club && `📍 ${ev.club}`, ev.level && `🥇 ${ev.level}`].filter(Boolean).join(' · ');
-    const gcal=(ev)=>{
-      const toUTC=(iso)=>{const d=new Date(iso);return `${d.getUTCFullYear()}${String(d.getUTCMonth()+1).padStart(2,'0')}${String(d.getUTCDate()).padStart(2,'0')}T${String(d.getUTCHours()).padStart(2,'0')}${String(d.getUTCMinutes()).padStart(2,'0')}00Z`};
-      return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(ev.title)}&dates=${toUTC(ev.start)}/${toUTC(ev.end)}&details=${encodeURIComponent(details)}&location=${encodeURIComponent(ev.club||'')}`;
-    };
-    tb.innerHTML+=`<tr>
-      <td>${ev.title}</td>
-      <td>${day} ${date} ${t(s)}–${t(e)}</td>
-      <td>${ev.club}</td>
-      <td>${ev.level||''}</td>
-      <td><a href="${gcal(ev)}" target="_blank" rel="noopener">Google</a></td>
-    </tr>`;
+    const club=ev.club||'Other';
+    if(!grouped[club])grouped[club]=[];
+    grouped[club].push(ev);
   });
-  qs('#status').textContent='';
+  
+  // Sort events within each club by date
+  Object.keys(grouped).forEach(club=>{
+    grouped[club].sort((a,b)=>new Date(a.start)-new Date(b.start));
+  });
+  
+  // Render
+  let html='';
+  Object.keys(grouped).sort().forEach(club=>{
+    html+=`<div class="club-section">
+      <h2 class="club-header">📍 ${club}</h2>
+      <ul class="events-list">`;
+    grouped[club].forEach(ev=>{
+      html+=renderEventCard(ev);
+    });
+    html+=`</ul></div>`;
+  });
+  
+  qs('#eventsWrap').innerHTML=html;
 }
 
-qs('#btnPreview').onclick=onFilter;
-loadClubs();
+// Render single event card
+function renderEventCard(ev){
+  const s=new Date(ev.start);
+  const e=new Date(ev.end);
+  const day=new Intl.DateTimeFormat(undefined,{weekday:'short'}).format(s);
+  const date=new Intl.DateTimeFormat(undefined,{day:'2-digit',month:'short'}).format(s);
+  const tStart=new Intl.DateTimeFormat(undefined,{hour:'2-digit',minute:'2-digit',hour12:false}).format(s).replace(/\s/g,'');
+  const tEnd=new Intl.DateTimeFormat(undefined,{hour:'2-digit',minute:'2-digit',hour12:false}).format(e).replace(/\s/g,'');
+  
+  const gcalLink=generateGoogleCalendarLink(ev);
+  const icsData=generateICS(ev);
+  
+  return `<li class="event-card">
+    <div class="event-title">${ev.title}</div>
+    <div class="event-datetime">${day} ${date} • ${tStart}–${tEnd}</div>
+    <div class="event-details">
+      ${ev.club?`<span class="detail-item">📍 ${ev.club}</span>`:''}
+      ${ev.level?`<span class="detail-item">🥇 ${ev.level}</span>`:''}
+    </div>
+    <div class="event-actions">
+      <a href="${gcalLink}" target="_blank" rel="noopener noreferrer" class="btn-calendar btn-google" aria-label="Add ${ev.title} to Google Calendar">
+        📅 Google Calendar
+      </a>
+      <button class="btn-calendar btn-ics" onclick='downloadICS(${JSON.stringify(icsData)})' aria-label="Download ${ev.title} as ICS file">
+        📥 Download ICS
+      </button>
+    </div>
+  </li>`;
+}
+
+// Generate Google Calendar link
+function generateGoogleCalendarLink(ev){
+  const toUTC=(iso)=>{
+    const d=new Date(iso);
+    return `${d.getUTCFullYear()}${String(d.getUTCMonth()+1).padStart(2,'0')}${String(d.getUTCDate()).padStart(2,'0')}T${String(d.getUTCHours()).padStart(2,'0')}${String(d.getUTCMinutes()).padStart(2,'0')}00Z`;
+  };
+  const details=[ev.club&&`📍 ${ev.club}`,ev.level&&`🥇 ${ev.level}`].filter(Boolean).join(' · ');
+  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(ev.title)}&dates=${toUTC(ev.start)}/${toUTC(ev.end)}&details=${encodeURIComponent(details)}&location=${encodeURIComponent(ev.club||'')}`;
+}
+
+// Generate ICS file content
+function generateICS(ev){
+  const formatDate=(iso)=>{
+    const d=new Date(iso);
+    return `${d.getUTCFullYear()}${String(d.getUTCMonth()+1).padStart(2,'0')}${String(d.getUTCDate()).padStart(2,'0')}T${String(d.getUTCHours()).padStart(2,'0')}${String(d.getUTCMinutes()).padStart(2,'0')}${String(d.getUTCSeconds()).padStart(2,'0')}Z`;
+  };
+  const now=formatDate(new Date().toISOString());
+  const start=formatDate(ev.start);
+  const end=formatDate(ev.end);
+  const uid=`${ev.title.replace(/\s+/g,'-')}-${Date.now()}@padelevents.com`;
+  const description=[ev.club&&`Club: ${ev.club}`,ev.level&&`Level: ${ev.level}`].filter(Boolean).join('\\n');
+  
+  return {
+    title:ev.title,
+    start:start,
+    end:end,
+    uid:uid,
+    description:description,
+    location:ev.club||''
+  };
+}
+
+// Download ICS file
+function downloadICS(icsData){
+  const icsContent=`BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Padel Events Bangkok//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:${icsData.uid}
+DTSTAMP:${icsData.start}
+DTSTART:${icsData.start}
+DTEND:${icsData.end}
+SUMMARY:${icsData.title}
+DESCRIPTION:${icsData.description}
+LOCATION:${icsData.location}
+STATUS:CONFIRMED
+SEQUENCE:0
+END:VEVENT
+END:VCALENDAR`;
+  
+  const blob=new Blob([icsContent],{type:'text/calendar;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download=`${icsData.title.replace(/\s+/g,'-')}.ics`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// Update last updated timestamp
+function updateLastUpdated(){
+  const now=new Date();
+  const time=new Intl.DateTimeFormat(undefined,{hour:'2-digit',minute:'2-digit'}).format(now);
+  qs('#lastUpdated').textContent=time;
+}
+
+// Initialize
+qs('#btnFilter').onclick=applyFilters;
+document.addEventListener('DOMContentLoaded',async ()=>{
+  await loadClubs();
+  await autoLoadEvents();
+});
 </script>
 </body>
 </html>
