@@ -198,10 +198,10 @@ function renderEvents(data,summaryText){
 function renderEventCard(ev){
   const s=new Date(ev.start);
   const e=new Date(ev.end);
-  const day=new Intl.DateTimeFormat(undefined,{weekday:'short'}).format(s);
-  const date=new Intl.DateTimeFormat(undefined,{day:'2-digit',month:'short'}).format(s);
-  const tStart=new Intl.DateTimeFormat(undefined,{hour:'2-digit',minute:'2-digit',hour12:false}).format(s).replace(/\s/g,'');
-  const tEnd=new Intl.DateTimeFormat(undefined,{hour:'2-digit',minute:'2-digit',hour12:false}).format(e).replace(/\s/g,'');
+  const day=new Intl.DateTimeFormat('en-GB',{weekday:'short',timeZone:'Asia/Bangkok'}).format(s);
+  const date=new Intl.DateTimeFormat('en-GB',{day:'2-digit',month:'short',timeZone:'Asia/Bangkok'}).format(s);
+  const tStart=new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',hour12:false,timeZone:'Asia/Bangkok'}).format(s);
+  const tEnd=new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',hour12:false,timeZone:'Asia/Bangkok'}).format(e);
   
   const gcalLink=generateGoogleCalendarLink(ev);
   const icsData=generateICS(ev);
@@ -210,8 +210,9 @@ function renderEventCard(ev){
     <div class="event-title">${ev.title}</div>
     <div class="event-datetime">${day} ${date} • ${tStart}–${tEnd}</div>
     <div class="event-details">
-      ${ev.club?`<span class="detail-item">📍 ${ev.club}</span>`:''}
-      ${ev.level?`<span class="detail-item">🥇 ${ev.level}</span>`:''}
+      ${ev.club?`<span class="detail-item">📍 Club: ${ev.club}</span>`:''}
+      ${ev.category?`<span class="detail-item">🎾 Category: ${ev.category}</span>`:''}
+      ${ev.level?`<span class="detail-item">🥇 Padel level: ${ev.level}</span>`:''}
     </div>
     <div class="event-actions">
       <a href="${gcalLink}" target="_blank" rel="noopener noreferrer" class="btn-calendar btn-google" aria-label="Add ${ev.title} to Google Calendar">
@@ -226,33 +227,70 @@ function renderEventCard(ev){
 
 // Generate Google Calendar link
 function generateGoogleCalendarLink(ev){
-  const toUTC=(iso)=>{
+  const toBangkokCalendarFormat=(iso)=>{
     const d=new Date(iso);
-    return `${d.getUTCFullYear()}${String(d.getUTCMonth()+1).padStart(2,'0')}${String(d.getUTCDate()).padStart(2,'0')}T${String(d.getUTCHours()).padStart(2,'0')}${String(d.getUTCMinutes()).padStart(2,'0')}00Z`;
+    // Format for Google Calendar (YYYYMMDDTHHMMSS in local Bangkok time, then convert to UTC for URL)
+    const bangkokTime=new Intl.DateTimeFormat('en-GB',{
+      year:'numeric',month:'2-digit',day:'2-digit',
+      hour:'2-digit',minute:'2-digit',
+      hour12:false,timeZone:'Asia/Bangkok'
+    }).format(d);
+    const [datePart,timePart]=bangkokTime.split(', ');
+    const [day,month,year]=datePart.split('/');
+    const [hour,minute]=timePart.split(':');
+    // Google Calendar needs UTC time with Z suffix
+    // Bangkok is UTC+7, so we need to subtract 7 hours
+    const bangkokDate=new Date(`${year}-${month}-${day}T${hour}:${minute}:00+07:00`);
+    const utcYear=bangkokDate.getUTCFullYear();
+    const utcMonth=String(bangkokDate.getUTCMonth()+1).padStart(2,'0');
+    const utcDay=String(bangkokDate.getUTCDate()).padStart(2,'0');
+    const utcHour=String(bangkokDate.getUTCHours()).padStart(2,'0');
+    const utcMin=String(bangkokDate.getUTCMinutes()).padStart(2,'0');
+    return `${utcYear}${utcMonth}${utcDay}T${utcHour}${utcMin}00Z`;
   };
-  const details=[ev.club&&`📍 ${ev.club}`,ev.level&&`🥇 ${ev.level}`].filter(Boolean).join(' · ');
-  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(ev.title)}&dates=${toUTC(ev.start)}/${toUTC(ev.end)}&details=${encodeURIComponent(details)}&location=${encodeURIComponent(ev.club||'')}`;
+  const details=[
+    ev.club&&`📍 Club: ${ev.club}`,
+    ev.category&&`🎾 Category: ${ev.category}`,
+    ev.level&&`🥇 Padel level: ${ev.level}`
+  ].filter(Boolean).join(' · ');
+  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(ev.title)}&dates=${toBangkokCalendarFormat(ev.start)}/${toBangkokCalendarFormat(ev.end)}&details=${encodeURIComponent(details)}&location=${encodeURIComponent(ev.club||'')}&ctz=Asia/Bangkok`;
 }
 
 // Generate ICS file content
 function generateICS(ev){
-  const formatDate=(iso)=>{
+  const formatDateBangkok=(iso)=>{
     const d=new Date(iso);
-    return `${d.getUTCFullYear()}${String(d.getUTCMonth()+1).padStart(2,'0')}${String(d.getUTCDate()).padStart(2,'0')}T${String(d.getUTCHours()).padStart(2,'0')}${String(d.getUTCMinutes()).padStart(2,'0')}${String(d.getUTCSeconds()).padStart(2,'0')}Z`;
+    // Convert to Bangkok timezone
+    const bangkokTime=new Intl.DateTimeFormat('en-GB',{
+      year:'numeric',month:'2-digit',day:'2-digit',
+      hour:'2-digit',minute:'2-digit',second:'2-digit',
+      hour12:false,timeZone:'Asia/Bangkok'
+    }).format(d);
+    // Parse: DD/MM/YYYY, HH:MM:SS
+    const [datePart,timePart]=bangkokTime.split(', ');
+    const [day,month,year]=datePart.split('/');
+    const [hour,minute,second]=timePart.split(':');
+    return `${year}${month}${day}T${hour}${minute}${second}`;
   };
-  const now=formatDate(new Date().toISOString());
-  const start=formatDate(ev.start);
-  const end=formatDate(ev.end);
+  const start=formatDateBangkok(ev.start);
+  const end=formatDateBangkok(ev.end);
+  const now=formatDateBangkok(new Date().toISOString());
   const uid=`${ev.title.replace(/\s+/g,'-')}-${Date.now()}@padelevents.com`;
-  const description=[ev.club&&`Club: ${ev.club}`,ev.level&&`Level: ${ev.level}`].filter(Boolean).join('\\n');
+  const description=[
+    ev.club&&`Club: ${ev.club}`,
+    ev.category&&`Category: ${ev.category}`,
+    ev.level&&`Padel level: ${ev.level}`
+  ].filter(Boolean).join('\\n');
   
   return {
     title:ev.title,
     start:start,
     end:end,
+    now:now,
     uid:uid,
     description:description,
-    location:ev.club||''
+    location:ev.club||'',
+    category:ev.category||''
   };
 }
 
@@ -263,11 +301,20 @@ VERSION:2.0
 PRODID:-//Padel Events Bangkok//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
+BEGIN:VTIMEZONE
+TZID:Asia/Bangkok
+BEGIN:STANDARD
+DTSTART:19700101T000000
+TZOFFSETFROM:+0700
+TZOFFSETTO:+0700
+TZNAME:+07
+END:STANDARD
+END:VTIMEZONE
 BEGIN:VEVENT
 UID:${icsData.uid}
-DTSTAMP:${icsData.start}
-DTSTART:${icsData.start}
-DTEND:${icsData.end}
+DTSTAMP:${icsData.now}
+DTSTART;TZID=Asia/Bangkok:${icsData.start}
+DTEND;TZID=Asia/Bangkok:${icsData.end}
 SUMMARY:${icsData.title}
 DESCRIPTION:${icsData.description}
 LOCATION:${icsData.location}
