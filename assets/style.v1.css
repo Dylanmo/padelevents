@@ -99,6 +99,11 @@ label.chip.checked {
   font-weight: 500;
 }
 
+label.chip.checked input[type="checkbox"] {
+  accent-color: white;
+  filter: brightness(1.2);
+}
+
 label.chip input {
   margin-right: 8px;
   width: 18px;
