@@ -363,21 +363,21 @@ function renderEvents(events) {
 **Run before commit**:
 
 ```bash
-npx eslint assets/js/**/*.js
-npx prettier --check "assets/js/**/*.js" "*.html"
+npx eslint "assets/js/**/*.js" --fix
+npx prettier --check "*.html" "assets/**/*.css" "assets/js/**/*.js"
 ```
 
 ## Formatting (MANDATORY prior to PR)
 
 ```bash
 # Check formatting
-npx prettier --check "assets/js/**/*.js" "*.html" "assets/**/*.css"
+npx prettier --check "*.html" "assets/**/*.css" "assets/js/**/*.js"
 
 # Auto-fix
-npx prettier --write "assets/js/**/*.js" "*.html" "assets/**/*.css"
+npx prettier --write "*.html" "assets/**/*.css" "assets/js/**/*.js"
 
-# Lint JS
-npx eslint assets/js/**/*.js --fix
+# Lint JS (run if ESLint config exists)
+npx eslint "assets/js/**/*.js" --fix
 ```
 
 ## Checklist for PRs changing JS

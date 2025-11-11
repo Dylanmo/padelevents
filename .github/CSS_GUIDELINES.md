@@ -250,7 +250,8 @@ Accessibility & color
 Linting & tooling (MANDATORY)
 
 - npx stylelint "assets/\*_/_.css" --fix
-- npx prettier --check "assets/**/\*.css" && npx prettier --write "assets/**/\*.css" if needed
+- npx prettier --check "_.html" "assets/\*\*/_.css" "assets/js/\*_/_.js"
+- If Prettier reports issues: npx prettier --write "_.html" "assets/\*\*/_.css" "assets/js/\*_/_.js"
 
 Release steps when changing CSS
 

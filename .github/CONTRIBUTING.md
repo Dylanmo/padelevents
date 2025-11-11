@@ -15,12 +15,12 @@ Local commands (run before opening a PR)
   - npx stylelint "assets/\*_/_.css" --fix
 
 - JS lint (if ESLint config exists)
-  - npx eslint index.html
-  - If the repo lacks an ESLint config and you want one, we can add `.eslintrc` tuned to the inline pattern — confirm before adding.
+  - npx eslint "assets/js/\*_/_.js" --fix
+  - If the repo lacks an ESLint config, run eslint only after adding a suitable `.eslintrc`; otherwise document the skip in your PR.
 
-- Formatting
-  - npx prettier --check "_.html" "assets/\*\*/_.css"
-  - If Prettier reports issues: npx prettier --write "_.html" "assets/\*\*/_.css"
+- Formatting (Prettier)
+  - npx prettier --check "_.html" "assets/\*\*/_.css" "assets/js/\*_/_.js"
+  - If Prettier reports issues: npx prettier --write "_.html" "assets/\*\*/_.css" "assets/js/\*_/_.js"
 
 How to run these on macOS with zsh (copy/paste into terminal)
 

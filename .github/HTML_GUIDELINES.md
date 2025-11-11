@@ -144,9 +144,9 @@ Linting & Validation (MANDATORY after each change)
 - Run these locally before PRs (this matches the project policy):
   - npx htmlhint index.html
   - npx stylelint "assets/\*_/_.css" --fix
-  - npx eslint index.html # run only if project has an ESLint config; if missing, document and skip
-  - npx prettier --check "_.html" "assets/\*\*/_.css"
-  - If Prettier reports issues: npx prettier --write "_.html" "assets/\*\*/_.css"
+  - npx eslint "assets/js/\*_/_.js" --fix # run only if an ESLint config is present; otherwise document the skip
+  - npx prettier --check "_.html" "assets/\*\*/_.css" "assets/js/\*_/_.js"
+  - If Prettier reports issues: npx prettier --write "_.html" "assets/\*\*/_.css" "assets/js/\*_/_.js"
 
 Checklist for PRs changing HTML
 
