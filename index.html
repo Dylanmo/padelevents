@@ -1,280 +1,358 @@
 <!doctype html>
 <html lang="en">
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>🎾 Padel Events Calendar</title>
-<link rel="stylesheet" href="/assets/style.v1.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>🎾 Padel Events Calendar</title>
+  <link rel="stylesheet" href="/assets/style.v1.css" />
 
-<body>
-  <div class="container">
-    <h1>🎾 Padel Events Calendar</h1>
-    <p class="subtitle">Find and add padel events in Bangkok to your calendar</p>
-
-    <div class="filters-section">
-      <div class="filter-group">
-        <p class="filter-label">Select Bangkok Padel Clubs</p>
-        <div id="clubBox" class="chips"></div>
+  <body>
+    <div class="container">
+      <div
+        style="
+          text-align: right;
+          font-size: 12px;
+          color: #666;
+          margin-bottom: 10px;
+        "
+      >
+        Version 1.0.0 (2025-11-11)
       </div>
+      <h1>🎾 Padel Events Calendar</h1>
+      <p class="subtitle">
+        Find and add padel events in Bangkok to your calendar
+      </p>
 
-      <div class="filter-group">
-        <p class="filter-label">Select Padel Level</p>
-        <div class="level-filter">
-          <button class="level-btn" data-range="0-2" aria-label="Beginner level 0 to 2">Beginner 0–2</button>
-          <button class="level-btn" data-range="2-3" aria-label="Low intermediate level 2 to 3">Low-Inter 2–3</button>
-          <button class="level-btn" data-range="3-4" aria-label="Mid intermediate level 3 to 4">Mid-Inter 3–4</button>
-          <button class="level-btn" data-range="4-5" aria-label="High intermediate level 4 to 5">High-Inter 4–5</button>
+      <div class="filters-section">
+        <div class="filter-group">
+          <p class="filter-label">Select Bangkok Padel Clubs</p>
+          <div id="clubBox" class="chips"></div>
+        </div>
+
+        <div class="filter-group">
+          <p class="filter-label">Select Padel Level</p>
+          <div class="level-filter">
+            <button
+              class="level-btn"
+              data-range="0-2"
+              aria-label="Beginner level 0 to 2"
+            >
+              Beginner 0–2
+            </button>
+            <button
+              class="level-btn"
+              data-range="2-3"
+              aria-label="Low intermediate level 2 to 3"
+            >
+              Low-Inter 2–3
+            </button>
+            <button
+              class="level-btn"
+              data-range="3-4"
+              aria-label="Mid intermediate level 3 to 4"
+            >
+              Mid-Inter 3–4
+            </button>
+            <button
+              class="level-btn"
+              data-range="4-5"
+              aria-label="High intermediate level 4 to 5"
+            >
+              High-Inter 4–5
+            </button>
+          </div>
+        </div>
+
+        <div class="filter-bar">
+          <button id="btnFilter" aria-label="Apply filters to events">
+            Apply Filters
+          </button>
+          <span id="status" role="status" aria-live="polite"></span>
         </div>
       </div>
 
-      <div class="filter-bar">
-        <button id="btnFilter" aria-label="Apply filters to events">Apply Filters</button>
-        <span id="status" role="status" aria-live="polite"></span>
+      <div id="eventsSection">
+        <div id="previewHeader" style="display: none">
+          <strong id="matchCount"></strong>
+          <span id="filterSummary"></span>
+        </div>
+
+        <div id="eventsWrap"></div>
       </div>
+
+      <footer class="footer">
+        <div>Last update: <strong id="lastUpdated">Loading...</strong></div>
+        <div class="footer-links">
+          <a
+            href="mailto:mouthaan.dylan@gmail.com?subject=Padel%20Calendar%20Suggestion"
+            class="btn-link"
+            >💡 Suggestion</a
+          >
+          <a
+            href="mailto:mouthaan.dylan@gmail.com?subject=Padel%20Calendar%20Issue"
+            class="btn-link"
+            >⚠️ Report issue</a
+          >
+        </div>
+      </footer>
     </div>
 
-    <div id="eventsSection">
-      <div id="previewHeader" style="display:none">
-        <strong id="matchCount"></strong>
-        <span id="filterSummary"></span>
-      </div>
+    <script>
+      const API =
+        "https://script.google.com/macros/s/AKfycbwgIl9UntPvaiuLYqczS_PUXSaycq7mNCIBGhbjObDrsPjowctV-Y6RG8pUAAFlC1jC9A/exec";
+      const qs = (s) => document.querySelector(s);
+      const qsa = (s) => document.querySelectorAll(s);
+      const selectedLevels = [];
+      let allClubs = [];
+      let cachedEvents = null;
 
-      <div id="eventsWrap"></div>
-    </div>
+      // Level button toggle
+      document.addEventListener("click", (e) => {
+        const b = e.target.closest(".level-btn");
+        if (!b) return;
+        const r = b.dataset.range;
+        b.classList.toggle("active");
+        const i = selectedLevels.indexOf(r);
+        if (i >= 0) selectedLevels.splice(i, 1);
+        else selectedLevels.push(r);
+      });
 
-    <footer class="footer">
-      <div>Last update: <strong id="lastUpdated">Loading...</strong></div>
-      <div class="footer-links">
-        <a href="mailto:mouthaan.dylan@gmail.com?subject=Padel%20Calendar%20Suggestion" class="btn-link">💡 Suggestion</a>
-        <a href="mailto:mouthaan.dylan@gmail.com?subject=Padel%20Calendar%20Issue" class="btn-link">⚠️ Report issue</a>
-      </div>
-    </footer>
-  </div>
+      // Club checkbox change
+      document.addEventListener("change", (e) => {
+        if (e.target.matches('#clubBox input[type="checkbox"]')) {
+          const label = e.target.closest("label");
+          if (e.target.checked) label.classList.add("checked");
+          else label.classList.remove("checked");
+        }
+      });
 
-<script>
-const API='https://script.google.com/macros/s/AKfycbwgIl9UntPvaiuLYqczS_PUXSaycq7mNCIBGhbjObDrsPjowctV-Y6RG8pUAAFlC1jC9A/exec';
-const qs=s=>document.querySelector(s);
-const qsa=s=>document.querySelectorAll(s);
-const selectedLevels=[];
-let allClubs=[];
-let cachedEvents=null;
+      // Load clubs from API
+      async function loadClubs() {
+        try {
+          const box = qs("#clubBox");
+          box.textContent = "Loading clubs...";
+          const res = await fetch(API + "?action=filters");
+          if (!res.ok) throw new Error("Failed to load clubs");
+          const { clubs } = await res.json();
+          allClubs = clubs;
+          box.innerHTML = clubs
+            .map(
+              (c) =>
+                `<label class="chip"><input type="checkbox" value="${c.value}" aria-label="Select ${c.label}"><span>${c.label}</span></label>`,
+            )
+            .join("");
+        } catch (err) {
+          console.error("Error loading clubs:", err);
+          qs("#clubBox").innerHTML =
+            '<span class="error">Unable to load clubs. Please refresh.</span>';
+        }
+      }
 
-// Level button toggle
-document.addEventListener('click',e=>{
-  const b=e.target.closest('.level-btn');
-  if(!b) return;
-  const r=b.dataset.range;
-  b.classList.toggle('active');
-  const i=selectedLevels.indexOf(r);
-  if(i>=0) selectedLevels.splice(i,1); else selectedLevels.push(r);
-});
+      // Fetch events from API
+      async function fetchEvents(clubs, levels) {
+        let url = API + "?action=preview";
+        if (clubs.length > 0) url += `&clubs=${clubs.join(",")}`;
+        if (levels.length > 0) url += `&levels=${levels.join(",")}`;
+        const res = await fetch(url);
+        if (!res.ok) throw new Error("API request failed");
+        const data = await res.json();
+        return data;
+      }
 
-// Club checkbox change
-document.addEventListener('change',e=>{
-  if(e.target.matches('#clubBox input[type="checkbox"]')){
-    const label=e.target.closest('label');
-    if(e.target.checked) label.classList.add('checked');
-    else label.classList.remove('checked');
-  }
-});
+      // Auto-load default events (2 weeks, all clubs)
+      async function autoLoadEvents() {
+        try {
+          qs("#status").textContent = "Loading upcoming events...";
+          const data = await fetchEvents([], []);
+          cachedEvents = data;
+          renderEvents(data, "All upcoming events");
+          updateLastUpdated();
+          qs("#status").textContent = "";
+        } catch (err) {
+          console.error("Error auto-loading events:", err);
+          qs("#status").innerHTML =
+            '<span class="error">⚠️ Unable to load events. Please try again.</span>';
+          if (cachedEvents) renderEvents(cachedEvents, "Cached events");
+        }
+      }
 
-// Load clubs from API
-async function loadClubs(){
-  try{
-    const box=qs('#clubBox');
-    box.textContent='Loading clubs...';
-    const res=await fetch(API+'?action=filters');
-    if(!res.ok) throw new Error('Failed to load clubs');
-    const {clubs}=await res.json();
-    allClubs=clubs;
-    box.innerHTML=clubs.map(c=>`<label class="chip"><input type="checkbox" value="${c.value}" aria-label="Select ${c.label}"><span>${c.label}</span></label>`).join('');
-  }catch(err){
-    console.error('Error loading clubs:',err);
-    qs('#clubBox').innerHTML='<span class="error">Unable to load clubs. Please refresh.</span>';
-  }
-}
+      // Apply filters manually
+      async function applyFilters() {
+        try {
+          const clubs = [...qsa("#clubBox input:checked")].map((x) => x.value);
+          qs("#status").textContent = "Filtering events...";
+          const data = await fetchEvents(clubs, selectedLevels);
+          cachedEvents = data;
+          const summary = buildFilterSummary(clubs, selectedLevels);
+          renderEvents(data, summary);
+          updateLastUpdated();
+          qs("#status").textContent = "";
+        } catch (err) {
+          console.error("Error filtering events:", err);
+          qs("#status").innerHTML =
+            '<span class="error">⚠️ Unable to filter events. Please try again.</span>';
+          if (cachedEvents) renderEvents(cachedEvents, "Cached events");
+        }
+      }
 
-// Fetch events from API
-async function fetchEvents(clubs,levels){
-  let url=API+'?action=preview';
-  if(clubs.length>0) url+=`&clubs=${clubs.join(',')}`;
-  if(levels.length>0) url+=`&levels=${levels.join(',')}`;
-  const res=await fetch(url);
-  if(!res.ok) throw new Error('API request failed');
-  const data=await res.json();
-  return data;
-}
+      // Build filter summary text
+      function buildFilterSummary(clubs, levels) {
+        const parts = [];
+        if (clubs.length === 0) parts.push("All clubs");
+        else if (clubs.length === 1) {
+          const club = allClubs.find((c) => c.value === clubs[0]);
+          parts.push(club ? club.label : clubs[0]);
+        } else parts.push(`${clubs.length} clubs`);
 
-// Auto-load default events (2 weeks, all clubs)
-async function autoLoadEvents(){
-  try{
-    qs('#status').textContent='Loading upcoming events...';
-    const data=await fetchEvents([],[]);
-    cachedEvents=data;
-    renderEvents(data,'All upcoming events');
-    updateLastUpdated();
-    qs('#status').textContent='';
-  }catch(err){
-    console.error('Error auto-loading events:',err);
-    qs('#status').innerHTML='<span class="error">⚠️ Unable to load events. Please try again.</span>';
-    if(cachedEvents) renderEvents(cachedEvents,'Cached events');
-  }
-}
+        if (levels.length === 0) parts.push("All levels");
+        else if (levels.length === 1) parts.push(`Level ${levels[0]}`);
+        else parts.push(`${levels.length} levels`);
 
-// Apply filters manually
-async function applyFilters(){
-  try{
-    const clubs=[...qsa('#clubBox input:checked')].map(x=>x.value);
-    qs('#status').textContent='Filtering events...';
-    const data=await fetchEvents(clubs,selectedLevels);
-    cachedEvents=data;
-    const summary=buildFilterSummary(clubs,selectedLevels);
-    renderEvents(data,summary);
-    updateLastUpdated();
-    qs('#status').textContent='';
-  }catch(err){
-    console.error('Error filtering events:',err);
-    qs('#status').innerHTML='<span class="error">⚠️ Unable to filter events. Please try again.</span>';
-    if(cachedEvents) renderEvents(cachedEvents,'Cached events');
-  }
-}
+        return parts.join(" • ");
+      }
 
-// Build filter summary text
-function buildFilterSummary(clubs,levels){
-  const parts=[];
-  if(clubs.length===0)parts.push('All clubs');
-  else if(clubs.length===1){
-    const club=allClubs.find(c=>c.value===clubs[0]);
-    parts.push(club?club.label:clubs[0]);
-  }else parts.push(`${clubs.length} clubs`);
-  
-  if(levels.length===0)parts.push('All levels');
-  else if(levels.length===1)parts.push(`Level ${levels[0]}`);
-  else parts.push(`${levels.length} levels`);
-  
-  return parts.join(' • ');
-}
+      // Render events grouped by club
+      function renderEvents(data, summaryText) {
+        const { total, sample } = data;
 
-// Render events grouped by club
-function renderEvents(data,summaryText){
-  const {total,sample}=data;
-  
-  if(!sample||sample.length===0){
-    qs('#previewHeader').style.display='none';
-    qs('#eventsWrap').innerHTML='<div class="empty-state"><p>No events found. Try adjusting your filters.</p></div>';
-    return;
-  }
-  
-  qs('#matchCount').textContent=`${total} events`;
-  qs('#filterSummary').textContent=summaryText;
-  qs('#previewHeader').style.display='block';
-  
-  const now=new Date();
-  const next24h=new Date(now.getTime()+24*60*60*1000);
-  const next7days=new Date(now.getTime()+7*24*60*60*1000);
-  
-  // Filter events happening in next 24 hours
-  const happeningSoon=sample.filter(ev=>new Date(ev.start)<=next24h).sort((a,b)=>new Date(a.start)-new Date(b.start));
-  
-  // Group by club for events in next 7 days
-  const grouped={};
-  sample.forEach(ev=>{
-    const eventDate=new Date(ev.start);
-    if(eventDate<=next7days){
-      const club=ev.club||'Other';
-      if(!grouped[club])grouped[club]=[];
-      grouped[club].push(ev);
-    }
-  });
-  
-  // Sort events within each club by date
-  Object.keys(grouped).forEach(club=>{
-    grouped[club].sort((a,b)=>new Date(a.start)-new Date(b.start));
-  });
-  
-  // Render HTML
-  let html='';
-  
-  // Happening Soon section
-  if(happeningSoon.length>0){
-    html+=`<div class="happening-soon">
+        if (!sample || sample.length === 0) {
+          qs("#previewHeader").style.display = "none";
+          qs("#eventsWrap").innerHTML =
+            '<div class="empty-state"><p>No events found. Try adjusting your filters.</p></div>';
+          return;
+        }
+
+        qs("#matchCount").textContent = `${total} events`;
+        qs("#filterSummary").textContent = summaryText;
+        qs("#previewHeader").style.display = "block";
+
+        const now = new Date();
+        const next24h = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+        const next7days = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+
+        // Filter events happening in next 24 hours
+        const happeningSoon = sample
+          .filter((ev) => new Date(ev.start) <= next24h)
+          .sort((a, b) => new Date(a.start) - new Date(b.start));
+
+        // Group by club for events in next 7 days
+        const grouped = {};
+        sample.forEach((ev) => {
+          const eventDate = new Date(ev.start);
+          if (eventDate <= next7days) {
+            const club = ev.club || "Other";
+            if (!grouped[club]) grouped[club] = [];
+            grouped[club].push(ev);
+          }
+        });
+
+        // Sort events within each club by date
+        Object.keys(grouped).forEach((club) => {
+          grouped[club].sort((a, b) => new Date(a.start) - new Date(b.start));
+        });
+
+        // Render HTML
+        let html = "";
+
+        // Happening Soon section
+        if (happeningSoon.length > 0) {
+          html += `<div class="happening-soon">
       <h2 class="happening-header">⚡ HAPPENING SOON</h2>
       <p class="happening-subtitle">Next events within 24 hours</p>
       <ul class="events-list">`;
-    happeningSoon.forEach(ev=>{
-      html+=renderEventCard(ev);
-    });
-    html+=`</ul></div>`;
-  }
-  
-  // Club sections (limit to 3 events initially)
-  Object.keys(grouped).sort().forEach(club=>{
-    const events=grouped[club];
-    const initialLimit=3;
-    const hasMore=events.length>initialLimit;
-    
-    html+=`<div class="club-section" data-club="${club}">
+          happeningSoon.forEach((ev) => {
+            html += renderEventCard(ev);
+          });
+          html += `</ul></div>`;
+        }
+
+        // Club sections (limit to 3 events initially)
+        Object.keys(grouped)
+          .sort()
+          .forEach((club) => {
+            const events = grouped[club];
+            const initialLimit = 3;
+            const hasMore = events.length > initialLimit;
+
+            html += `<div class="club-section" data-club="${club}">
       <h2 class="club-header">📍 ${club}</h2>
       <ul class="events-list">`;
-    
-    events.slice(0,initialLimit).forEach(ev=>{
-      html+=renderEventCard(ev);
-    });
-    
-    if(hasMore){
-      html+=`</ul>
+
+            events.slice(0, initialLimit).forEach((ev) => {
+              html += renderEventCard(ev);
+            });
+
+            if (hasMore) {
+              html += `</ul>
       <ul class="events-list events-hidden" style="display:none;">`;
-      events.slice(initialLimit).forEach(ev=>{
-        html+=renderEventCard(ev);
-      });
-    }
-    
-    html+=`</ul>`;
-    
-    if(hasMore){
-      const moreCount=events.length-initialLimit;
-      html+=`<button class="btn-show-more" onclick="toggleClubEvents('${club}')" aria-label="Show ${moreCount} more events from ${club}">
-        Show ${moreCount} more event${moreCount>1?'s':''} →
+              events.slice(initialLimit).forEach((ev) => {
+                html += renderEventCard(ev);
+              });
+            }
+
+            html += `</ul>`;
+
+            if (hasMore) {
+              const moreCount = events.length - initialLimit;
+              html += `<button class="btn-show-more" onclick="toggleClubEvents('${club}')" aria-label="Show ${moreCount} more events from ${club}">
+        Show ${moreCount} more event${moreCount > 1 ? "s" : ""} →
       </button>`;
-    }
-    
-    html+=`</div>`;
-  });
-  
-  qs('#eventsWrap').innerHTML=html;
-}
+            }
 
-// Toggle show more events for a club
-function toggleClubEvents(club){
-  const section=qs(`.club-section[data-club="${club}"]`);
-  if(!section)return;
-  const hiddenList=section.querySelector('.events-hidden');
-  const btn=section.querySelector('.btn-show-more');
-  if(hiddenList&&btn){
-    hiddenList.style.display='flex';
-    btn.remove();
-  }
-}
+            html += `</div>`;
+          });
 
-// Render single event card
-function renderEventCard(ev){
-  const s=new Date(ev.start);
-  const e=new Date(ev.end);
-  const now=new Date();
-  const isPast=e<now;
-  const day=new Intl.DateTimeFormat('en-GB',{weekday:'short',timeZone:'Asia/Bangkok'}).format(s);
-  const date=new Intl.DateTimeFormat('en-GB',{day:'2-digit',month:'short',timeZone:'Asia/Bangkok'}).format(s);
-  const tStart=new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',hour12:false,timeZone:'Asia/Bangkok'}).format(s);
-  const tEnd=new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',hour12:false,timeZone:'Asia/Bangkok'}).format(e);
-  
-  const gcalLink=generateGoogleCalendarLink(ev);
-  const icsData=generateICS(ev);
-  
-  return `<li class="event-card${isPast?' event-past':''}">
+        qs("#eventsWrap").innerHTML = html;
+      }
+
+      // Toggle show more events for a club
+      function toggleClubEvents(club) {
+        const section = qs(`.club-section[data-club="${club}"]`);
+        if (!section) return;
+        const hiddenList = section.querySelector(".events-hidden");
+        const btn = section.querySelector(".btn-show-more");
+        if (hiddenList && btn) {
+          hiddenList.style.display = "flex";
+          btn.remove();
+        }
+      }
+
+      // Render single event card
+      function renderEventCard(ev) {
+        const s = new Date(ev.start);
+        const e = new Date(ev.end);
+        const now = new Date();
+        const isPast = e < now;
+        const day = new Intl.DateTimeFormat("en-GB", {
+          weekday: "short",
+          timeZone: "Asia/Bangkok",
+        }).format(s);
+        const date = new Intl.DateTimeFormat("en-GB", {
+          day: "2-digit",
+          month: "short",
+          timeZone: "Asia/Bangkok",
+        }).format(s);
+        const tStart = new Intl.DateTimeFormat("en-GB", {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+          timeZone: "Asia/Bangkok",
+        }).format(s);
+        const tEnd = new Intl.DateTimeFormat("en-GB", {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+          timeZone: "Asia/Bangkok",
+        }).format(e);
+
+        const gcalLink = generateGoogleCalendarLink(ev);
+        const icsData = generateICS(ev);
+
+        return `<li class="event-card${isPast ? " event-past" : ""}">
     <div class="event-title">${ev.title}</div>
     <div class="event-datetime">${day} ${date} • ${tStart}–${tEnd}</div>
     <div class="event-details">
-      ${ev.club?`<span class="detail-item detail-club">📍 ${ev.club}</span>`:''}
-      ${ev.level?`<span class="detail-item">🥇 Padel level: ${ev.level}</span>`:''}
+      ${ev.club ? `<span class="detail-item detail-club">📍 ${ev.club}</span>` : ""}
+      ${ev.level ? `<span class="detail-item">🥇 Padel level: ${ev.level}</span>` : ""}
     </div>
     <div class="event-actions-label">📅 Add to calendar</div>
     <div class="event-actions">
@@ -287,77 +365,95 @@ function renderEventCard(ev){
       </button>
     </div>
   </li>`;
-}
+      }
 
-// Generate Google Calendar link
-function generateGoogleCalendarLink(ev){
-  const toBangkokCalendarFormat=(iso)=>{
-    const d=new Date(iso);
-    // Format for Google Calendar (YYYYMMDDTHHMMSS in local Bangkok time, then convert to UTC for URL)
-    const bangkokTime=new Intl.DateTimeFormat('en-GB',{
-      year:'numeric',month:'2-digit',day:'2-digit',
-      hour:'2-digit',minute:'2-digit',
-      hour12:false,timeZone:'Asia/Bangkok'
-    }).format(d);
-    const [datePart,timePart]=bangkokTime.split(', ');
-    const [day,month,year]=datePart.split('/');
-    const [hour,minute]=timePart.split(':');
-    // Google Calendar needs UTC time with Z suffix
-    // Bangkok is UTC+7, so we need to subtract 7 hours
-    const bangkokDate=new Date(`${year}-${month}-${day}T${hour}:${minute}:00+07:00`);
-    const utcYear=bangkokDate.getUTCFullYear();
-    const utcMonth=String(bangkokDate.getUTCMonth()+1).padStart(2,'0');
-    const utcDay=String(bangkokDate.getUTCDate()).padStart(2,'0');
-    const utcHour=String(bangkokDate.getUTCHours()).padStart(2,'0');
-    const utcMin=String(bangkokDate.getUTCMinutes()).padStart(2,'0');
-    return `${utcYear}${utcMonth}${utcDay}T${utcHour}${utcMin}00Z`;
-  };
-  const details=[
-    ev.club&&`📍 Club: ${ev.club}`,
-    ev.level&&`🥇 Padel level: ${ev.level}`
-  ].filter(Boolean).join('%0A');
-  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(ev.title)}&dates=${toBangkokCalendarFormat(ev.start)}/${toBangkokCalendarFormat(ev.end)}&details=${details}&location=${encodeURIComponent(ev.club||'')}&ctz=Asia/Bangkok`;
-}
+      // Generate Google Calendar link
+      function generateGoogleCalendarLink(ev) {
+        const toBangkokCalendarFormat = (iso) => {
+          const d = new Date(iso);
+          // Format for Google Calendar (YYYYMMDDTHHMMSS in local Bangkok time, then convert to UTC for URL)
+          const bangkokTime = new Intl.DateTimeFormat("en-GB", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+            timeZone: "Asia/Bangkok",
+          }).format(d);
+          const [datePart, timePart] = bangkokTime.split(", ");
+          const [day, month, year] = datePart.split("/");
+          const [hour, minute] = timePart.split(":");
+          // Google Calendar needs UTC time with Z suffix
+          // Bangkok is UTC+7, so we need to subtract 7 hours
+          const bangkokDate = new Date(
+            `${year}-${month}-${day}T${hour}:${minute}:00+07:00`,
+          );
+          const utcYear = bangkokDate.getUTCFullYear();
+          const utcMonth = String(bangkokDate.getUTCMonth() + 1).padStart(
+            2,
+            "0",
+          );
+          const utcDay = String(bangkokDate.getUTCDate()).padStart(2, "0");
+          const utcHour = String(bangkokDate.getUTCHours()).padStart(2, "0");
+          const utcMin = String(bangkokDate.getUTCMinutes()).padStart(2, "0");
+          return `${utcYear}${utcMonth}${utcDay}T${utcHour}${utcMin}00Z`;
+        };
+        const details = [
+          ev.club && `📍 Club: ${ev.club}`,
+          ev.level && `🥇 Padel level: ${ev.level}`,
+        ]
+          .filter(Boolean)
+          .join("%0A");
+        return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(ev.title)}&dates=${toBangkokCalendarFormat(ev.start)}/${toBangkokCalendarFormat(ev.end)}&details=${details}&location=${encodeURIComponent(ev.club || "")}&ctz=Asia/Bangkok`;
+      }
 
-// Generate ICS file content
-function generateICS(ev){
-  const formatDateBangkok=(iso)=>{
-    const d=new Date(iso);
-    // Convert to Bangkok timezone
-    const bangkokTime=new Intl.DateTimeFormat('en-GB',{
-      year:'numeric',month:'2-digit',day:'2-digit',
-      hour:'2-digit',minute:'2-digit',second:'2-digit',
-      hour12:false,timeZone:'Asia/Bangkok'
-    }).format(d);
-    // Parse: DD/MM/YYYY, HH:MM:SS
-    const [datePart,timePart]=bangkokTime.split(', ');
-    const [day,month,year]=datePart.split('/');
-    const [hour,minute,second]=timePart.split(':');
-    return `${year}${month}${day}T${hour}${minute}${second}`;
-  };
-  const start=formatDateBangkok(ev.start);
-  const end=formatDateBangkok(ev.end);
-  const now=formatDateBangkok(new Date().toISOString());
-  const uid=`${ev.title.replace(/\s+/g,'-')}-${Date.now()}@padelevents.com`;
-  const description=[
-    ev.club&&`Club: ${ev.club}`,
-    ev.level&&`Padel level: ${ev.level}`
-  ].filter(Boolean).join('\\n');
-  
-  return {
-    title:ev.title,
-    start:start,
-    end:end,
-    now:now,
-    uid:uid,
-    description:description,
-    location:ev.club||''
-  };
-}
+      // Generate ICS file content
+      function generateICS(ev) {
+        const formatDateBangkok = (iso) => {
+          const d = new Date(iso);
+          // Convert to Bangkok timezone
+          const bangkokTime = new Intl.DateTimeFormat("en-GB", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: false,
+            timeZone: "Asia/Bangkok",
+          }).format(d);
+          // Parse: DD/MM/YYYY, HH:MM:SS
+          const [datePart, timePart] = bangkokTime.split(", ");
+          const [day, month, year] = datePart.split("/");
+          const [hour, minute, second] = timePart.split(":");
+          return `${year}${month}${day}T${hour}${minute}${second}`;
+        };
+        const start = formatDateBangkok(ev.start);
+        const end = formatDateBangkok(ev.end);
+        const now = formatDateBangkok(new Date().toISOString());
+        const uid = `${ev.title.replace(/\s+/g, "-")}-${Date.now()}@padelevents.com`;
+        const description = [
+          ev.club && `Club: ${ev.club}`,
+          ev.level && `Padel level: ${ev.level}`,
+        ]
+          .filter(Boolean)
+          .join("\\n");
 
-// Download ICS file
-function downloadICS(icsData){
-  const icsContent=`BEGIN:VCALENDAR
+        return {
+          title: ev.title,
+          start: start,
+          end: end,
+          now: now,
+          uid: uid,
+          description: description,
+          location: ev.club || "",
+        };
+      }
+
+      // Download ICS file
+      function downloadICS(icsData) {
+        const icsContent = `BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//Padel Events Bangkok//EN
 CALSCALE:GREGORIAN
@@ -383,36 +479,42 @@ STATUS:CONFIRMED
 SEQUENCE:0
 END:VEVENT
 END:VCALENDAR`;
-  
-  const blob=new Blob([icsContent],{type:'text/calendar;charset=utf-8'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
-  a.href=url;
-  a.download=`${icsData.title.replace(/\s+/g,'-')}.ics`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-}
 
-// Update last updated timestamp
-function updateLastUpdated(){
-  const now=new Date();
-  const formatted=new Intl.DateTimeFormat('en-GB',{
-    weekday:'short',day:'2-digit',month:'short',
-    hour:'2-digit',minute:'2-digit',hour12:false,
-    timeZone:'Asia/Bangkok'
-  }).format(now);
-  // Format: "Mon 10 Nov, 17:19" -> "Mon 10 Nov 17:19"
-  qs('#lastUpdated').textContent=formatted.replace(', ',' ');
-}
+        const blob = new Blob([icsContent], {
+          type: "text/calendar;charset=utf-8",
+        });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `${icsData.title.replace(/\s+/g, "-")}.ics`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }
 
-// Initialize
-qs('#btnFilter').onclick=applyFilters;
-document.addEventListener('DOMContentLoaded',async ()=>{
-  await loadClubs();
-  await autoLoadEvents();
-});
-</script>
-</body>
+      // Update last updated timestamp
+      function updateLastUpdated() {
+        const now = new Date();
+        const formatted = new Intl.DateTimeFormat("en-GB", {
+          weekday: "short",
+          day: "2-digit",
+          month: "short",
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+          timeZone: "Asia/Bangkok",
+        }).format(now);
+        // Format: "Mon 10 Nov, 17:19" -> "Mon 10 Nov 17:19"
+        qs("#lastUpdated").textContent = formatted.replace(", ", " ");
+      }
+
+      // Initialize
+      qs("#btnFilter").onclick = applyFilters;
+      document.addEventListener("DOMContentLoaded", async () => {
+        await loadClubs();
+        await autoLoadEvents();
+      });
+    </script>
+  </body>
 </html>

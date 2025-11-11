@@ -1,806 +1,1621 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-<meta http-equiv="Pragma" content="no-cache" />
-<meta http-equiv="Expires" content="0" />
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
-<title>🎾 Padel Events Calendar</title>
-<style>
-html, body { zoom: 1.25; }
-iframe[role="presentation"],
-iframe[src*="script.google.com/macros/"] { display: none !important; }
+  <head>
+    <meta
+      http-equiv="Cache-Control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,maximum-scale=1"
+    />
+    <title>🎾 Padel Events Calendar</title>
+    <style>
+      html,
+      body {
+        zoom: 1.25;
+      }
+      iframe[role="presentation"],
+      iframe[src*="script.google.com/macros/"] {
+        display: none !important;
+      }
 
-/* Theme */
-:root{
-  --text:16px;
-  --muted:#6b7280;
-  --border:#e5e7eb;
-  --border-strong:#d1d5db;
-  --bg:#ffffff;
-  --ink:#111827;
-  --accent:#111827;
-  --hover:#f3f4f6;
-  --header-bg:#111827;
-  --header-ink:#ffffff;
-}
-*{box-sizing:border-box}
-body{font-family:system-ui,Segoe UI,Roboto,Arial;margin:0;background:var(--bg);font-size:var(--text);color:var(--ink)}
+      /* Theme */
+      :root {
+        --text: 16px;
+        --muted: #6b7280;
+        --border: #e5e7eb;
+        --border-strong: #d1d5db;
+        --bg: #ffffff;
+        --ink: #111827;
+        --accent: #111827;
+        --hover: #f3f4f6;
+        --header-bg: #111827;
+        --header-ink: #ffffff;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        font-family:
+          system-ui,
+          Segoe UI,
+          Roboto,
+          Arial;
+        margin: 0;
+        background: var(--bg);
+        font-size: var(--text);
+        color: var(--ink);
+      }
 
-/* Header */
-.header{ background:var(--header-bg); color:var(--header-ink); padding:18px 16px 14px; }
-.header .title{ margin:0; font-size:1.6rem; line-height:1.25; font-weight:800; }
+      /* Header */
+      .header {
+        background: var(--header-bg);
+        color: var(--header-ink);
+        padding: 18px 16px 14px;
+      }
+      .header .title {
+        margin: 0;
+        font-size: 1.6rem;
+        line-height: 1.25;
+        font-weight: 800;
+      }
 
-/* Layout */
-.container{padding:16px}
+      /* Layout */
+      .container {
+        padding: 16px;
+      }
 
-/* Buttons */
-button{padding:12px 16px;border-radius:12px;border:0;background:#111827;color:#fff;cursor:pointer;font-size:1rem}
-button:active{background:#374151}
-.muted{color:var(--muted)}
-.meta{color:var(--muted)}
+      /* Buttons */
+      button {
+        padding: 12px 16px;
+        border-radius: 12px;
+        border: 0;
+        background: #111827;
+        color: #fff;
+        cursor: pointer;
+        font-size: 1rem;
+      }
+      button:active {
+        background: #374151;
+      }
+      .muted {
+        color: var(--muted);
+      }
+      .meta {
+        color: var(--muted);
+      }
 
-/* Chips (clubs) */
-.section-title{font-size:1.1rem;font-weight:700;margin:8px 0 10px}
-.chips{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin:10px 0 12px}
-.chip{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid var(--border);border-radius:10px;background:#fff;color:var(--ink);cursor:pointer;font-size:1rem;font-weight:500;transition:all .25s}
-.chip:hover{border-color:var(--border-strong)}
-.chip input[type="checkbox"]{width:20px;height:20px;accent-color:var(--accent);cursor:pointer;flex-shrink:0}
-.chip:has(input[type="checkbox"]:checked){background:#111827;border-color:#111827;color:#fff}
+      /* Chips (clubs) */
+      .section-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin: 8px 0 10px;
+      }
+      .chips {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 10px;
+        margin: 10px 0 12px;
+      }
+      .chip {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 14px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: #fff;
+        color: var(--ink);
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 500;
+        transition: all 0.25s;
+      }
+      .chip:hover {
+        border-color: var(--border-strong);
+      }
+      .chip input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        accent-color: var(--accent);
+        cursor: pointer;
+        flex-shrink: 0;
+      }
+      .chip:has(input[type="checkbox"]:checked) {
+        background: #111827;
+        border-color: #111827;
+        color: #fff;
+      }
 
-/* Level filter: four buttons */
-.level-filter{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:4px 0 12px; }
-@media (min-width:640px){ .level-filter{ grid-template-columns:repeat(4,1fr); } }
-.level-btn{ padding:14px; font-size:1.05rem; font-weight:600; border-radius:12px; border:1px solid var(--border); background:#fff; color:#111827; text-align:center; cursor:pointer; transition:all .2s; }
-.level-btn:hover{ border-color:var(--border-strong); background:var(--hover); }
-.level-btn.active{ background:#111827; color:#fff; border-color:#111827; }
+      /* Level filter: four buttons */
+      .level-filter {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin: 4px 0 12px;
+      }
+      @media (min-width: 640px) {
+        .level-filter {
+          grid-template-columns: repeat(4, 1fr);
+        }
+      }
+      .level-btn {
+        padding: 14px;
+        font-size: 1.05rem;
+        font-weight: 600;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: #fff;
+        color: #111827;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .level-btn:hover {
+        border-color: var(--border-strong);
+        background: var(--hover);
+      }
+      .level-btn.active {
+        background: #111827;
+        color: #fff;
+        border-color: #111827;
+      }
 
-/* Filter buttons row */
-.filter-bar{margin-top:10px;margin-bottom:20px;display:flex;flex-wrap:wrap;gap:10px}
+      /* Filter buttons row */
+      .filter-bar {
+        margin-top: 10px;
+        margin-bottom: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
 
-/* Preview header */
-.preview-bar{ margin:10px 0 10px; font-size:1.05rem; display:flex; flex-wrap:wrap; align-items:center; gap:4px; }
-.preview-bar strong{font-weight:700}
-.preview-bar .meta{color:var(--muted)}
+      /* Preview header */
+      .preview-bar {
+        margin: 10px 0 10px;
+        font-size: 1.05rem;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 4px;
+      }
+      .preview-bar strong {
+        font-weight: 700;
+      }
+      .preview-bar .meta {
+        color: var(--muted);
+      }
 
-/* Table box */
-.table-wrap{ width:100%;max-height:480px; overflow:auto; border:1px solid var(--border); border-radius:12px;background:#fff; margin-bottom: 20px; }
+      /* Table box */
+      .table-wrap {
+        width: 100%;
+        max-height: 480px;
+        overflow: auto;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: #fff;
+        margin-bottom: 20px;
+      }
 
-/* Table */
-table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:1rem}
-th,td{padding:10px;border-bottom:1px solid #f1f5f9;text-align:left;vertical-align:middle}
-th{font-weight:700;background:#f9fafb;position:sticky;top:0}
-tr:hover td{background:var(--hover);}
+      /* Table */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-variant-numeric: tabular-nums;
+        font-size: 1rem;
+      }
+      th,
+      td {
+        padding: 10px;
+        border-bottom: 1px solid #f1f5f9;
+        text-align: left;
+        vertical-align: middle;
+      }
+      th {
+        font-weight: 700;
+        background: #f9fafb;
+        position: sticky;
+        top: 0;
+      }
+      tr:hover td {
+        background: var(--hover);
+      }
 
-/* Tight, aligned date column */
-.date-cell{ white-space:nowrap; font-variant-numeric:tabular-nums; display:inline-flex; align-items:center; gap:8px; }
-.date-part{display:inline-block;text-align:left}
-.date-part.day{width:3ch;margin-right:4px;}
-.date-part.date{margin-right:4px;}
-.date-part.time{}
+      /* Tight, aligned date column */
+      .date-cell {
+        white-space: nowrap;
+        font-variant-numeric: tabular-nums;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .date-part {
+        display: inline-block;
+        text-align: left;
+      }
+      .date-part.day {
+        width: 3ch;
+        margin-right: 4px;
+      }
+      .date-part.date {
+        margin-right: 4px;
+      }
+      .date-part.time {
+      }
 
-/* Add-to-calendar pills */
-.cal-actions{display:flex;gap:6px;align-items:center}
-.cal-btn{ display:inline-flex; align-items:center; gap:6px; border:1px solid var(--border); border-radius:999px; padding:4px 10px; font-weight:600; text-decoration:none; color:var(--ink); font-size:.9rem; background:#fff; }
-.cal-btn:hover{background:var(--hover);border-color:var(--border-strong)}
-.cal-btn svg{width:16px;height:16px;display:block}
+      /* Add-to-calendar pills */
+      .cal-actions {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+      }
+      .cal-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 4px 10px;
+        font-weight: 600;
+        text-decoration: none;
+        color: var(--ink);
+        font-size: 0.9rem;
+        background: #fff;
+      }
+      .cal-btn:hover {
+        background: var(--hover);
+        border-color: var(--border-strong);
+      }
+      .cal-btn svg {
+        width: 16px;
+        height: 16px;
+        display: block;
+      }
 
-/* Mobile cards */
-#cards{display:none}
-.ev{border:1px solid var(--border);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:6px;background:#fff;transition:background .25s}
-.ev:hover{background:var(--hover);}
-.ev-title{font-weight:700;font-size:1.1rem;line-height:1.25}
-.ev-row{display:flex;align-items:center;gap:8px}
-.ev-label{color:var(--muted);min-width:48px}
-.badge{display:inline-block;border:1px solid var(--border);border-radius:999px;padding:4px 10px}
+      /* Mobile cards */
+      #cards {
+        display: none;
+      }
+      .ev {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        background: #fff;
+        transition: background 0.25s;
+      }
+      .ev:hover {
+        background: var(--hover);
+      }
+      .ev-title {
+        font-weight: 700;
+        font-size: 1.1rem;
+        line-height: 1.25;
+      }
+      .ev-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .ev-label {
+        color: var(--muted);
+        min-width: 48px;
+      }
+      .badge {
+        display: inline-block;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 4px 10px;
+      }
 
-/* Footer */
-.footer{ margin-top:0; padding:6px 0; color:var(--muted); display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between; border-top:1px solid var(--border); }
-.footer .links{ display:flex; flex-direction:row; justify-content:space-between; gap:12px; width:100%; }
-.footer a.btn-link{ display:block; text-align:center; width:100%; padding:12px 0; margin-top: 20px; border:1px solid var(--border); border-radius:12px; color:var(--ink); text-decoration:none; font-weight:600; font-size:1rem; transition:all 0.2s; flex:1; }
-.footer a.btn-link:hover{border-color:var(--border-strong);background:var(--hover)}
+      /* Footer */
+      .footer {
+        margin-top: 0;
+        padding: 6px 0;
+        color: var(--muted);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+        justify-content: space-between;
+        border-top: 1px solid var(--border);
+      }
+      .footer .links {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 12px;
+        width: 100%;
+      }
+      .footer a.btn-link {
+        display: block;
+        text-align: center;
+        width: 100%;
+        padding: 12px 0;
+        margin-top: 20px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        color: var(--ink);
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all 0.2s;
+        flex: 1;
+      }
+      .footer a.btn-link:hover {
+        border-color: var(--border-strong);
+        background: var(--hover);
+      }
 
-/* Responsive */
-@media (max-width:768px){
-  .chips{grid-template-columns:1fr 1fr}
-  button{width:100%;font-size:1.1rem;padding:14px 18px}
-}
-@media (max-width:480px){
-  :root{--text:17px}
-  .header .title{font-size:1.45rem}
-  table{display:none}
-  #cards{display:grid;gap:12px}
-  .footer{flex-direction:column;align-items:flex-start}
-  .footer .links{flex-direction:column}
-  .ev-title{
-    max-width:100%;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    display:block;
-  }
-}
-</style>
-</head>
-<body>
+      /* Responsive */
+      @media (max-width: 768px) {
+        .chips {
+          grid-template-columns: 1fr 1fr;
+        }
+        button {
+          width: 100%;
+          font-size: 1.1rem;
+          padding: 14px 18px;
+        }
+      }
+      @media (max-width: 480px) {
+        :root {
+          --text: 17px;
+        }
+        .header .title {
+          font-size: 1.45rem;
+        }
+        table {
+          display: none;
+        }
+        #cards {
+          display: grid;
+          gap: 12px;
+        }
+        .footer {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .footer .links {
+          flex-direction: column;
+        }
+        .ev-title {
+          max-width: 100%;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: block;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <h1 class="title">🎾 Create your personal Padel Events Calendar</h1>
+    </header>
 
-<header class="header">
-  <h1 class="title">🎾 Create your personal Padel Events Calendar</h1>
-</header>
+    <main class="container">
+      <div class="section-title">Select one or more Bangkok Padel Clubs</div>
+      <div id="clubBox" class="chips"></div>
 
-<main class="container">
-  <div class="section-title">Select one or more Bangkok Padel Clubs</div>
-  <div id="clubBox" class="chips"></div>
+      <div class="section-title">Select Padel level</div>
+      <div class="level-filter">
+        <button class="level-btn" data-range="0-2" data-label="Beginner 0–2">
+          Beginner 0–2
+        </button>
+        <button class="level-btn" data-range="2-3" data-label="Low-Inter 2–3">
+          Low-Inter 2–3
+        </button>
+        <button class="level-btn" data-range="3-4" data-label="Mid-Inter 3–4">
+          Mid-Inter 3–4
+        </button>
+        <button class="level-btn" data-range="4-5" data-label="High-Inter 4–5">
+          High-Inter 4–5
+        </button>
+      </div>
 
-  <div class="section-title">Select Padel level</div>
-  <div class="level-filter">
-    <button class="level-btn" data-range="0-2" data-label="Beginner 0–2">Beginner 0–2</button>
-    <button class="level-btn" data-range="2-3" data-label="Low-Inter 2–3">Low-Inter 2–3</button>
-    <button class="level-btn" data-range="3-4" data-label="Mid-Inter 3–4">Mid-Inter 3–4</button>
-    <button class="level-btn" data-range="4-5" data-label="High-Inter 4–5">High-Inter 4–5</button>
-  </div>
+      <div class="filter-bar">
+        <button id="btnPreview">Filter Padel events</button>
+        <span id="status" class="muted" style="align-self: center"></span>
+      </div>
 
-  <div class="filter-bar">
-    <button id="btnPreview">Filter Padel events</button>
-    <span id="status" class="muted" style="align-self:center;"></span>
-  </div>
+      <div id="previewHeader" class="preview-bar" style="display: none">
+        <strong id="matchCount">0</strong>
+        <span>matches based on filter:</span>
+        <span class="meta" id="filterSummary">All clubs · All levels</span>
+      </div>
 
-  <div id="previewHeader" class="preview-bar" style="display:none">
-    <strong id="matchCount">0</strong>
-    <span>matches based on filter:</span>
-    <span class="meta" id="filterSummary">All clubs · All levels</span>
-  </div>
+      <div id="previewWrap" class="table-wrap" style="display: none">
+        <table>
+          <thead>
+            <tr>
+              <th>Event</th>
+              <th>Date</th>
+              <th>Club</th>
+              <th>Level</th>
+              <th>Add to calendar</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+        <div id="cards"></div>
+      </div>
 
-  <div id="previewWrap" class="table-wrap" style="display:none">
-    <table>
-      <thead>
-        <tr><th>Event</th><th>Date</th><th>Club</th><th>Level</th><th>Add to calendar</th></tr>
-      </thead>
-      <tbody id="tbody"></tbody>
-    </table>
-    <div id="cards"></div>
-  </div>
+      <footer class="footer">
+        <div>
+          <span>Last update: <strong id="lastUpdated">—</strong></span>
+          <span class="meta" id="tzBuild" style="margin-left: 10px"></span>
+        </div>
+        <div class="links">
+          <a
+            id="suggestLink"
+            href="mailto:mouthaan.dylan@gmail.com?subject=Padel%20Calendar%20Suggestion"
+            class="btn-link"
+            >💡 Make suggestion</a
+          >
+          <a
+            id="reportLink"
+            href="mailto:mouthaan.dylan@gmail.com?subject=Report%20Incorrect%20Padel%20Event"
+            class="btn-link"
+            >⚠️ Report incorrect event</a
+          >
+        </div>
+      </footer>
+    </main>
 
-  <footer class="footer">
-    <div>
-      <span>Last update: <strong id="lastUpdated">—</strong></span>
-      <span class="meta" id="tzBuild" style="margin-left:10px"></span>
-    </div>
-    <div class="links">
-      <a id="suggestLink" href="mailto:mouthaan.dylan@gmail.com?subject=Padel%20Calendar%20Suggestion" class="btn-link">💡 Make suggestion</a>
-      <a id="reportLink" href="mailto:mouthaan.dylan@gmail.com?subject=Report%20Incorrect%20Padel%20Event" class="btn-link">⚠️ Report incorrect event</a>
-    </div>
-  </footer>
-</main>
+    <script>
+      const API =
+        "https://script.google.com/macros/s/AKfycbwgIl9UntPvaiuLYqczS_PUXSaycq7mNCIBGhbjObDrsPjowctV-Y6RG8pUAAFlC1jC9A/exec";
+      const qs = (s) => document.querySelector(s),
+        qsa = (s) => [...document.querySelectorAll(s)];
+      const escapeHtml = (s) =>
+        String(s || "").replace(
+          /[&<>"']/g,
+          (c) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            })[c],
+        );
+      function setStatus(t) {
+        const el = qs("#status");
+        if (el) el.textContent = t || "";
+      }
+      qs("#tzBuild").textContent = "Timezone: Asia/Bangkok";
 
-<script>
-const API='https://script.google.com/macros/s/AKfycbwgIl9UntPvaiuLYqczS_PUXSaycq7mNCIBGhbjObDrsPjowctV-Y6RG8pUAAFlC1jC9A/exec';
-const qs=s=>document.querySelector(s), qsa=s=>[...document.querySelectorAll(s)];
-const escapeHtml=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-function setStatus(t){const el=qs('#status');if(el)el.textContent=t||'';}
-qs('#tzBuild').textContent='Timezone: Asia/Bangkok';
+      /* Level buttons state */
+      let selectedLevels = [];
+      qsa(".level-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const range = btn.dataset.range;
+          btn.classList.toggle("active");
+          if (selectedLevels.includes(range)) {
+            selectedLevels = selectedLevels.filter((r) => r !== range);
+          } else {
+            selectedLevels.push(range);
+          }
+        });
+      });
 
-/* Level buttons state */
-let selectedLevels = [];
-qsa('.level-btn').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    const range=btn.dataset.range;
-    btn.classList.toggle('active');
-    if(selectedLevels.includes(range)){
-      selectedLevels=selectedLevels.filter(r=>r!==range);
-    }else{ selectedLevels.push(range); }
-  });
-});
-
-function fmtDateParts(startISO,endISO){
-  const s=new Date(startISO), e=new Date(endISO);
-  const day=new Intl.DateTimeFormat(undefined,{weekday:'short'}).format(s);
-  const date=new Intl.DateTimeFormat(undefined,{day:'2-digit',month:'short'}).format(s);
-  const tFmt={hour:'2-digit',minute:'2-digit',hour12:false};
-  const tStart=new Intl.DateTimeFormat(undefined,tFmt).format(s).replace(/\s/g,'');
-  const tEnd=new Intl.DateTimeFormat(undefined,tFmt).format(e).replace(/\s/g,'');
-  return{day,date,tStart,tEnd};
-}
-function availabilityText(total, available){
-  if(total == null || available == null) return '';
-  if(available <= 0) return `🔴 Full · 0 of ${total} spots available`;
-  const ratio = available/total;
-  if(ratio <= 0.25) return `🟠 Almost full · ${available} of ${total} spots available`;
-  return `🟢 Open · ${available} of ${total} spots available`;
-}
-function levelLabel(range){
-  if(!range) return '';
-  const [a,b]=String(range).split(/[–-]/).map(x=>parseFloat(x));
-  if(Number.isFinite(a) && Number.isFinite(b)){
-    if(b<=2.5) return `${range} (Beginner)`;
-    if(a>=2.5 && b<=4) return `${range} (Low–Mid Inter.)`;
-    if(a>=4) return `${range} (High Inter.+)`;
-  }
-  return range;
-}
-function buildEventDetails(r){
-  const lines = [
-    r.club && `📍 Club: ${r.club}`,
-    r.price && `💰 ${r.price}`,
-    r.category && `🎾 Category: ${r.category}`,
-    r.level && `🥇 Level: ${levelLabel(r.level)}`,
-    availabilityText(r.total, r.available),
-    '',
-    '🎾 Padel events Bangkok 🇹🇭'
-  ].filter(Boolean);
-  return lines.join('\n');
-}
-function fmtDateRange(startISO,endISO){
-  const p=fmtDateParts(startISO,endISO);
-  return `<span class="date-cell">
+      function fmtDateParts(startISO, endISO) {
+        const s = new Date(startISO),
+          e = new Date(endISO);
+        const day = new Intl.DateTimeFormat(undefined, {
+          weekday: "short",
+        }).format(s);
+        const date = new Intl.DateTimeFormat(undefined, {
+          day: "2-digit",
+          month: "short",
+        }).format(s);
+        const tFmt = { hour: "2-digit", minute: "2-digit", hour12: false };
+        const tStart = new Intl.DateTimeFormat(undefined, tFmt)
+          .format(s)
+          .replace(/\s/g, "");
+        const tEnd = new Intl.DateTimeFormat(undefined, tFmt)
+          .format(e)
+          .replace(/\s/g, "");
+        return { day, date, tStart, tEnd };
+      }
+      function availabilityText(total, available) {
+        if (total == null || available == null) return "";
+        if (available <= 0) return `🔴 Full · 0 of ${total} spots available`;
+        const ratio = available / total;
+        if (ratio <= 0.25)
+          return `🟠 Almost full · ${available} of ${total} spots available`;
+        return `🟢 Open · ${available} of ${total} spots available`;
+      }
+      function levelLabel(range) {
+        if (!range) return "";
+        const [a, b] = String(range)
+          .split(/[–-]/)
+          .map((x) => parseFloat(x));
+        if (Number.isFinite(a) && Number.isFinite(b)) {
+          if (b <= 2.5) return `${range} (Beginner)`;
+          if (a >= 2.5 && b <= 4) return `${range} (Low–Mid Inter.)`;
+          if (a >= 4) return `${range} (High Inter.+)`;
+        }
+        return range;
+      }
+      function buildEventDetails(r) {
+        const lines = [
+          r.club && `📍 Club: ${r.club}`,
+          r.price && `💰 ${r.price}`,
+          r.category && `🎾 Category: ${r.category}`,
+          r.level && `🥇 Level: ${levelLabel(r.level)}`,
+          availabilityText(r.total, r.available),
+          "",
+          "🎾 Padel events Bangkok 🇹🇭",
+        ].filter(Boolean);
+        return lines.join("\n");
+      }
+      function fmtDateRange(startISO, endISO) {
+        const p = fmtDateParts(startISO, endISO);
+        return `<span class="date-cell">
     <span class="date-part day">${p.day}</span>
     <span class="date-part date">${p.date}</span>
     <span class="date-part time">${p.tStart}–${p.tEnd}</span>
   </span>`;
-}
-function toUtcStamp(iso){
-  const d=new Date(iso);
-  const y=d.getUTCFullYear();
-  const m=String(d.getUTCMonth()+1).padStart(2,'0');
-  const day=String(d.getUTCDate()).padStart(2,'0');
-  const hh=String(d.getUTCHours()).padStart(2,'0');
-  const mm=String(d.getUTCMinutes()).padStart(2,'0');
-  const ss=String(d.getUTCSeconds()).padStart(2,'0');
-  return `${y}${m}${day}T${hh}${mm}${ss}Z`;
-}
-function googleCalUrl({title, start, end, club, description}){
-  const dates=`${toUtcStamp(start)}/${toUtcStamp(end)}`;
-  const text=encodeURIComponent(title||'Padel');
-  const details=encodeURIComponent(description||'');
-  const location=encodeURIComponent(club||'');
-  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${text}&dates=${dates}&details=${details}&location=${location}`;
-}
-function buildIcs({id, title, start, end, club, description}){
-  const uid=(id||`${Date.now()}-${Math.random().toString(36).slice(2)}`)+'@padel-bkk';
-  const lines=[
-    'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Padel BKK//Web//EN','CALSCALE:GREGORIAN','METHOD:PUBLISH',
-    'BEGIN:VEVENT',
-    `UID:${uid}`,
-    `DTSTAMP:${toUtcStamp(new Date().toISOString())}`,
-    `DTSTART:${toUtcStamp(start)}`,
-    `DTEND:${toUtcStamp(end)}`,
-    `SUMMARY:${title || 'Padel'}`,
-    club ? `LOCATION:${club}` : '',
-    `DESCRIPTION:${(description || '').replace(/\n/g,'\\n')}`,
-    'END:VEVENT','END:VCALENDAR'
-  ].filter(Boolean).join('\r\n');
-  return lines;
-}
-function downloadIcsFile(evtData){
-  const ics=buildIcs(evtData);
-  const blob=new Blob([ics],{type:'text/calendar;charset=utf-8'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
-  a.href=url; a.download=(evtData.title||'event')+'.ics';
-  document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-}
-function buildFilterSummary(){
-  const checked=qsa('input[name="club"]:checked');
-  const clubPart = (checked.length===0)
-    ? 'All clubs'
-    : (checked.length<=3
-        ? checked.map(cb=>cb.parentElement.textContent.trim()).join(', ')
-        : `${checked.slice(0,3).map(cb=>cb.parentElement.textContent.trim()).join(', ')} +${checked.length-3} more`);
-  const levelPart=(selectedLevels.length===0)
-    ? 'All levels'
-    : selectedLevels.map(r=>qs(`.level-btn[data-range="${r}"]`)?.dataset.label || r).slice(0,10).join(', ');
-  return `${clubPart} · ${levelPart}`;
-}
-async function loadLastUpdated(){
-  try{
-    const r=await fetch(API+'?action=meta'); if(!r.ok) throw new Error(r.status);
-    const {lastUpdated}=await r.json(); const el=qs('#lastUpdated'); if(!el) return;
-    if(!lastUpdated){ el.textContent='—'; return; }
-    const d=new Date(lastUpdated);
-    el.textContent=new Intl.DateTimeFormat(undefined,{year:'numeric',month:'short',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}).format(d).replace(/,/g,'');
-  }catch(e){ console.error(e); }
-}
-async function hydrateClubsAndAutoPreview(){
-  const r=await fetch(API+'?action=filters'); const {clubs=[]}=await r.json();
-  const box=qs('#clubBox'); box.innerHTML='';
-  clubs.forEach(({value,label})=>{
-    const id='club_'+value.replace(/\W+/g,'_');
-    const el=document.createElement('label');
-    el.className='chip';
-    el.innerHTML=`<input type="checkbox" name="club" id="${id}" value="${escapeHtml(value)}"> ${escapeHtml(label || value)}`;
-    box.appendChild(el);
-  });
-  onPreview();
-}
-function renderCards(rows){
-  const wrap=qs('#cards'); wrap.innerHTML='';
-  rows.forEach(r=>{
-    const p=fmtDateParts(r.start,r.end);
-    const details=buildEventDetails(r);
-    const gUrl=googleCalUrl({title:r.title,start:r.start,end:r.end,club:r.location||r.club,description:details});
-    const card=document.createElement('div');
-    card.className='ev';
-    card.innerHTML=`
+      }
+      function toUtcStamp(iso) {
+        const d = new Date(iso);
+        const y = d.getUTCFullYear();
+        const m = String(d.getUTCMonth() + 1).padStart(2, "0");
+        const day = String(d.getUTCDate()).padStart(2, "0");
+        const hh = String(d.getUTCHours()).padStart(2, "0");
+        const mm = String(d.getUTCMinutes()).padStart(2, "0");
+        const ss = String(d.getUTCSeconds()).padStart(2, "0");
+        return `${y}${m}${day}T${hh}${mm}${ss}Z`;
+      }
+      function googleCalUrl({ title, start, end, club, description }) {
+        const dates = `${toUtcStamp(start)}/${toUtcStamp(end)}`;
+        const text = encodeURIComponent(title || "Padel");
+        const details = encodeURIComponent(description || "");
+        const location = encodeURIComponent(club || "");
+        return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${text}&dates=${dates}&details=${details}&location=${location}`;
+      }
+      function buildIcs({ id, title, start, end, club, description }) {
+        const uid =
+          (id || `${Date.now()}-${Math.random().toString(36).slice(2)}`) +
+          "@padel-bkk";
+        const lines = [
+          "BEGIN:VCALENDAR",
+          "VERSION:2.0",
+          "PRODID:-//Padel BKK//Web//EN",
+          "CALSCALE:GREGORIAN",
+          "METHOD:PUBLISH",
+          "BEGIN:VEVENT",
+          `UID:${uid}`,
+          `DTSTAMP:${toUtcStamp(new Date().toISOString())}`,
+          `DTSTART:${toUtcStamp(start)}`,
+          `DTEND:${toUtcStamp(end)}`,
+          `SUMMARY:${title || "Padel"}`,
+          club ? `LOCATION:${club}` : "",
+          `DESCRIPTION:${(description || "").replace(/\n/g, "\\n")}`,
+          "END:VEVENT",
+          "END:VCALENDAR",
+        ]
+          .filter(Boolean)
+          .join("\r\n");
+        return lines;
+      }
+      function downloadIcsFile(evtData) {
+        const ics = buildIcs(evtData);
+        const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = (evtData.title || "event") + ".ics";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      }
+      function buildFilterSummary() {
+        const checked = qsa('input[name="club"]:checked');
+        const clubPart =
+          checked.length === 0
+            ? "All clubs"
+            : checked.length <= 3
+              ? checked
+                  .map((cb) => cb.parentElement.textContent.trim())
+                  .join(", ")
+              : `${checked
+                  .slice(0, 3)
+                  .map((cb) => cb.parentElement.textContent.trim())
+                  .join(", ")} +${checked.length - 3} more`;
+        const levelPart =
+          selectedLevels.length === 0
+            ? "All levels"
+            : selectedLevels
+                .map(
+                  (r) =>
+                    qs(`.level-btn[data-range="${r}"]`)?.dataset.label || r,
+                )
+                .slice(0, 10)
+                .join(", ");
+        return `${clubPart} · ${levelPart}`;
+      }
+      async function loadLastUpdated() {
+        try {
+          const r = await fetch(API + "?action=meta");
+          if (!r.ok) throw new Error(r.status);
+          const { lastUpdated } = await r.json();
+          const el = qs("#lastUpdated");
+          if (!el) return;
+          if (!lastUpdated) {
+            el.textContent = "—";
+            return;
+          }
+          const d = new Date(lastUpdated);
+          el.textContent = new Intl.DateTimeFormat(undefined, {
+            year: "numeric",
+            month: "short",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+          })
+            .format(d)
+            .replace(/,/g, "");
+        } catch (e) {
+          console.error(e);
+        }
+      }
+      async function hydrateClubsAndAutoPreview() {
+        const r = await fetch(API + "?action=filters");
+        const { clubs = [] } = await r.json();
+        const box = qs("#clubBox");
+        box.innerHTML = "";
+        clubs.forEach(({ value, label }) => {
+          const id = "club_" + value.replace(/\W+/g, "_");
+          const el = document.createElement("label");
+          el.className = "chip";
+          el.innerHTML = `<input type="checkbox" name="club" id="${id}" value="${escapeHtml(value)}"> ${escapeHtml(label || value)}`;
+          box.appendChild(el);
+        });
+        onPreview();
+      }
+      function renderCards(rows) {
+        const wrap = qs("#cards");
+        wrap.innerHTML = "";
+        rows.forEach((r) => {
+          const p = fmtDateParts(r.start, r.end);
+          const details = buildEventDetails(r);
+          const gUrl = googleCalUrl({
+            title: r.title,
+            start: r.start,
+            end: r.end,
+            club: r.location || r.club,
+            description: details,
+          });
+          const card = document.createElement("div");
+          card.className = "ev";
+          card.innerHTML = `
       <div class="ev-title">${escapeHtml(r.title)}</div>
       <div class="ev-row"><span class="ev-label">When</span> <span style="font-variant-numeric:tabular-nums">${p.day} ${p.date} ${p.tStart}–${p.tEnd}</span></div>
       <div class="ev-row"><span class="ev-label">Club</span> <span class="badge">${escapeHtml(r.club)}</span></div>
-      <div class="ev-row"><span class="ev-label">Level</span> <span class="badge">${escapeHtml(r.level || '—')}</span></div>
+      <div class="ev-row"><span class="ev-label">Level</span> <span class="badge">${escapeHtml(r.level || "—")}</span></div>
       <div class="ev-row" style="margin-top:6px">
         <div class="cal-actions">
           <a class="cal-btn" href="${gUrl}" target="_blank" rel="noopener">Google</a>
           <a class="cal-btn" href="#" data-ics>ICS</a>
         </div>
       </div>`;
-    const icsA=card.querySelector('a[data-ics]');
-    icsA.addEventListener('click',(e)=>{
-      e.preventDefault();
-      downloadIcsFile({id:r.id,title:r.title,start:r.start,end:r.end,club:r.location||r.club,description:details});
-    });
-    wrap.appendChild(card);
-  });
-}
-async function onPreview(){
-  const btn=qs('#btnPreview'); const clubs=qsa('input[name="club"]:checked').map(el=>el.value);
-  btn.disabled=true; btn.setAttribute('aria-busy','true'); setStatus('Loading…');
-  const params=new URLSearchParams({
-    action:'preview',
-    limit:'200',
-    clubs: clubs.join(','),
-    levels: selectedLevels.join(',')
-  });
-  try{
-    const r=await fetch(API+'?'+params.toString(),{headers:{'Accept':'application/json'}});
-    if(!r.ok) throw new Error('API '+r.status);
-    const {total,sample}=await r.json();
-    qs('#previewHeader').style.display='flex';
-    qs('#previewWrap').style.display='block';
-    qs('#matchCount').textContent=String(total);
-    qs('#filterSummary').textContent=buildFilterSummary();
+          const icsA = card.querySelector("a[data-ics]");
+          icsA.addEventListener("click", (e) => {
+            e.preventDefault();
+            downloadIcsFile({
+              id: r.id,
+              title: r.title,
+              start: r.start,
+              end: r.end,
+              club: r.location || r.club,
+              description: details,
+            });
+          });
+          wrap.appendChild(card);
+        });
+      }
+      async function onPreview() {
+        const btn = qs("#btnPreview");
+        const clubs = qsa('input[name="club"]:checked').map((el) => el.value);
+        btn.disabled = true;
+        btn.setAttribute("aria-busy", "true");
+        setStatus("Loading…");
+        const params = new URLSearchParams({
+          action: "preview",
+          limit: "200",
+          clubs: clubs.join(","),
+          levels: selectedLevels.join(","),
+        });
+        try {
+          const r = await fetch(API + "?" + params.toString(), {
+            headers: { Accept: "application/json" },
+          });
+          if (!r.ok) throw new Error("API " + r.status);
+          const { total, sample } = await r.json();
+          qs("#previewHeader").style.display = "flex";
+          qs("#previewWrap").style.display = "block";
+          qs("#matchCount").textContent = String(total);
+          qs("#filterSummary").textContent = buildFilterSummary();
 
-    const tbody=qs('#tbody'); tbody.innerHTML='';
-    sample.forEach(r=>{
-      const details=buildEventDetails(r);
-      const tr=document.createElement('tr');
-      const gUrl=googleCalUrl({title:r.title,start:r.start,end:r.end,club:r.location||r.club,description:details});
-      tr.innerHTML=`
+          const tbody = qs("#tbody");
+          tbody.innerHTML = "";
+          sample.forEach((r) => {
+            const details = buildEventDetails(r);
+            const tr = document.createElement("tr");
+            const gUrl = googleCalUrl({
+              title: r.title,
+              start: r.start,
+              end: r.end,
+              club: r.location || r.club,
+              description: details,
+            });
+            tr.innerHTML = `
         <td>${escapeHtml(r.title)}</td>
-        <td>${fmtDateRange(r.start,r.end)}</td>
+        <td>${fmtDateRange(r.start, r.end)}</td>
         <td>${escapeHtml(r.club)}</td>
-        <td>${escapeHtml(r.level || '')}</td>
+        <td>${escapeHtml(r.level || "")}</td>
         <td>
           <div class="cal-actions">
             <a class="cal-btn" href="${gUrl}" target="_blank" rel="noopener">Google</a>
             <button class="cal-btn" type="button">ICS</button>
           </div>
         </td>`;
-      tr.querySelector('button.cal-btn').addEventListener('click',()=>downloadIcsFile({
-        id:r.id,title:r.title,start:r.start,end:r.end,club:r.location||r.club,description:details
-      }));
-      tbody.appendChild(tr);
-    });
+            tr.querySelector("button.cal-btn").addEventListener("click", () =>
+              downloadIcsFile({
+                id: r.id,
+                title: r.title,
+                start: r.start,
+                end: r.end,
+                club: r.location || r.club,
+                description: details,
+              }),
+            );
+            tbody.appendChild(tr);
+          });
 
-    renderCards(sample);
-    loadLastUpdated();
-    setStatus('');
-  }catch(e){
-    console.error(e);
-    setStatus('Failed. See console.');
-  }finally{
-    btn.disabled=false; btn.removeAttribute('aria-busy');
-  }
-}
+          renderCards(sample);
+          loadLastUpdated();
+          setStatus("");
+        } catch (e) {
+          console.error(e);
+          setStatus("Failed. See console.");
+        } finally {
+          btn.disabled = false;
+          btn.removeAttribute("aria-busy");
+        }
+      }
 
-document.addEventListener('DOMContentLoaded',()=>{
-  qs('#btnPreview').onclick=onPreview;
-  hydrateClubsAndAutoPreview(); loadLastUpdated();
-  qs('#suggestLink').href='mailto:mouthaan.dylan@gmail.com?subject=Padel%20Calendar%20Suggestion';
-  qs('#reportLink').href='mailto:mouthaan.dylan@gmail.com?subject=Report%20Incorrect%20Padel%20Event';
-});
-</script>
-</body>
+      document.addEventListener("DOMContentLoaded", () => {
+        qs("#btnPreview").onclick = onPreview;
+        hydrateClubsAndAutoPreview();
+        loadLastUpdated();
+        qs("#suggestLink").href =
+          "mailto:mouthaan.dylan@gmail.com?subject=Padel%20Calendar%20Suggestion";
+        qs("#reportLink").href =
+          "mailto:mouthaan.dylan@gmail.com?subject=Report%20Incorrect%20Padel%20Event";
+      });
+    </script>
+  </body>
 </html>
-HTMLcd ~/padel-events
-cat > index.html <<'HTML'
-<!DOCTYPE html>
+HTMLcd ~/padel-events cat > index.html <<'HTML'
+<!doctype html>
 <html>
-<head>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-<meta http-equiv="Pragma" content="no-cache" />
-<meta http-equiv="Expires" content="0" />
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
-<title>🎾 Padel Events Calendar</title>
-<style>
-html, body { zoom: 1.25; }
-iframe[role="presentation"],
-iframe[src*="script.google.com/macros/"] { display: none !important; }
+  <head>
+    <meta
+      http-equiv="Cache-Control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,maximum-scale=1"
+    />
+    <title>🎾 Padel Events Calendar</title>
+    <style>
+      html,
+      body {
+        zoom: 1.25;
+      }
+      iframe[role="presentation"],
+      iframe[src*="script.google.com/macros/"] {
+        display: none !important;
+      }
 
-/* Theme */
-:root{
-  --text:16px;
-  --muted:#6b7280;
-  --border:#e5e7eb;
-  --border-strong:#d1d5db;
-  --bg:#ffffff;
-  --ink:#111827;
-  --accent:#111827;
-  --hover:#f3f4f6;
-  --header-bg:#111827;
-  --header-ink:#ffffff;
-}
-*{box-sizing:border-box}
-body{font-family:system-ui,Segoe UI,Roboto,Arial;margin:0;background:var(--bg);font-size:var(--text);color:var(--ink)}
+      /* Theme */
+      :root {
+        --text: 16px;
+        --muted: #6b7280;
+        --border: #e5e7eb;
+        --border-strong: #d1d5db;
+        --bg: #ffffff;
+        --ink: #111827;
+        --accent: #111827;
+        --hover: #f3f4f6;
+        --header-bg: #111827;
+        --header-ink: #ffffff;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        font-family:
+          system-ui,
+          Segoe UI,
+          Roboto,
+          Arial;
+        margin: 0;
+        background: var(--bg);
+        font-size: var(--text);
+        color: var(--ink);
+      }
 
-/* Header */
-.header{ background:var(--header-bg); color:var(--header-ink); padding:18px 16px 14px; }
-.header .title{ margin:0; font-size:1.6rem; line-height:1.25; font-weight:800; }
+      /* Header */
+      .header {
+        background: var(--header-bg);
+        color: var(--header-ink);
+        padding: 18px 16px 14px;
+      }
+      .header .title {
+        margin: 0;
+        font-size: 1.6rem;
+        line-height: 1.25;
+        font-weight: 800;
+      }
 
-/* Layout */
-.container{padding:16px}
+      /* Layout */
+      .container {
+        padding: 16px;
+      }
 
-/* Buttons */
-button{padding:12px 16px;border-radius:12px;border:0;background:#111827;color:#fff;cursor:pointer;font-size:1rem}
-button:active{background:#374151}
-.muted{color:var(--muted)}
-.meta{color:var(--muted)}
+      /* Buttons */
+      button {
+        padding: 12px 16px;
+        border-radius: 12px;
+        border: 0;
+        background: #111827;
+        color: #fff;
+        cursor: pointer;
+        font-size: 1rem;
+      }
+      button:active {
+        background: #374151;
+      }
+      .muted {
+        color: var(--muted);
+      }
+      .meta {
+        color: var(--muted);
+      }
 
-/* Chips (clubs) */
-.section-title{font-size:1.1rem;font-weight:700;margin:8px 0 10px}
-.chips{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin:10px 0 12px}
-.chip{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid var(--border);border-radius:10px;background:#fff;color:var(--ink);cursor:pointer;font-size:1rem;font-weight:500;transition:all .25s}
-.chip:hover{border-color:var(--border-strong)}
-.chip input[type="checkbox"]{width:20px;height:20px;accent-color:var(--accent);cursor:pointer;flex-shrink:0}
-.chip:has(input[type="checkbox"]:checked){background:#111827;border-color:#111827;color:#fff}
+      /* Chips (clubs) */
+      .section-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin: 8px 0 10px;
+      }
+      .chips {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 10px;
+        margin: 10px 0 12px;
+      }
+      .chip {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 14px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: #fff;
+        color: var(--ink);
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 500;
+        transition: all 0.25s;
+      }
+      .chip:hover {
+        border-color: var(--border-strong);
+      }
+      .chip input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        accent-color: var(--accent);
+        cursor: pointer;
+        flex-shrink: 0;
+      }
+      .chip:has(input[type="checkbox"]:checked) {
+        background: #111827;
+        border-color: #111827;
+        color: #fff;
+      }
 
-/* Level filter: four buttons */
-.level-filter{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:4px 0 12px; }
-@media (min-width:640px){ .level-filter{ grid-template-columns:repeat(4,1fr); } }
-.level-btn{ padding:14px; font-size:1.05rem; font-weight:600; border-radius:12px; border:1px solid var(--border); background:#fff; color:#111827; text-align:center; cursor:pointer; transition:all .2s; }
-.level-btn:hover{ border-color:var(--border-strong); background:var(--hover); }
-.level-btn.active{ background:#111827; color:#fff; border-color:#111827; }
+      /* Level filter: four buttons */
+      .level-filter {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin: 4px 0 12px;
+      }
+      @media (min-width: 640px) {
+        .level-filter {
+          grid-template-columns: repeat(4, 1fr);
+        }
+      }
+      .level-btn {
+        padding: 14px;
+        font-size: 1.05rem;
+        font-weight: 600;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: #fff;
+        color: #111827;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .level-btn:hover {
+        border-color: var(--border-strong);
+        background: var(--hover);
+      }
+      .level-btn.active {
+        background: #111827;
+        color: #fff;
+        border-color: #111827;
+      }
 
-/* Filter buttons row */
-.filter-bar{margin-top:10px;margin-bottom:20px;display:flex;flex-wrap:wrap;gap:10px}
+      /* Filter buttons row */
+      .filter-bar {
+        margin-top: 10px;
+        margin-bottom: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
 
-/* Preview header */
-.preview-bar{ margin:10px 0 10px; font-size:1.05rem; display:flex; flex-wrap:wrap; align-items:center; gap:4px; }
-.preview-bar strong{font-weight:700}
-.preview-bar .meta{color:var(--muted)}
+      /* Preview header */
+      .preview-bar {
+        margin: 10px 0 10px;
+        font-size: 1.05rem;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 4px;
+      }
+      .preview-bar strong {
+        font-weight: 700;
+      }
+      .preview-bar .meta {
+        color: var(--muted);
+      }
 
-/* Table box */
-.table-wrap{ width:100%;max-height:480px; overflow:auto; border:1px solid var(--border); border-radius:12px;background:#fff; margin-bottom: 20px; }
+      /* Table box */
+      .table-wrap {
+        width: 100%;
+        max-height: 480px;
+        overflow: auto;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: #fff;
+        margin-bottom: 20px;
+      }
 
-/* Table */
-table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:1rem}
-th,td{padding:10px;border-bottom:1px solid #f1f5f9;text-align:left;vertical-align:middle}
-th{font-weight:700;background:#f9fafb;position:sticky;top:0}
-tr:hover td{background:var(--hover);}
+      /* Table */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-variant-numeric: tabular-nums;
+        font-size: 1rem;
+      }
+      th,
+      td {
+        padding: 10px;
+        border-bottom: 1px solid #f1f5f9;
+        text-align: left;
+        vertical-align: middle;
+      }
+      th {
+        font-weight: 700;
+        background: #f9fafb;
+        position: sticky;
+        top: 0;
+      }
+      tr:hover td {
+        background: var(--hover);
+      }
 
-/* Tight, aligned date column */
-.date-cell{ white-space:nowrap; font-variant-numeric:tabular-nums; display:inline-flex; align-items:center; gap:8px; }
-.date-part{display:inline-block;text-align:left}
-.date-part.day{width:3ch;margin-right:4px;}
-.date-part.date{margin-right:4px;}
-.date-part.time{}
+      /* Tight, aligned date column */
+      .date-cell {
+        white-space: nowrap;
+        font-variant-numeric: tabular-nums;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .date-part {
+        display: inline-block;
+        text-align: left;
+      }
+      .date-part.day {
+        width: 3ch;
+        margin-right: 4px;
+      }
+      .date-part.date {
+        margin-right: 4px;
+      }
+      .date-part.time {
+      }
 
-/* Add-to-calendar pills */
-.cal-actions{display:flex;gap:6px;align-items:center}
-.cal-btn{ display:inline-flex; align-items:center; gap:6px; border:1px solid var(--border); border-radius:999px; padding:4px 10px; font-weight:600; text-decoration:none; color:var(--ink); font-size:.9rem; background:#fff; }
-.cal-btn:hover{background:var(--hover);border-color:var(--border-strong)}
-.cal-btn svg{width:16px;height:16px;display:block}
+      /* Add-to-calendar pills */
+      .cal-actions {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+      }
+      .cal-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 4px 10px;
+        font-weight: 600;
+        text-decoration: none;
+        color: var(--ink);
+        font-size: 0.9rem;
+        background: #fff;
+      }
+      .cal-btn:hover {
+        background: var(--hover);
+        border-color: var(--border-strong);
+      }
+      .cal-btn svg {
+        width: 16px;
+        height: 16px;
+        display: block;
+      }
 
-/* Mobile cards */
-#cards{display:none}
-.ev{border:1px solid var(--border);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:6px;background:#fff;transition:background .25s}
-.ev:hover{background:var(--hover);}
-.ev-title{font-weight:700;font-size:1.1rem;line-height:1.25}
-.ev-row{display:flex;align-items:center;gap:8px}
-.ev-label{color:var(--muted);min-width:48px}
-.badge{display:inline-block;border:1px solid var(--border);border-radius:999px;padding:4px 10px}
+      /* Mobile cards */
+      #cards {
+        display: none;
+      }
+      .ev {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        background: #fff;
+        transition: background 0.25s;
+      }
+      .ev:hover {
+        background: var(--hover);
+      }
+      .ev-title {
+        font-weight: 700;
+        font-size: 1.1rem;
+        line-height: 1.25;
+      }
+      .ev-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .ev-label {
+        color: var(--muted);
+        min-width: 48px;
+      }
+      .badge {
+        display: inline-block;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 4px 10px;
+      }
 
-/* Footer */
-.footer{ margin-top:0; padding:6px 0; color:var(--muted); display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between; border-top:1px solid var(--border); }
-.footer .links{ display:flex; flex-direction:row; justify-content:space-between; gap:12px; width:100%; }
-.footer a.btn-link{ display:block; text-align:center; width:100%; padding:12px 0; margin-top: 20px; border:1px solid var(--border); border-radius:12px; color:var(--ink); text-decoration:none; font-weight:600; font-size:1rem; transition:all 0.2s; flex:1; }
-.footer a.btn-link:hover{border-color:var(--border-strong);background:var(--hover)}
+      /* Footer */
+      .footer {
+        margin-top: 0;
+        padding: 6px 0;
+        color: var(--muted);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+        justify-content: space-between;
+        border-top: 1px solid var(--border);
+      }
+      .footer .links {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 12px;
+        width: 100%;
+      }
+      .footer a.btn-link {
+        display: block;
+        text-align: center;
+        width: 100%;
+        padding: 12px 0;
+        margin-top: 20px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        color: var(--ink);
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all 0.2s;
+        flex: 1;
+      }
+      .footer a.btn-link:hover {
+        border-color: var(--border-strong);
+        background: var(--hover);
+      }
 
-/* Responsive */
-@media (max-width:768px){
-  .chips{grid-template-columns:1fr 1fr}
-  button{width:100%;font-size:1.1rem;padding:14px 18px}
-}
-@media (max-width:480px){
-  :root{--text:17px}
-  .header .title{font-size:1.45rem}
-  table{display:none}
-  #cards{display:grid;gap:12px}
-  .footer{flex-direction:column;align-items:flex-start}
-  .footer .links{flex-direction:column}
-  .ev-title{
-    max-width:100%;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    display:block;
-  }
-}
-</style>
-</head>
-<body>
+      /* Responsive */
+      @media (max-width: 768px) {
+        .chips {
+          grid-template-columns: 1fr 1fr;
+        }
+        button {
+          width: 100%;
+          font-size: 1.1rem;
+          padding: 14px 18px;
+        }
+      }
+      @media (max-width: 480px) {
+        :root {
+          --text: 17px;
+        }
+        .header .title {
+          font-size: 1.45rem;
+        }
+        table {
+          display: none;
+        }
+        #cards {
+          display: grid;
+          gap: 12px;
+        }
+        .footer {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .footer .links {
+          flex-direction: column;
+        }
+        .ev-title {
+          max-width: 100%;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: block;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <h1 class="title">🎾 Create your personal Padel Events Calendar</h1>
+    </header>
 
-<header class="header">
-  <h1 class="title">🎾 Create your personal Padel Events Calendar</h1>
-</header>
+    <main class="container">
+      <div class="section-title">Select one or more Bangkok Padel Clubs</div>
+      <div id="clubBox" class="chips"></div>
 
-<main class="container">
-  <div class="section-title">Select one or more Bangkok Padel Clubs</div>
-  <div id="clubBox" class="chips"></div>
+      <div class="section-title">Select Padel level</div>
+      <div class="level-filter">
+        <button class="level-btn" data-range="0-2" data-label="Beginner 0–2">
+          Beginner 0–2
+        </button>
+        <button class="level-btn" data-range="2-3" data-label="Low-Inter 2–3">
+          Low-Inter 2–3
+        </button>
+        <button class="level-btn" data-range="3-4" data-label="Mid-Inter 3–4">
+          Mid-Inter 3–4
+        </button>
+        <button class="level-btn" data-range="4-5" data-label="High-Inter 4–5">
+          High-Inter 4–5
+        </button>
+      </div>
 
-  <div class="section-title">Select Padel level</div>
-  <div class="level-filter">
-    <button class="level-btn" data-range="0-2" data-label="Beginner 0–2">Beginner 0–2</button>
-    <button class="level-btn" data-range="2-3" data-label="Low-Inter 2–3">Low-Inter 2–3</button>
-    <button class="level-btn" data-range="3-4" data-label="Mid-Inter 3–4">Mid-Inter 3–4</button>
-    <button class="level-btn" data-range="4-5" data-label="High-Inter 4–5">High-Inter 4–5</button>
-  </div>
+      <div class="filter-bar">
+        <button id="btnPreview">Filter Padel events</button>
+        <span id="status" class="muted" style="align-self: center"></span>
+      </div>
 
-  <div class="filter-bar">
-    <button id="btnPreview">Filter Padel events</button>
-    <span id="status" class="muted" style="align-self:center;"></span>
-  </div>
+      <div id="previewHeader" class="preview-bar" style="display: none">
+        <strong id="matchCount">0</strong>
+        <span>matches based on filter:</span>
+        <span class="meta" id="filterSummary">All clubs · All levels</span>
+      </div>
 
-  <div id="previewHeader" class="preview-bar" style="display:none">
-    <strong id="matchCount">0</strong>
-    <span>matches based on filter:</span>
-    <span class="meta" id="filterSummary">All clubs · All levels</span>
-  </div>
+      <div id="previewWrap" class="table-wrap" style="display: none">
+        <table>
+          <thead>
+            <tr>
+              <th>Event</th>
+              <th>Date</th>
+              <th>Club</th>
+              <th>Level</th>
+              <th>Add to calendar</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+        <div id="cards"></div>
+      </div>
 
-  <div id="previewWrap" class="table-wrap" style="display:none">
-    <table>
-      <thead>
-        <tr><th>Event</th><th>Date</th><th>Club</th><th>Level</th><th>Add to calendar</th></tr>
-      </thead>
-      <tbody id="tbody"></tbody>
-    </table>
-    <div id="cards"></div>
-  </div>
+      <footer class="footer">
+        <div>
+          <span>Last update: <strong id="lastUpdated">—</strong></span>
+          <span class="meta" id="tzBuild" style="margin-left: 10px"></span>
+        </div>
+        <div class="links">
+          <a
+            id="suggestLink"
+            href="mailto:mouthaan.dylan@gmail.com?subject=Padel%20Calendar%20Suggestion"
+            class="btn-link"
+            >💡 Make suggestion</a
+          >
+          <a
+            id="reportLink"
+            href="mailto:mouthaan.dylan@gmail.com?subject=Report%20Incorrect%20Padel%20Event"
+            class="btn-link"
+            >⚠️ Report incorrect event</a
+          >
+        </div>
+      </footer>
+    </main>
 
-  <footer class="footer">
-    <div>
-      <span>Last update: <strong id="lastUpdated">—</strong></span>
-      <span class="meta" id="tzBuild" style="margin-left:10px"></span>
-    </div>
-    <div class="links">
-      <a id="suggestLink" href="mailto:mouthaan.dylan@gmail.com?subject=Padel%20Calendar%20Suggestion" class="btn-link">💡 Make suggestion</a>
-      <a id="reportLink" href="mailto:mouthaan.dylan@gmail.com?subject=Report%20Incorrect%20Padel%20Event" class="btn-link">⚠️ Report incorrect event</a>
-    </div>
-  </footer>
-</main>
+    <script>
+      const API =
+        "https://script.google.com/macros/s/AKfycbwgIl9UntPvaiuLYqczS_PUXSaycq7mNCIBGhbjObDrsPjowctV-Y6RG8pUAAFlC1jC9A/exec";
+      const qs = (s) => document.querySelector(s),
+        qsa = (s) => [...document.querySelectorAll(s)];
+      const escapeHtml = (s) =>
+        String(s || "").replace(
+          /[&<>"']/g,
+          (c) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            })[c],
+        );
+      function setStatus(t) {
+        const el = qs("#status");
+        if (el) el.textContent = t || "";
+      }
+      qs("#tzBuild").textContent = "Timezone: Asia/Bangkok";
 
-<script>
-const API='https://script.google.com/macros/s/AKfycbwgIl9UntPvaiuLYqczS_PUXSaycq7mNCIBGhbjObDrsPjowctV-Y6RG8pUAAFlC1jC9A/exec';
-const qs=s=>document.querySelector(s), qsa=s=>[...document.querySelectorAll(s)];
-const escapeHtml=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-function setStatus(t){const el=qs('#status');if(el)el.textContent=t||'';}
-qs('#tzBuild').textContent='Timezone: Asia/Bangkok';
+      /* Level buttons state */
+      let selectedLevels = [];
+      qsa(".level-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const range = btn.dataset.range;
+          btn.classList.toggle("active");
+          if (selectedLevels.includes(range)) {
+            selectedLevels = selectedLevels.filter((r) => r !== range);
+          } else {
+            selectedLevels.push(range);
+          }
+        });
+      });
 
-/* Level buttons state */
-let selectedLevels = [];
-qsa('.level-btn').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    const range=btn.dataset.range;
-    btn.classList.toggle('active');
-    if(selectedLevels.includes(range)){
-      selectedLevels=selectedLevels.filter(r=>r!==range);
-    }else{ selectedLevels.push(range); }
-  });
-});
-
-function fmtDateParts(startISO,endISO){
-  const s=new Date(startISO), e=new Date(endISO);
-  const day=new Intl.DateTimeFormat(undefined,{weekday:'short'}).format(s);
-  const date=new Intl.DateTimeFormat(undefined,{day:'2-digit',month:'short'}).format(s);
-  const tFmt={hour:'2-digit',minute:'2-digit',hour12:false};
-  const tStart=new Intl.DateTimeFormat(undefined,tFmt).format(s).replace(/\s/g,'');
-  const tEnd=new Intl.DateTimeFormat(undefined,tFmt).format(e).replace(/\s/g,'');
-  return{day,date,tStart,tEnd};
-}
-function availabilityText(total, available){
-  if(total == null || available == null) return '';
-  if(available <= 0) return `🔴 Full · 0 of ${total} spots available`;
-  const ratio = available/total;
-  if(ratio <= 0.25) return `🟠 Almost full · ${available} of ${total} spots available`;
-  return `🟢 Open · ${available} of ${total} spots available`;
-}
-function levelLabel(range){
-  if(!range) return '';
-  const [a,b]=String(range).split(/[–-]/).map(x=>parseFloat(x));
-  if(Number.isFinite(a) && Number.isFinite(b)){
-    if(b<=2.5) return `${range} (Beginner)`;
-    if(a>=2.5 && b<=4) return `${range} (Low–Mid Inter.)`;
-    if(a>=4) return `${range} (High Inter.+)`;
-  }
-  return range;
-}
-function buildEventDetails(r){
-  const lines = [
-    r.club && `📍 Club: ${r.club}`,
-    r.price && `💰 ${r.price}`,
-    r.category && `🎾 Category: ${r.category}`,
-    r.level && `🥇 Level: ${levelLabel(r.level)}`,
-    availabilityText(r.total, r.available),
-    '',
-    '🎾 Padel events Bangkok 🇹🇭'
-  ].filter(Boolean);
-  return lines.join('\n');
-}
-function fmtDateRange(startISO,endISO){
-  const p=fmtDateParts(startISO,endISO);
-  return `<span class="date-cell">
+      function fmtDateParts(startISO, endISO) {
+        const s = new Date(startISO),
+          e = new Date(endISO);
+        const day = new Intl.DateTimeFormat(undefined, {
+          weekday: "short",
+        }).format(s);
+        const date = new Intl.DateTimeFormat(undefined, {
+          day: "2-digit",
+          month: "short",
+        }).format(s);
+        const tFmt = { hour: "2-digit", minute: "2-digit", hour12: false };
+        const tStart = new Intl.DateTimeFormat(undefined, tFmt)
+          .format(s)
+          .replace(/\s/g, "");
+        const tEnd = new Intl.DateTimeFormat(undefined, tFmt)
+          .format(e)
+          .replace(/\s/g, "");
+        return { day, date, tStart, tEnd };
+      }
+      function availabilityText(total, available) {
+        if (total == null || available == null) return "";
+        if (available <= 0) return `🔴 Full · 0 of ${total} spots available`;
+        const ratio = available / total;
+        if (ratio <= 0.25)
+          return `🟠 Almost full · ${available} of ${total} spots available`;
+        return `🟢 Open · ${available} of ${total} spots available`;
+      }
+      function levelLabel(range) {
+        if (!range) return "";
+        const [a, b] = String(range)
+          .split(/[–-]/)
+          .map((x) => parseFloat(x));
+        if (Number.isFinite(a) && Number.isFinite(b)) {
+          if (b <= 2.5) return `${range} (Beginner)`;
+          if (a >= 2.5 && b <= 4) return `${range} (Low–Mid Inter.)`;
+          if (a >= 4) return `${range} (High Inter.+)`;
+        }
+        return range;
+      }
+      function buildEventDetails(r) {
+        const lines = [
+          r.club && `📍 Club: ${r.club}`,
+          r.price && `💰 ${r.price}`,
+          r.category && `🎾 Category: ${r.category}`,
+          r.level && `🥇 Level: ${levelLabel(r.level)}`,
+          availabilityText(r.total, r.available),
+          "",
+          "🎾 Padel events Bangkok 🇹🇭",
+        ].filter(Boolean);
+        return lines.join("\n");
+      }
+      function fmtDateRange(startISO, endISO) {
+        const p = fmtDateParts(startISO, endISO);
+        return `<span class="date-cell">
     <span class="date-part day">${p.day}</span>
     <span class="date-part date">${p.date}</span>
     <span class="date-part time">${p.tStart}–${p.tEnd}</span>
   </span>`;
-}
-function toUtcStamp(iso){
-  const d=new Date(iso);
-  const y=d.getUTCFullYear();
-  const m=String(d.getUTCMonth()+1).padStart(2,'0');
-  const day=String(d.getUTCDate()).padStart(2,'0');
-  const hh=String(d.getUTCHours()).padStart(2,'0');
-  const mm=String(d.getUTCMinutes()).padStart(2,'0');
-  const ss=String(d.getUTCSeconds()).padStart(2,'0');
-  return `${y}${m}${day}T${hh}${mm}${ss}Z`;
-}
-function googleCalUrl({title, start, end, club, description}){
-  const dates=`${toUtcStamp(start)}/${toUtcStamp(end)}`;
-  const text=encodeURIComponent(title||'Padel');
-  const details=encodeURIComponent(description||'');
-  const location=encodeURIComponent(club||'');
-  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${text}&dates=${dates}&details=${details}&location=${location}`;
-}
-function buildIcs({id, title, start, end, club, description}){
-  const uid=(id||`${Date.now()}-${Math.random().toString(36).slice(2)}`)+'@padel-bkk';
-  const lines=[
-    'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Padel BKK//Web//EN','CALSCALE:GREGORIAN','METHOD:PUBLISH',
-    'BEGIN:VEVENT',
-    `UID:${uid}`,
-    `DTSTAMP:${toUtcStamp(new Date().toISOString())}`,
-    `DTSTART:${toUtcStamp(start)}`,
-    `DTEND:${toUtcStamp(end)}`,
-    `SUMMARY:${title || 'Padel'}`,
-    club ? `LOCATION:${club}` : '',
-    `DESCRIPTION:${(description || '').replace(/\n/g,'\\n')}`,
-    'END:VEVENT','END:VCALENDAR'
-  ].filter(Boolean).join('\r\n');
-  return lines;
-}
-function downloadIcsFile(evtData){
-  const ics=buildIcs(evtData);
-  const blob=new Blob([ics],{type:'text/calendar;charset=utf-8'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
-  a.href=url; a.download=(evtData.title||'event')+'.ics';
-  document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-}
-function buildFilterSummary(){
-  const checked=qsa('input[name="club"]:checked');
-  const clubPart = (checked.length===0)
-    ? 'All clubs'
-    : (checked.length<=3
-        ? checked.map(cb=>cb.parentElement.textContent.trim()).join(', ')
-        : `${checked.slice(0,3).map(cb=>cb.parentElement.textContent.trim()).join(', ')} +${checked.length-3} more`);
-  const levelPart=(selectedLevels.length===0)
-    ? 'All levels'
-    : selectedLevels.map(r=>qs(`.level-btn[data-range="${r}"]`)?.dataset.label || r).slice(0,10).join(', ');
-  return `${clubPart} · ${levelPart}`;
-}
-async function loadLastUpdated(){
-  try{
-    const r=await fetch(API+'?action=meta'); if(!r.ok) throw new Error(r.status);
-    const {lastUpdated}=await r.json(); const el=qs('#lastUpdated'); if(!el) return;
-    if(!lastUpdated){ el.textContent='—'; return; }
-    const d=new Date(lastUpdated);
-    el.textContent=new Intl.DateTimeFormat(undefined,{year:'numeric',month:'short',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}).format(d).replace(/,/g,'');
-  }catch(e){ console.error(e); }
-}
-async function hydrateClubsAndAutoPreview(){
-  const r=await fetch(API+'?action=filters'); const {clubs=[]}=await r.json();
-  const box=qs('#clubBox'); box.innerHTML='';
-  clubs.forEach(({value,label})=>{
-    const id='club_'+value.replace(/\W+/g,'_');
-    const el=document.createElement('label');
-    el.className='chip';
-    el.innerHTML=`<input type="checkbox" name="club" id="${id}" value="${escapeHtml(value)}"> ${escapeHtml(label || value)}`;
-    box.appendChild(el);
-  });
-  onPreview();
-}
-function renderCards(rows){
-  const wrap=qs('#cards'); wrap.innerHTML='';
-  rows.forEach(r=>{
-    const p=fmtDateParts(r.start,r.end);
-    const details=buildEventDetails(r);
-    const gUrl=googleCalUrl({title:r.title,start:r.start,end:r.end,club:r.location||r.club,description:details});
-    const card=document.createElement('div');
-    card.className='ev';
-    card.innerHTML=`
+      }
+      function toUtcStamp(iso) {
+        const d = new Date(iso);
+        const y = d.getUTCFullYear();
+        const m = String(d.getUTCMonth() + 1).padStart(2, "0");
+        const day = String(d.getUTCDate()).padStart(2, "0");
+        const hh = String(d.getUTCHours()).padStart(2, "0");
+        const mm = String(d.getUTCMinutes()).padStart(2, "0");
+        const ss = String(d.getUTCSeconds()).padStart(2, "0");
+        return `${y}${m}${day}T${hh}${mm}${ss}Z`;
+      }
+      function googleCalUrl({ title, start, end, club, description }) {
+        const dates = `${toUtcStamp(start)}/${toUtcStamp(end)}`;
+        const text = encodeURIComponent(title || "Padel");
+        const details = encodeURIComponent(description || "");
+        const location = encodeURIComponent(club || "");
+        return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${text}&dates=${dates}&details=${details}&location=${location}`;
+      }
+      function buildIcs({ id, title, start, end, club, description }) {
+        const uid =
+          (id || `${Date.now()}-${Math.random().toString(36).slice(2)}`) +
+          "@padel-bkk";
+        const lines = [
+          "BEGIN:VCALENDAR",
+          "VERSION:2.0",
+          "PRODID:-//Padel BKK//Web//EN",
+          "CALSCALE:GREGORIAN",
+          "METHOD:PUBLISH",
+          "BEGIN:VEVENT",
+          `UID:${uid}`,
+          `DTSTAMP:${toUtcStamp(new Date().toISOString())}`,
+          `DTSTART:${toUtcStamp(start)}`,
+          `DTEND:${toUtcStamp(end)}`,
+          `SUMMARY:${title || "Padel"}`,
+          club ? `LOCATION:${club}` : "",
+          `DESCRIPTION:${(description || "").replace(/\n/g, "\\n")}`,
+          "END:VEVENT",
+          "END:VCALENDAR",
+        ]
+          .filter(Boolean)
+          .join("\r\n");
+        return lines;
+      }
+      function downloadIcsFile(evtData) {
+        const ics = buildIcs(evtData);
+        const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = (evtData.title || "event") + ".ics";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      }
+      function buildFilterSummary() {
+        const checked = qsa('input[name="club"]:checked');
+        const clubPart =
+          checked.length === 0
+            ? "All clubs"
+            : checked.length <= 3
+              ? checked
+                  .map((cb) => cb.parentElement.textContent.trim())
+                  .join(", ")
+              : `${checked
+                  .slice(0, 3)
+                  .map((cb) => cb.parentElement.textContent.trim())
+                  .join(", ")} +${checked.length - 3} more`;
+        const levelPart =
+          selectedLevels.length === 0
+            ? "All levels"
+            : selectedLevels
+                .map(
+                  (r) =>
+                    qs(`.level-btn[data-range="${r}"]`)?.dataset.label || r,
+                )
+                .slice(0, 10)
+                .join(", ");
+        return `${clubPart} · ${levelPart}`;
+      }
+      async function loadLastUpdated() {
+        try {
+          const r = await fetch(API + "?action=meta");
+          if (!r.ok) throw new Error(r.status);
+          const { lastUpdated } = await r.json();
+          const el = qs("#lastUpdated");
+          if (!el) return;
+          if (!lastUpdated) {
+            el.textContent = "—";
+            return;
+          }
+          const d = new Date(lastUpdated);
+          el.textContent = new Intl.DateTimeFormat(undefined, {
+            year: "numeric",
+            month: "short",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+          })
+            .format(d)
+            .replace(/,/g, "");
+        } catch (e) {
+          console.error(e);
+        }
+      }
+      async function hydrateClubsAndAutoPreview() {
+        const r = await fetch(API + "?action=filters");
+        const { clubs = [] } = await r.json();
+        const box = qs("#clubBox");
+        box.innerHTML = "";
+        clubs.forEach(({ value, label }) => {
+          const id = "club_" + value.replace(/\W+/g, "_");
+          const el = document.createElement("label");
+          el.className = "chip";
+          el.innerHTML = `<input type="checkbox" name="club" id="${id}" value="${escapeHtml(value)}"> ${escapeHtml(label || value)}`;
+          box.appendChild(el);
+        });
+        onPreview();
+      }
+      function renderCards(rows) {
+        const wrap = qs("#cards");
+        wrap.innerHTML = "";
+        rows.forEach((r) => {
+          const p = fmtDateParts(r.start, r.end);
+          const details = buildEventDetails(r);
+          const gUrl = googleCalUrl({
+            title: r.title,
+            start: r.start,
+            end: r.end,
+            club: r.location || r.club,
+            description: details,
+          });
+          const card = document.createElement("div");
+          card.className = "ev";
+          card.innerHTML = `
       <div class="ev-title">${escapeHtml(r.title)}</div>
       <div class="ev-row"><span class="ev-label">When</span> <span style="font-variant-numeric:tabular-nums">${p.day} ${p.date} ${p.tStart}–${p.tEnd}</span></div>
       <div class="ev-row"><span class="ev-label">Club</span> <span class="badge">${escapeHtml(r.club)}</span></div>
-      <div class="ev-row"><span class="ev-label">Level</span> <span class="badge">${escapeHtml(r.level || '—')}</span></div>
+      <div class="ev-row"><span class="ev-label">Level</span> <span class="badge">${escapeHtml(r.level || "—")}</span></div>
       <div class="ev-row" style="margin-top:6px">
         <div class="cal-actions">
           <a class="cal-btn" href="${gUrl}" target="_blank" rel="noopener">Google</a>
           <a class="cal-btn" href="#" data-ics>ICS</a>
         </div>
       </div>`;
-    const icsA=card.querySelector('a[data-ics]');
-    icsA.addEventListener('click',(e)=>{
-      e.preventDefault();
-      downloadIcsFile({id:r.id,title:r.title,start:r.start,end:r.end,club:r.location||r.club,description:details});
-    });
-    wrap.appendChild(card);
-  });
-}
-async function onPreview(){
-  const btn=qs('#btnPreview'); const clubs=qsa('input[name="club"]:checked').map(el=>el.value);
-  btn.disabled=true; btn.setAttribute('aria-busy','true'); setStatus('Loading…');
-  const params=new URLSearchParams({
-    action:'preview',
-    limit:'200',
-    clubs: clubs.join(','),
-    levels: selectedLevels.join(',')
-  });
-  try{
-    const r=await fetch(API+'?'+params.toString(),{headers:{'Accept':'application/json'}});
-    if(!r.ok) throw new Error('API '+r.status);
-    const {total,sample}=await r.json();
-    qs('#previewHeader').style.display='flex';
-    qs('#previewWrap').style.display='block';
-    qs('#matchCount').textContent=String(total);
-    qs('#filterSummary').textContent=buildFilterSummary();
+          const icsA = card.querySelector("a[data-ics]");
+          icsA.addEventListener("click", (e) => {
+            e.preventDefault();
+            downloadIcsFile({
+              id: r.id,
+              title: r.title,
+              start: r.start,
+              end: r.end,
+              club: r.location || r.club,
+              description: details,
+            });
+          });
+          wrap.appendChild(card);
+        });
+      }
+      async function onPreview() {
+        const btn = qs("#btnPreview");
+        const clubs = qsa('input[name="club"]:checked').map((el) => el.value);
+        btn.disabled = true;
+        btn.setAttribute("aria-busy", "true");
+        setStatus("Loading…");
+        const params = new URLSearchParams({
+          action: "preview",
+          limit: "200",
+          clubs: clubs.join(","),
+          levels: selectedLevels.join(","),
+        });
+        try {
+          const r = await fetch(API + "?" + params.toString(), {
+            headers: { Accept: "application/json" },
+          });
+          if (!r.ok) throw new Error("API " + r.status);
+          const { total, sample } = await r.json();
+          qs("#previewHeader").style.display = "flex";
+          qs("#previewWrap").style.display = "block";
+          qs("#matchCount").textContent = String(total);
+          qs("#filterSummary").textContent = buildFilterSummary();
 
-    const tbody=qs('#tbody'); tbody.innerHTML='';
-    sample.forEach(r=>{
-      const details=buildEventDetails(r);
-      const tr=document.createElement('tr');
-      const gUrl=googleCalUrl({title:r.title,start:r.start,end:r.end,club:r.location||r.club,description:details});
-      tr.innerHTML=`
+          const tbody = qs("#tbody");
+          tbody.innerHTML = "";
+          sample.forEach((r) => {
+            const details = buildEventDetails(r);
+            const tr = document.createElement("tr");
+            const gUrl = googleCalUrl({
+              title: r.title,
+              start: r.start,
+              end: r.end,
+              club: r.location || r.club,
+              description: details,
+            });
+            tr.innerHTML = `
         <td>${escapeHtml(r.title)}</td>
-        <td>${fmtDateRange(r.start,r.end)}</td>
+        <td>${fmtDateRange(r.start, r.end)}</td>
         <td>${escapeHtml(r.club)}</td>
-        <td>${escapeHtml(r.level || '')}</td>
+        <td>${escapeHtml(r.level || "")}</td>
         <td>
           <div class="cal-actions">
             <a class="cal-btn" href="${gUrl}" target="_blank" rel="noopener">Google</a>
             <button class="cal-btn" type="button">ICS</button>
           </div>
         </td>`;
-      tr.querySelector('button.cal-btn').addEventListener('click',()=>downloadIcsFile({
-        id:r.id,title:r.title,start:r.start,end:r.end,club:r.location||r.club,description:details
-      }));
-      tbody.appendChild(tr);
-    });
+            tr.querySelector("button.cal-btn").addEventListener("click", () =>
+              downloadIcsFile({
+                id: r.id,
+                title: r.title,
+                start: r.start,
+                end: r.end,
+                club: r.location || r.club,
+                description: details,
+              }),
+            );
+            tbody.appendChild(tr);
+          });
 
-    renderCards(sample);
-    loadLastUpdated();
-    setStatus('');
-  }catch(e){
-    console.error(e);
-    setStatus('Failed. See console.');
-  }finally{
-    btn.disabled=false; btn.removeAttribute('aria-busy');
-  }
-}
+          renderCards(sample);
+          loadLastUpdated();
+          setStatus("");
+        } catch (e) {
+          console.error(e);
+          setStatus("Failed. See console.");
+        } finally {
+          btn.disabled = false;
+          btn.removeAttribute("aria-busy");
+        }
+      }
 
-document.addEventListener('DOMContentLoaded',()=>{
-  qs('#btnPreview').onclick=onPreview;
-  hydrateClubsAndAutoPreview(); loadLastUpdated();
-  qs('#suggestLink').href='mailto:mouthaan.dylan@gmail.com?subject=Padel%20Calendar%20Suggestion';
-  qs('#reportLink').href='mailto:mouthaan.dylan@gmail.com?subject=Report%20Incorrect%20Padel%20Event';
-});
-</script>
-</body>
+      document.addEventListener("DOMContentLoaded", () => {
+        qs("#btnPreview").onclick = onPreview;
+        hydrateClubsAndAutoPreview();
+        loadLastUpdated();
+        qs("#suggestLink").href =
+          "mailto:mouthaan.dylan@gmail.com?subject=Padel%20Calendar%20Suggestion";
+        qs("#reportLink").href =
+          "mailto:mouthaan.dylan@gmail.com?subject=Report%20Incorrect%20Padel%20Event";
+      });
+    </script>
+  </body>
 </html>
