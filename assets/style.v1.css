@@ -5,7 +5,7 @@
   --brand-primary: #0E9F6E;
   --brand-accent: #0B7285;
   --bg-page: #F9FAFB;
-  --bg-card: #FFFFFF;
+  --bg-card: #FFF;
   --bg-hover: #F3F4F6;
   --text-primary: #111827;
   --text-secondary: #6B7280;
@@ -13,8 +13,8 @@
   --border: #E5E7EB;
   --border-active: #0E9F6E;
   --error: #DC2626;
-  --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 5%);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 10%);
 }
 
 /* Base Styles */
@@ -39,14 +39,14 @@ body {
 h1 {
   font-size: 1.75rem;
   font-weight: 700;
-  margin: 0 0 8px 0;
+  margin: 0 0 8px;
   color: var(--text-primary);
 }
 
 .subtitle {
   font-size: 0.95rem;
   color: var(--text-secondary);
-  margin: 0 0 24px 0;
+  margin: 0 0 24px;
 }
 
 /* Filter Sections */
@@ -62,7 +62,7 @@ h1 {
   font-size: 0.875rem;
   font-weight: 600;
   color: var(--text-primary);
-  margin: 0 0 10px 0;
+  margin: 0 0 10px;
 }
 
 /* Club Chips */
@@ -213,6 +213,40 @@ button#btnFilter:active {
   color: var(--text-secondary);
 }
 
+/* Happening Soon Section */
+.happening-soon {
+  margin-bottom: 40px;
+  padding: 20px;
+  background: linear-gradient(135deg, #0E9F6E 0%, #0B7285 100%);
+  border-radius: 16px;
+  box-shadow: var(--shadow-md);
+}
+
+.happening-header {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.happening-subtitle {
+  font-size: 0.875rem;
+  color: rgb(255 255 255 / 90%);
+  margin: 0 0 16px;
+}
+
+.happening-soon .events-list {
+  gap: 16px;
+}
+
+.happening-soon .event-card {
+  background: rgb(255 255 255 / 95%);
+  backdrop-filter: blur(10px);
+}
+
 /* Club Sections */
 .club-section {
   margin-bottom: 32px;
@@ -222,7 +256,7 @@ button#btnFilter:active {
   font-size: 1.25rem;
   font-weight: 700;
   color: var(--text-primary);
-  margin: 0 0 16px 0;
+  margin: 0 0 16px;
   padding-bottom: 8px;
   border-bottom: 2px solid var(--border);
 }
@@ -331,6 +365,34 @@ button#btnFilter:active {
   box-shadow: var(--shadow-md);
 }
 
+/* Show More Button */
+.btn-show-more {
+  width: 100%;
+  padding: 12px 16px;
+  margin-top: 16px;
+  background: var(--bg-page);
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  color: var(--brand-primary);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.btn-show-more:hover {
+  background: var(--brand-primary);
+  color: white;
+  border-color: var(--brand-primary);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-show-more:active {
+  transform: translateY(0);
+}
+
 /* Empty State */
 .empty-state {
   text-align: center;
@@ -381,7 +443,7 @@ button#btnFilter:active {
 }
 
 /* Responsive Design */
-@media (min-width: 600px) {
+@media (width >= 600px) {
   body {
     padding: 24px;
   }
@@ -409,7 +471,7 @@ button#btnFilter:active {
   }
 }
 
-@media (min-width: 768px) {
+@media (width >= 768px) {
   .events-list {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -436,6 +498,6 @@ button#btnFilter:active {
 
   .event-card {
     break-inside: avoid;
-    page-break-inside: avoid;
+    break-inside: avoid;
   }
 }
