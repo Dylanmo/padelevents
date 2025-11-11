@@ -100,8 +100,26 @@ label.chip.checked {
 }
 
 label.chip.checked input[type="checkbox"] {
-  accent-color: white;
-  filter: brightness(1.2);
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: white;
+  border: 2px solid white;
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+  margin-right: 8px;
+}
+
+label.chip.checked input[type="checkbox"]:checked::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--brand-primary);
+  font-size: 14px;
+  font-weight: 700;
 }
 
 label.chip input {
@@ -314,9 +332,24 @@ button#btnFilter:active {
   background: var(--bg-page);
   padding: 4px 10px;
   border-radius: 6px;
+.detail-club {
+  font-weight: 700;
+}
+
 }
 
 /* Event Actions */
+.event-actions-label {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  margin-top: 12px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .event-actions {
   display: flex;
   flex-direction: column;
@@ -347,6 +380,10 @@ button#btnFilter:active {
 }
 
 .btn-google:hover {
+.btn-google svg {
+  flex-shrink: 0;
+}
+
   background: #0D8F63;
   transform: translateY(-1px);
   box-shadow: var(--shadow-md);
@@ -366,6 +403,19 @@ button#btnFilter:active {
 }
 
 /* Show More Button */
+/* Past Events */
+.event-past {
+  opacity: 0.5;
+  filter: grayscale(50%);
+}
+
+.event-past .event-title::after {
+  content: ' (Past)';
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
 .btn-show-more {
   width: 100%;
   padding: 12px 16px;

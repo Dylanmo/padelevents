@@ -57,3 +57,23 @@ A single-page web app for creating personalized padel event calendars in Bangkok
 - Keep inline JS readable; line count isn't a concern
 - Firebase Hosting config controls caching—don't add `.htaccess` or server logic
 - API endpoint is external/unchangeable—work within its current response format
+
+## Lint & Formatting Policy (MANDATORY FOR EVERY CHANGE)
+
+After EVERY code edit (HTML, CSS, inline JS) the assistant must automatically run the linters and formatting checks before considering the task complete:
+
+1. HTML: `npx htmlhint index.html`
+2. CSS: `npx stylelint "assets/**/*.css" --fix` (apply safe auto-fixes)
+3. JS (inline in HTML): `npx eslint index.html` (requires existing config; if missing, skip with note)
+4. Formatting: `npx prettier --check "*.html" "assets/**/*.css"` then, if issues, `npx prettier --write "*.html" "assets/**/*.css"`
+
+Rules:
+
+- Never skip linting unless user explicitly says so.
+- If linters report only naming-convention or stylistic warnings conflicting with established project patterns (e.g., camelCase IDs), document and ignore—do NOT refactor IDs unless requested.
+- Apply only safe automatic fixes; do not introduce new dependencies beyond already added dev tools.
+- Summarize lint results (PASS/FAIL) per tool after each edit.
+- If a fix introduces new errors, revert that part or adjust until all critical errors are resolved.
+- Do not block deployment on non-critical stylistic warnings.
+
+If linters are temporarily unavailable or configs missing, note the gap and propose minimal config creation before proceeding.
