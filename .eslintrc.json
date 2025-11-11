@@ -1,0 +1,29 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": "airbnb-base",
+  "parserOptions": {
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "rules": {
+    "import/extensions": ["error", "always", { "ignorePackages": true }],
+    "import/prefer-default-export": "off",
+    "no-console": ["warn", { "allow": ["error", "warn"] }],
+    "max-len": ["error", { "code": 100, "ignoreUrls": true, "ignoreStrings": true }],
+    "no-use-before-define": ["error", { "functions": false }],
+    "no-restricted-syntax": [
+      "error",
+      {
+        "selector": "CallExpression[callee.name='eval']",
+        "message": "eval() is forbidden for security reasons"
+      },
+      {
+        "selector": "NewExpression[callee.name='Function']",
+        "message": "new Function() is forbidden for security reasons"
+      }
+    ]
+  }
+}
