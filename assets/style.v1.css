@@ -51,6 +51,14 @@ h1 {
   margin: 0 0 24px;
 }
 
+.version {
+  text-align: right;
+  font-size: 11px;
+  color: #888;
+  margin-bottom: 10px;
+  font-family: "Courier New", monospace;
+}
+
 /* Filter Sections */
 .filters-section {
   margin-bottom: 32px;
