@@ -1,3 +1,8 @@
+---
+applyTo:
+  - "assets/**/*.css"
+---
+
 CSS Guidelines — padel-events
 
 Purpose

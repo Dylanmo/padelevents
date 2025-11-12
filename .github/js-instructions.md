@@ -1,3 +1,8 @@
+---
+applyTo:
+  - "assets/js/**/*.js"
+---
+
 JavaScript Guidelines — padel-events
 
 Purpose
@@ -294,7 +299,7 @@ node.appendChild(p);
 
 - Keep UI updates respectful to screen readers: prefer element reflow over removing/recreating if it harms focus
 - Maintain focus order on updates (e.g., when opening a modal, move focus to it)
-- Use semantic HTML with proper ARIA labels (see HTML_GUIDELINES.md)
+- Use semantic HTML with proper ARIA labels (see html-instructions.md)
 - Ensure keyboard navigation works (tab order, escape to close)
 
 ## Function Naming Conventions

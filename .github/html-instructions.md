@@ -1,3 +1,8 @@
+---
+applyTo:
+  - "**/*.html"
+---
+
 HTML Guidelines — padel-events
 
 Purpose
