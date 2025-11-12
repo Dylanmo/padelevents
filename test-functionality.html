@@ -6,7 +6,10 @@
     <title>JS Functionality Test Report</title>
     <style>
       body {
-        font-family: system-ui, -apple-system, sans-serif;
+        font-family:
+          system-ui,
+          -apple-system,
+          sans-serif;
         max-width: 900px;
         margin: 40px auto;
         padding: 20px;
@@ -265,7 +268,12 @@
               `Found ${clubs.length} clubs`,
             );
           } else {
-            addTest("api", "loadClubs() returns data", "fail", "No clubs returned");
+            addTest(
+              "api",
+              "loadClubs() returns data",
+              "fail",
+              "No clubs returned",
+            );
           }
         } catch (e) {
           addTest("api", "loadClubs() returns data", "fail", e.message);
@@ -281,7 +289,12 @@
               `Total: ${events.total}, Sample: ${events.sample.length}`,
             );
           } else {
-            addTest("api", "fetchEvents() returns data", "fail", "No events returned");
+            addTest(
+              "api",
+              "fetchEvents() returns data",
+              "fail",
+              "No events returned",
+            );
           }
         } catch (e) {
           addTest("api", "fetchEvents() returns data", "fail", e.message);
@@ -321,11 +334,7 @@
 
         try {
           const clubs = await loadClubs();
-          const summary = buildFilterSummary(
-            ["Bangkok Padel"],
-            ["3-4"],
-            clubs,
-          );
+          const summary = buildFilterSummary(["Bangkok Padel"], ["3-4"], clubs);
           if (summary.includes("Bangkok Padel") && summary.includes("Level")) {
             addTest(
               "ui",
@@ -342,7 +351,12 @@
             );
           }
         } catch (e) {
-          addTest("ui", "buildFilterSummary() generates text", "fail", e.message);
+          addTest(
+            "ui",
+            "buildFilterSummary() generates text",
+            "fail",
+            e.message,
+          );
         }
 
         // Calendar tests
@@ -366,10 +380,20 @@
               gcalLink.substring(0, 100) + "...",
             );
           } else {
-            addTest("calendar", "generateGoogleCalendarLink()", "fail", gcalLink);
+            addTest(
+              "calendar",
+              "generateGoogleCalendarLink()",
+              "fail",
+              gcalLink,
+            );
           }
         } catch (e) {
-          addTest("calendar", "generateGoogleCalendarLink()", "fail", e.message);
+          addTest(
+            "calendar",
+            "generateGoogleCalendarLink()",
+            "fail",
+            e.message,
+          );
         }
 
         try {

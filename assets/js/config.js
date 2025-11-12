@@ -18,3 +18,6 @@ export const CITY_CONFIG = {
 };
 
 export const STORAGE_KEY = "padel.filters";
+
+export const GITHUB_API_URL =
+  "https://api.github.com/repos/Dylanmo/padelevents/commits/main";

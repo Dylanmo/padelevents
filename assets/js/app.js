@@ -3,14 +3,14 @@
  * Orchestrates all modules and initializes the app
  */
 
-import { loadClubs, fetchEvents } from "./api.js";
+import { loadClubs, fetchEvents, fetchLatestCommit } from "./api.js";
 import {
   generateGoogleCalendarLink,
   generateICS,
   downloadICS,
 } from "./calendar.js";
 import { buildFilterSummary, getSelectedClubs } from "./filters.js";
-import { qs, qsa, formatBangkokDate } from "./utils.js";
+import { qs, qsa, formatBangkokDate, formatCommitDate } from "./utils.js";
 
 // Application state
 const state = {
@@ -23,9 +23,25 @@ const state = {
  * Initialize the application
  */
 async function init() {
+  updateVersion();
   await initializeClubs();
   await autoLoadEvents();
   attachEventListeners();
+}
+
+/**
+ * Update version display with latest GitHub commit info
+ */
+async function updateVersion() {
+  const versionEl = qs(".version");
+  try {
+    const { sha, date } = await fetchLatestCommit();
+    const formattedDate = formatCommitDate(date);
+    versionEl.textContent = `v${sha} • ${formattedDate}`;
+  } catch (error) {
+    console.error("Failed to fetch version:", error);
+    versionEl.textContent = "Version unavailable";
+  }
 }
 
 /**
@@ -63,7 +79,6 @@ async function autoLoadEvents() {
     state.cachedEvents = data;
 
     renderEvents(data, "All upcoming events");
-    updateLastUpdated();
     qs("#status").textContent = "";
   } catch (error) {
     console.error("Error auto-loading events:", error);
@@ -93,7 +108,6 @@ async function applyFilters() {
       state.allClubs,
     );
     renderEvents(data, summary);
-    updateLastUpdated();
     qs("#status").textContent = "";
   } catch (error) {
     console.error("Error filtering events:", error);
@@ -154,7 +168,6 @@ async function filterByClub(clubDisplayName) {
       // Render all events for this club
       const summary = `Showing ${data.total} events for ${clubDisplayName}`;
       renderEvents(data, summary, true, clubDisplayName); // Pass club name for header
-      updateLastUpdated();
 
       // Scroll to events
       qs("#eventsSection").scrollIntoView({
@@ -378,25 +391,6 @@ function renderEventCard(event, isHidden = false) {
 		</div>
 		<a href="${reportMailto}" class="report-link" aria-label="Report issue with ${event.title}">⚠️ Report issue</a>
 	</li>`;
-}
-
-/**
- * Update last updated timestamp
- */
-function updateLastUpdated() {
-  const now = new Date();
-  const formatted = new Intl.DateTimeFormat("en-GB", {
-    weekday: "short",
-    day: "2-digit",
-    month: "short",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-    timeZone: "Asia/Bangkok",
-  }).format(now);
-
-  // Format: "Mon 10 Nov, 17:19" -> "Mon 10 Nov 17:19"
-  qs("#lastUpdated").textContent = formatted.replace(", ", " ");
 }
 
 /**

@@ -2,7 +2,7 @@
  * API client for fetching clubs and events
  */
 
-import { API_CONFIG } from "./config.js";
+import { API_CONFIG, GITHUB_API_URL } from "./config.js";
 
 /**
  * Load available clubs from API
@@ -40,4 +40,20 @@ export async function fetchEvents(clubs = [], levels = []) {
   }
 
   return response.json();
+}
+
+/**
+ * Fetch latest commit info from GitHub API
+ * @returns {Promise<{sha: string, date: string}>}
+ */
+export async function fetchLatestCommit() {
+  const response = await fetch(GITHUB_API_URL);
+  if (!response.ok) {
+    throw new Error(`GitHub API error: ${response.status}`);
+  }
+  const data = await response.json();
+  return {
+    sha: data.sha.substring(0, 7),
+    date: data.commit.committer.date,
+  };
 }
