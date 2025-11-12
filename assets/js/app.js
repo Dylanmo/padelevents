@@ -24,9 +24,39 @@ const state = {
  */
 async function init() {
   updateVersion();
+  setupFooterEmailLinks();
   await initializeClubs();
   await autoLoadEvents();
   attachEventListeners();
+}
+
+/**
+ * Setup footer email links based on device type
+ * Mobile: use mailto links
+ * Desktop: use Gmail compose URLs
+ */
+function setupFooterEmailLinks() {
+  // Detect if user is on mobile device
+  const isMobile =
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent,
+    ) ||
+    (navigator.maxTouchPoints && navigator.maxTouchPoints > 2);
+
+  const emailLinks = qsa(".footer-email-link");
+
+  for (const link of emailLinks) {
+    if (!isMobile) {
+      // Desktop: use Gmail link
+      const gmailUrl = link.dataset.gmail;
+      if (gmailUrl) {
+        link.href = gmailUrl;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+      }
+    }
+    // Mobile: keep mailto (already in HTML)
+  }
 }
 
 /**
@@ -50,11 +80,22 @@ async function updateVersion() {
 async function initializeClubs() {
   try {
     const box = qs("#clubBox");
-    box.textContent = "Loading clubs...";
+    const loadingEl = qs("#clubsLoading");
+
+    // Show loading animation
+    if (loadingEl) {
+      loadingEl.style.display = "flex";
+    }
 
     const clubs = await loadClubs();
     state.allClubs = clubs;
 
+    // Hide loading animation
+    if (loadingEl) {
+      loadingEl.style.display = "none";
+    }
+
+    // Render club chips
     box.innerHTML = clubs
       .map(
         (club) =>
@@ -63,6 +104,10 @@ async function initializeClubs() {
       .join("");
   } catch (error) {
     console.error("Error loading clubs:", error);
+    const loadingEl = qs("#clubsLoading");
+    if (loadingEl) {
+      loadingEl.style.display = "none";
+    }
     qs("#clubBox").innerHTML =
       '<span class="error">Unable to load clubs. Please refresh.</span>';
   }

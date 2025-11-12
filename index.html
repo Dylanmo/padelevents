@@ -15,7 +15,16 @@
       <div class="filters-section">
         <div class="filter-group">
           <p class="filter-label">Select Bangkok Padel Clubs</p>
-          <div id="clubBox" class="chips"></div>
+          <div id="clubBox" class="chips">
+            <div id="clubsLoading" class="clubs-loading" aria-live="polite">
+              <img
+                src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbTE2ZWhrMXQwYTF2aTZlZXVldmwweDFwNTlpNXBkdjUycTIweTlyayZlcD12MV9naWZzX3NlYXJjaCZjdD1n/PZ1yRtwjc1wLAvfMJZ/giphy.gif"
+                alt="Loading clubs animation"
+                class="loading-gif"
+              />
+              <p class="loading-text">Warming up, loading Padel Clubs</p>
+            </div>
+          </div>
         </div>
 
         <div class="filter-group">
@@ -70,19 +79,21 @@
       </div>
 
       <footer class="footer">
-        <div class="version">Loading version...</div>
         <div class="footer-links">
           <a
             href="mailto:mouthaan.dylan@gmail.com?subject=Padel%20Calendar%20Suggestion"
-            class="btn-link"
-            >💡 Suggestion</a
+            data-gmail="https://mail.google.com/mail/?view=cm&fs=1&to=mouthaan.dylan@gmail.com&su=Padel%20Calendar%20Suggestion"
+            class="footer-pill footer-email-link"
+            >Make suggestion</a
           >
           <a
             href="mailto:mouthaan.dylan@gmail.com?subject=Padel%20Calendar%20Issue"
-            class="btn-link"
-            >⚠️ Report issue</a
+            data-gmail="https://mail.google.com/mail/?view=cm&fs=1&to=mouthaan.dylan@gmail.com&su=Padel%20Calendar%20Issue"
+            class="footer-pill footer-email-link"
+            >Report issue</a
           >
         </div>
+        <div class="version">Loading version...</div>
       </footer>
     </div>
 

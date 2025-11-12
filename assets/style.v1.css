@@ -51,14 +51,6 @@ h1 {
   margin: 0 0 24px;
 }
 
-.version {
-  text-align: right;
-  font-size: 11px;
-  color: #888;
-  margin-bottom: 10px;
-  font-family: "Courier New", monospace;
-}
-
 /* Filter Sections */
 .filters-section {
   margin-bottom: 32px;
@@ -81,6 +73,34 @@ h1 {
   flex-wrap: wrap;
   gap: 8px;
   margin-bottom: 10px;
+  min-height: 100px;
+  align-items: flex-start;
+}
+
+/* Loading State for Clubs */
+.clubs-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 20px;
+  gap: 12px;
+}
+
+.loading-gif {
+  width: 70%;
+  max-width: 290px;
+  height: auto;
+  object-fit: contain;
+  border-radius: 12px;
+}
+
+.loading-text {
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  margin: 0;
 }
 
 label.chip {
@@ -515,30 +535,48 @@ button#btnFilter:active {
 /* Footer */
 .footer {
   margin-top: 48px;
-  padding-top: 24px;
+  padding-top: 16px;
   border-top: 1px solid var(--border);
   font-size: 0.875rem;
   color: var(--text-muted);
   display: flex;
   flex-direction: column;
   gap: 12px;
+  align-items: center;
 }
 
 .footer-links {
   display: flex;
-  gap: 16px;
+  gap: 10px;
+  align-items: center;
 }
 
-.btn-link {
-  color: var(--brand-accent);
+.footer-pill {
+  display: inline-block;
+  padding: 6px 14px;
+  background: var(--bg-page);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  color: var(--text-secondary);
   text-decoration: none;
   font-weight: 500;
-  transition: color 0.2s ease;
+  font-size: 0.8125rem;
+  transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
-.btn-link:hover {
-  color: var(--brand-primary);
-  text-decoration: underline;
+.footer-pill:hover {
+  background: var(--brand-primary);
+  color: white;
+  border-color: var(--brand-primary);
+  transform: translateY(-1px);
+}
+
+.version {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-family: "Courier New", monospace;
+  text-align: center;
 }
 
 /* Error Messages */
@@ -556,6 +594,10 @@ button#btnFilter:active {
     font-size: 2rem;
   }
 
+  .loading-gif {
+    max-width: 300px;
+  }
+
   .event-actions {
     flex-direction: row;
   }
@@ -571,7 +613,11 @@ button#btnFilter:active {
   }
 
   .footer-links {
-    gap: 20px;
+    order: -1;
+  }
+
+  .version {
+    text-align: right;
   }
 }
 
