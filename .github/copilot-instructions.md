@@ -134,6 +134,7 @@ See individual guidelines files for complete rules:
 5. **Accessibility**: Verify color contrast (4.5:1 for text), touch targets (44px min), keyboard navigation
 
 **Core Design Principles**:
+
 - **Restrained color palette**: Use primary green (#10b981) sparingly for CTAs only
 - **System fonts**: Never add custom web fonts (use system UI stack)
 - **4px spacing scale**: Use CSS variables (`--space-1` through `--space-16`)
@@ -141,6 +142,7 @@ See individual guidelines files for complete rules:
 - **WCAG AA compliance**: Required for all color contrast ratios
 
 **Design Documentation**:
+
 - `docs/VISUAL_DESIGN_GUIDELINES.md` - Main design system overview
 - `docs/design/color-system.md` - Color palette and usage rules
 - `docs/design/typography.md` - Font stack, type scale, hierarchy
@@ -149,6 +151,7 @@ See individual guidelines files for complete rules:
 - `docs/design/accessibility.md` - WCAG compliance, ARIA, keyboard nav
 
 **Before implementing UI changes**:
+
 - [ ] Check if component exists in `docs/design/components.md`
 - [ ] Use CSS variables for colors, spacing, typography (never hardcoded values)
 - [ ] Verify mobile layout at 375px width
@@ -157,6 +160,7 @@ See individual guidelines files for complete rules:
 - [ ] Add proper ARIA labels and semantic HTML
 
 **When proposing new visual patterns**:
+
 1. Document in appropriate design file first
 2. Get approval before implementing
 3. Update component specs after implementation

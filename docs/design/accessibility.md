@@ -11,6 +11,7 @@
 ### Text Contrast Requirements
 
 **WCAG AA Standards**:
+
 - **Normal text** (< 18px): **4.5:1** minimum
 - **Large text** (>= 18px or 14px bold): **3:1** minimum
 - **UI components** (buttons, borders): **3:1** minimum
@@ -18,6 +19,7 @@
 ### Current Palette Compliance
 
 **On white background (#ffffff)**:
+
 - ✅ `--color-text-primary` (#111827): **15.5:1** (excellent)
 - ✅ `--color-text-secondary` (#6b7280): **5.2:1** (passes AA)
 - ⚠️ `--color-text-tertiary` (#9ca3af): **3.2:1** (use for large text only)
@@ -26,14 +28,17 @@
 ### Testing Tools
 
 **Browser DevTools**:
+
 - Chrome: Inspect > Color Picker > Contrast Ratio
 - Firefox: Accessibility Inspector > Color Contrast
 
 **Online Tools**:
+
 - [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/)
 - [Contrast Ratio Calculator](https://contrast-ratio.com/)
 
 **Automated Testing**:
+
 ```bash
 # axe DevTools browser extension
 # WAVE browser extension
@@ -72,7 +77,8 @@
 
 <!-- Bad: Skip links out of order -->
 <main>...</main>
-<nav>...</nav> <!-- Don't put nav after main -->
+<nav>...</nav>
+<!-- Don't put nav after main -->
 ```
 
 ### Skip Links
@@ -113,14 +119,10 @@
 
 ```html
 <!-- Good -->
-<button aria-label="Add event to Google Calendar">
-  📅 Add to Calendar
-</button>
+<button aria-label="Add event to Google Calendar">📅 Add to Calendar</button>
 
 <!-- Bad -->
-<button>
-  📅
-</button>
+<button>📅</button>
 ```
 
 ### Toggle States
@@ -130,14 +132,12 @@
 ```html
 <!-- Filter chip -->
 <label class="filter-chip">
-  <input type="checkbox" aria-checked="false">
+  <input type="checkbox" aria-checked="false" />
   <span>Thonglor Padel</span>
 </label>
 
 <!-- Level button -->
-<button class="level-btn" aria-pressed="false">
-  Beginner 0–2
-</button>
+<button class="level-btn" aria-pressed="false">Beginner 0–2</button>
 ```
 
 ### Live Regions
@@ -145,17 +145,14 @@
 **Announce dynamic content updates**:
 
 ```html
-<div role="status" aria-live="polite" aria-atomic="true">
-  Loading events...
-</div>
+<div role="status" aria-live="polite" aria-atomic="true">Loading events...</div>
 
 <!-- Changes to: -->
-<div role="status" aria-live="polite" aria-atomic="true">
-  Loaded 12 events
-</div>
+<div role="status" aria-live="polite" aria-atomic="true">Loaded 12 events</div>
 ```
 
 **Use cases**:
+
 - Loading states
 - Error messages
 - Success confirmations
@@ -195,12 +192,12 @@
 ```html
 <!-- Good -->
 <h1>Padel Events Bangkok</h1>
-  <h2>Thonglor Padel Club</h2>
-    <h3>Mixed Doubles Tournament</h3>
+<h2>Thonglor Padel Club</h2>
+<h3>Mixed Doubles Tournament</h3>
 
 <!-- Bad: Skip from h1 to h3 -->
 <h1>Padel Events Bangkok</h1>
-  <h3>Mixed Doubles Tournament</h3>
+<h3>Mixed Doubles Tournament</h3>
 ```
 
 ---
@@ -246,11 +243,11 @@ input[type="checkbox"] {
 ```html
 <!-- Good: Explicit association -->
 <label for="email">Email Address</label>
-<input type="email" id="email" name="email">
+<input type="email" id="email" name="email" />
 
 <!-- Bad: No association -->
 <label>Email Address</label>
-<input type="email" name="email">
+<input type="email" name="email" />
 ```
 
 ### Error Messages
@@ -259,15 +256,13 @@ input[type="checkbox"] {
 
 ```html
 <label for="email">Email Address</label>
-<input 
-  type="email" 
-  id="email" 
+<input
+  type="email"
+  id="email"
   aria-describedby="email-error"
   aria-invalid="true"
->
-<span id="email-error" class="error">
-  Please enter a valid email address
-</span>
+/>
+<span id="email-error" class="error"> Please enter a valid email address </span>
 ```
 
 ---
@@ -280,13 +275,13 @@ input[type="checkbox"] {
 
 ```html
 <!-- Good: Descriptive alt text -->
-<img src="padel-court.jpg" alt="Outdoor padel court at Thonglor Padel Club">
+<img src="padel-court.jpg" alt="Outdoor padel court at Thonglor Padel Club" />
 
 <!-- Bad: Generic alt text -->
-<img src="image1.jpg" alt="Image">
+<img src="image1.jpg" alt="Image" />
 
 <!-- Decorative images: Empty alt -->
-<img src="decorative-line.svg" alt="">
+<img src="decorative-line.svg" alt="" />
 ```
 
 ### SVG Icons
@@ -341,11 +336,13 @@ input[type="checkbox"] {
 ### Tools
 
 **Desktop**:
+
 - **macOS**: VoiceOver (Cmd + F5)
 - **Windows**: NVDA (free), JAWS (paid)
 - **Linux**: Orca
 
 **Mobile**:
+
 - **iOS**: VoiceOver (Settings > Accessibility)
 - **Android**: TalkBack (Settings > Accessibility)
 

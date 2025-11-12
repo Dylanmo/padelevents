@@ -20,11 +20,13 @@ This document establishes the visual design system for Padel Events Bangkok. Our
 ### Reference Inspirations
 
 **Big Players**:
+
 - Airbnb: Clean cards, generous whitespace, clear CTAs
 - Spotify: Bold typography, vibrant accent colors, dark mode support
 - Google Calendar: Efficient information density, scannable events
 
 **Innovative Players**:
+
 - Linear: Minimal color palette, crisp typography, subtle animations
 - Pitch: Bold brand colors used sparingly, strong typography hierarchy
 - Arc Browser: Playful yet professional, unique color system
@@ -40,38 +42,39 @@ We use a **restrained color palette** with green as our primary brand color, use
 ```css
 :root {
   /* Primary Brand */
-  --color-primary: #10b981;        /* Vibrant padel green */
-  --color-primary-hover: #059669;  /* Darker on hover */
-  --color-primary-light: #d1fae5;  /* Subtle backgrounds */
-  
+  --color-primary: #10b981; /* Vibrant padel green */
+  --color-primary-hover: #059669; /* Darker on hover */
+  --color-primary-light: #d1fae5; /* Subtle backgrounds */
+
   /* Accent */
-  --color-accent: #0891b2;         /* Teal for secondary actions */
+  --color-accent: #0891b2; /* Teal for secondary actions */
   --color-accent-hover: #0e7490;
-  
+
   /* Neutral Palette */
-  --color-bg-page: #fafafa;        /* Off-white page background */
-  --color-bg-card: #ffffff;        /* Pure white cards */
-  --color-bg-elevated: #ffffff;    /* Modals, dropdowns */
-  
+  --color-bg-page: #fafafa; /* Off-white page background */
+  --color-bg-card: #ffffff; /* Pure white cards */
+  --color-bg-elevated: #ffffff; /* Modals, dropdowns */
+
   /* Text */
-  --color-text-primary: #111827;   /* Near-black for headings */
+  --color-text-primary: #111827; /* Near-black for headings */
   --color-text-secondary: #6b7280; /* Gray for metadata */
-  --color-text-tertiary: #9ca3af;  /* Lighter gray for hints */
-  --color-text-inverse: #ffffff;   /* White text on dark backgrounds */
-  
+  --color-text-tertiary: #9ca3af; /* Lighter gray for hints */
+  --color-text-inverse: #ffffff; /* White text on dark backgrounds */
+
   /* Borders & Dividers */
-  --color-border: #e5e7eb;         /* Subtle borders */
-  --color-border-focus: #10b981;   /* Focus outlines */
-  
+  --color-border: #e5e7eb; /* Subtle borders */
+  --color-border-focus: #10b981; /* Focus outlines */
+
   /* Status Colors */
-  --color-success: #10b981;        /* Same as primary */
-  --color-warning: #f59e0b;        /* Amber */
-  --color-error: #ef4444;          /* Red */
-  --color-info: #3b82f6;           /* Blue */
+  --color-success: #10b981; /* Same as primary */
+  --color-warning: #f59e0b; /* Amber */
+  --color-error: #ef4444; /* Red */
+  --color-info: #3b82f6; /* Blue */
 }
 ```
 
 **Usage Guidelines**:
+
 - **Primary green**: Reserve for CTAs ("Add to Calendar"), selected filters, and key highlights
 - **Accent teal**: Use for secondary actions, hover states, or info badges
 - **Neutrals**: Use extensively — most of the UI should be neutral grays and whites
@@ -89,13 +92,15 @@ We use a **restrained color palette** with green as our primary brand color, use
 
 ```css
 :root {
-  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 
-               'Helvetica Neue', Arial, sans-serif;
-  --font-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Courier New', monospace;
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, sans-serif;
+  --font-mono: "SF Mono", Monaco, "Cascadia Code", "Courier New", monospace;
 }
 ```
 
 **Why System Fonts?**
+
 - Zero network latency (instant load)
 - Optimized for each platform (iOS, Android, Windows)
 - Accessible and familiar to users
@@ -108,19 +113,19 @@ We use a **restrained color palette** with green as our primary brand color, use
 ```css
 :root {
   /* Base */
-  --text-xs: 0.75rem;    /* 12px - captions, labels */
-  --text-sm: 0.875rem;   /* 14px - metadata, small UI text */
-  --text-base: 1rem;     /* 16px - body text (minimum for readability) */
-  --text-lg: 1.125rem;   /* 18px - card titles */
-  --text-xl: 1.25rem;    /* 20px - section headers */
-  --text-2xl: 1.5rem;    /* 24px - page titles */
-  --text-3xl: 1.875rem;  /* 30px - hero text (desktop only) */
-  
+  --text-xs: 0.75rem; /* 12px - captions, labels */
+  --text-sm: 0.875rem; /* 14px - metadata, small UI text */
+  --text-base: 1rem; /* 16px - body text (minimum for readability) */
+  --text-lg: 1.125rem; /* 18px - card titles */
+  --text-xl: 1.25rem; /* 20px - section headers */
+  --text-2xl: 1.5rem; /* 24px - page titles */
+  --text-3xl: 1.875rem; /* 30px - hero text (desktop only) */
+
   /* Line Heights */
   --leading-tight: 1.25;
   --leading-normal: 1.5;
   --leading-relaxed: 1.75;
-  
+
   /* Font Weights */
   --weight-normal: 400;
   --weight-medium: 500;
@@ -130,6 +135,7 @@ We use a **restrained color palette** with green as our primary brand color, use
 ```
 
 **Hierarchy Example**:
+
 - **H1** (Page Title): 24px / 600 weight / tight leading
 - **H2** (Section): 20px / 600 weight / tight leading
 - **H3** (Card Title): 18px / 600 weight / normal leading
@@ -137,6 +143,7 @@ We use a **restrained color palette** with green as our primary brand color, use
 - **Metadata**: 14px / 400 weight / normal leading / gray color
 
 **Accessibility**:
+
 - Minimum body text: 16px (never smaller)
 - Line height: 1.5 minimum for body text
 - Contrast: 4.5:1 for body, 3:1 for large text (18px+)
@@ -152,20 +159,21 @@ We use a **restrained color palette** with green as our primary brand color, use
 ```css
 :root {
   --space-0: 0;
-  --space-1: 0.25rem;  /* 4px */
-  --space-2: 0.5rem;   /* 8px */
-  --space-3: 0.75rem;  /* 12px */
-  --space-4: 1rem;     /* 16px */
-  --space-5: 1.25rem;  /* 20px */
-  --space-6: 1.5rem;   /* 24px */
-  --space-8: 2rem;     /* 32px */
-  --space-10: 2.5rem;  /* 40px */
-  --space-12: 3rem;    /* 48px */
-  --space-16: 4rem;    /* 64px */
+  --space-1: 0.25rem; /* 4px */
+  --space-2: 0.5rem; /* 8px */
+  --space-3: 0.75rem; /* 12px */
+  --space-4: 1rem; /* 16px */
+  --space-5: 1.25rem; /* 20px */
+  --space-6: 1.5rem; /* 24px */
+  --space-8: 2rem; /* 32px */
+  --space-10: 2.5rem; /* 40px */
+  --space-12: 3rem; /* 48px */
+  --space-16: 4rem; /* 64px */
 }
 ```
 
 **Usage**:
+
 - **Tight spacing** (4–8px): Between related elements (icon + label)
 - **Default spacing** (12–16px): Card padding, button padding
 - **Comfortable spacing** (20–24px): Between sections
@@ -175,14 +183,15 @@ We use a **restrained color palette** with green as our primary brand color, use
 
 ```css
 :root {
-  --container-sm: 640px;   /* Single column content */
-  --container-md: 768px;   /* Tablet */
-  --container-lg: 1024px;  /* Desktop */
-  --container-xl: 1280px;  /* Wide desktop (max) */
+  --container-sm: 640px; /* Single column content */
+  --container-md: 768px; /* Tablet */
+  --container-lg: 1024px; /* Desktop */
+  --container-xl: 1280px; /* Wide desktop (max) */
 }
 ```
 
 **Layout Pattern**:
+
 - Mobile (< 640px): Full-width cards with 16px side padding
 - Tablet (640–1024px): Max-width container, cards in 2 columns
 - Desktop (1024px+): Max 1280px width, cards in 2–3 columns, centered
@@ -356,11 +365,13 @@ input[type="radio"] {
 ### Color Contrast
 
 **Required ratios** (WCAG AA):
+
 - **Body text** (< 18px): 4.5:1
 - **Large text** (>= 18px or 14px bold): 3:1
 - **UI components**: 3:1
 
 **Current Palette Compliance**:
+
 - ✅ `--color-text-primary` (#111827) on white: 15.5:1
 - ✅ `--color-text-secondary` (#6b7280) on white: 5.2:1
 - ✅ `--color-primary` (#10b981) on white: 3.1:1 (use for large text/buttons only)
@@ -386,16 +397,21 @@ input[type="radio"] {
 ### ARIA Labels
 
 **Event Cards**:
+
 ```html
-<button class="btn-primary" aria-label="Add [Event Title] on [Date] to Google Calendar">
+<button
+  class="btn-primary"
+  aria-label="Add [Event Title] on [Date] to Google Calendar"
+>
   Add to Calendar
 </button>
 ```
 
 **Filter Chips**:
+
 ```html
 <label class="filter-chip">
-  <input type="checkbox" aria-checked="false">
+  <input type="checkbox" aria-checked="false" />
   <span>Thonglor Padel</span>
 </label>
 ```
@@ -416,24 +432,28 @@ input[type="radio"] {
 }
 
 /* Apply to interactive elements */
-.btn, .filter-chip {
+.btn,
+.filter-chip {
   transition: all var(--transition-base);
 }
 ```
 
 **What to animate**:
+
 - ✅ Background color changes (hover, active)
 - ✅ Border color changes (focus, active)
 - ✅ Opacity (tooltips, modals)
 - ✅ Transform scale (button press feedback)
 
 **What NOT to animate**:
+
 - ❌ Layout shifts (height, width, position) — causes jank
 - ❌ Box-shadow (expensive, use sparingly)
 
 ### Micro-Interactions
 
 **Button Press**:
+
 ```css
 .btn:active {
   transform: scale(0.98);
@@ -441,6 +461,7 @@ input[type="radio"] {
 ```
 
 **Card Hover** (desktop only):
+
 ```css
 @media (hover: hover) {
   .event-card:hover {
@@ -476,6 +497,7 @@ input[type="radio"] {
 ```
 
 **Design for these viewports**:
+
 - **375px** (iPhone SE) — minimum target
 - **414px** (iPhone Pro Max)
 - **768px** (iPad portrait)
@@ -531,6 +553,7 @@ When building a new feature:
 ## Questions & Updates
 
 **How to propose changes**:
+
 1. Create a branch: `design/[change-description]`
 2. Update this document + implement in CSS
 3. Take before/after screenshots

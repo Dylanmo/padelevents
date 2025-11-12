@@ -10,9 +10,10 @@
 We use **system fonts** for optimal performance and native feel:
 
 ```css
---font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 
-             'Helvetica Neue', Arial, sans-serif;
---font-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Courier New', monospace;
+--font-sans:
+  -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+  Arial, sans-serif;
+--font-mono: "SF Mono", Monaco, "Cascadia Code", "Courier New", monospace;
 ```
 
 ### Why System Fonts?
@@ -29,13 +30,13 @@ We use **system fonts** for optimal performance and native feel:
 **Mobile-first sizing** (base 16px):
 
 ```css
---text-xs: 0.75rem;    /* 12px - Captions, labels */
---text-sm: 0.875rem;   /* 14px - Metadata, small UI text */
---text-base: 1rem;     /* 16px - Body text (minimum for readability) */
---text-lg: 1.125rem;   /* 18px - Card titles */
---text-xl: 1.25rem;    /* 20px - Section headers */
---text-2xl: 1.5rem;    /* 24px - Page titles */
---text-3xl: 1.875rem;  /* 30px - Hero text (desktop only) */
+--text-xs: 0.75rem; /* 12px - Captions, labels */
+--text-sm: 0.875rem; /* 14px - Metadata, small UI text */
+--text-base: 1rem; /* 16px - Body text (minimum for readability) */
+--text-lg: 1.125rem; /* 18px - Card titles */
+--text-xl: 1.25rem; /* 20px - Section headers */
+--text-2xl: 1.5rem; /* 24px - Page titles */
+--text-3xl: 1.875rem; /* 30px - Hero text (desktop only) */
 ```
 
 **Never use font sizes smaller than 16px for body text** (accessibility guideline).
@@ -45,8 +46,8 @@ We use **system fonts** for optimal performance and native feel:
 ## Line Heights
 
 ```css
---leading-tight: 1.25;   /* Headings */
---leading-normal: 1.5;   /* Body text (minimum for readability) */
+--leading-tight: 1.25; /* Headings */
+--leading-normal: 1.5; /* Body text (minimum for readability) */
 --leading-relaxed: 1.75; /* Long-form content */
 ```
 
@@ -57,10 +58,10 @@ We use **system fonts** for optimal performance and native feel:
 ## Font Weights
 
 ```css
---weight-normal: 400;    /* Body text */
---weight-medium: 500;    /* Emphasized text, button labels */
---weight-semibold: 600;  /* Subheadings, card titles */
---weight-bold: 700;      /* Page headings */
+--weight-normal: 400; /* Body text */
+--weight-medium: 500; /* Emphasized text, button labels */
+--weight-semibold: 600; /* Subheadings, card titles */
+--weight-bold: 700; /* Page headings */
 ```
 
 **Avoid using too many weights** — Stick to 400, 600, 700 for consistency.
@@ -73,7 +74,7 @@ We use **system fonts** for optimal performance and native feel:
 
 ```css
 h1 {
-  font-size: var(--text-2xl);    /* 24px */
+  font-size: var(--text-2xl); /* 24px */
   font-weight: var(--weight-bold);
   line-height: var(--leading-tight);
   color: var(--color-text-primary);
@@ -81,7 +82,7 @@ h1 {
 
 @media (min-width: 768px) {
   h1 {
-    font-size: var(--text-3xl);  /* 30px on tablet+ */
+    font-size: var(--text-3xl); /* 30px on tablet+ */
   }
 }
 ```
@@ -90,7 +91,7 @@ h1 {
 
 ```css
 h2 {
-  font-size: var(--text-xl);         /* 20px */
+  font-size: var(--text-xl); /* 20px */
   font-weight: var(--weight-semibold);
   line-height: var(--leading-tight);
   color: var(--color-text-primary);
@@ -101,7 +102,7 @@ h2 {
 
 ```css
 h3 {
-  font-size: var(--text-lg);         /* 18px */
+  font-size: var(--text-lg); /* 18px */
   font-weight: var(--weight-semibold);
   line-height: var(--leading-tight);
   color: var(--color-text-primary);
@@ -111,8 +112,9 @@ h3 {
 ### Body Text
 
 ```css
-p, li {
-  font-size: var(--text-base);      /* 16px */
+p,
+li {
+  font-size: var(--text-base); /* 16px */
   font-weight: var(--weight-normal);
   line-height: var(--leading-normal);
   color: var(--color-text-primary);
@@ -123,7 +125,7 @@ p, li {
 
 ```css
 .metadata {
-  font-size: var(--text-sm);        /* 14px */
+  font-size: var(--text-sm); /* 14px */
   font-weight: var(--weight-normal);
   color: var(--color-text-secondary);
 }
@@ -133,7 +135,7 @@ p, li {
 
 ```css
 .label {
-  font-size: var(--text-xs);        /* 12px */
+  font-size: var(--text-xs); /* 12px */
   font-weight: var(--weight-medium);
   text-transform: uppercase;
   letter-spacing: 0.05em;

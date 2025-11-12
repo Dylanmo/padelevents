@@ -10,6 +10,7 @@
 ### Mobile Layout (< 640px)
 
 **Visual Structure**:
+
 ```
 ┌─────────────────────────────────────┐
 │ 📍 Section Header: Club Name       │
@@ -28,13 +29,14 @@
 ```
 
 **HTML Structure**:
+
 ```html
 <section class="club-section">
   <h2 class="club-section__header">📍 Thonglor Padel Club</h2>
-  
+
   <article class="event-card">
     <h3 class="event-card__title">Mixed Doubles Tournament</h3>
-    
+
     <div class="event-card__meta">
       <time class="event-card__datetime">Fri 15 Nov • 18:00–20:00</time>
       <div class="event-card__details">
@@ -42,7 +44,7 @@
         <span class="event-card__level">🥇 Level 3–4</span>
       </div>
     </div>
-    
+
     <div class="event-card__actions">
       <button class="btn btn-primary" aria-label="Add event to Google Calendar">
         Add to Calendar
@@ -56,6 +58,7 @@
 ```
 
 **CSS**:
+
 ```css
 .club-section {
   margin-bottom: var(--space-8);
@@ -116,18 +119,19 @@
 ### Desktop Layout (>= 640px)
 
 **Grid Layout**:
+
 ```css
 @media (min-width: 640px) {
   .club-section {
     padding: 0 var(--space-6);
   }
-  
+
   .event-list {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: var(--space-4);
   }
-  
+
   .event-card {
     margin: 0; /* Remove horizontal margins in grid */
   }
@@ -147,17 +151,24 @@
 ### Club Filter Chips
 
 **Visual States**:
+
 - Default: White background, gray border
 - Hover: Green border
 - Active/Checked: Green background (light), green border, green text
 
 **HTML**:
+
 ```html
 <div class="filter-group">
   <h3 class="filter-group__label">Select Clubs</h3>
   <div class="filter-chips">
     <label class="filter-chip">
-      <input type="checkbox" class="filter-chip__input" value="thonglor" aria-checked="false">
+      <input
+        type="checkbox"
+        class="filter-chip__input"
+        value="thonglor"
+        aria-checked="false"
+      />
       <span class="filter-chip__label">Thonglor Padel</span>
     </label>
     <!-- Repeat for each club -->
@@ -166,6 +177,7 @@
 ```
 
 **CSS**:
+
 ```css
 .filter-group {
   margin-bottom: var(--space-6);
@@ -225,10 +237,12 @@
 ### Level Filter Buttons
 
 **Visual States**:
+
 - Default: White background, gray border
 - Active: Green background, white text
 
 **HTML**:
+
 ```html
 <div class="filter-group">
   <h3 class="filter-group__label">Select Levels</h3>
@@ -243,6 +257,7 @@
 ```
 
 **CSS**:
+
 ```css
 .level-filters {
   display: grid;
@@ -503,7 +518,7 @@
 }
 
 .alert-error::before {
-  content: '⚠️';
+  content: "⚠️";
   font-size: var(--text-lg);
 }
 ```
@@ -523,7 +538,7 @@
 }
 
 .alert-success::before {
-  content: '✓';
+  content: "✓";
   font-size: var(--text-lg);
 }
 ```
@@ -533,6 +548,7 @@
 ## Implementation Notes
 
 **When adding a new component**:
+
 1. Add HTML structure to this file
 2. Add CSS to `assets/style.v1.css`
 3. Update visual guidelines if introducing new patterns

@@ -18,12 +18,13 @@ Our color system is **minimal and purposeful**. We use green sparingly to draw a
 **Purpose**: CTAs, selected states, key highlights
 
 ```css
---color-primary: #10b981;        /* Main brand color */
---color-primary-hover: #059669;  /* Hover/active state */
---color-primary-light: #d1fae5;  /* Subtle backgrounds */
+--color-primary: #10b981; /* Main brand color */
+--color-primary-hover: #059669; /* Hover/active state */
+--color-primary-light: #d1fae5; /* Subtle backgrounds */
 ```
 
 **Usage**:
+
 - ✅ "Add to Calendar" button background
 - ✅ Selected filter chips border + background
 - ✅ Active level button background
@@ -32,6 +33,7 @@ Our color system is **minimal and purposeful**. We use green sparingly to draw a
 - ❌ Do NOT use for large background areas
 
 **Contrast Ratios**:
+
 - On white (#ffffff): **3.1:1** (WCAG AA for large text only)
 - On light green (#d1fae5): **2.4:1** (fails WCAG, use darker text)
 
@@ -45,6 +47,7 @@ Our color system is **minimal and purposeful**. We use green sparingly to draw a
 ```
 
 **Usage**:
+
 - ✅ Secondary buttons
 - ✅ Info badges ("New", "Popular")
 - ✅ Links in body content
@@ -57,12 +60,13 @@ Our color system is **minimal and purposeful**. We use green sparingly to draw a
 ### Backgrounds
 
 ```css
---color-bg-page: #fafafa;    /* Off-white page background */
---color-bg-card: #ffffff;    /* Pure white cards */
+--color-bg-page: #fafafa; /* Off-white page background */
+--color-bg-card: #ffffff; /* Pure white cards */
 --color-bg-elevated: #ffffff; /* Modals, dropdowns */
 ```
 
 **Why off-white for page?**
+
 - Creates subtle depth with white cards
 - Reduces eye strain vs pure white
 - Common pattern in modern apps (Airbnb, Linear)
@@ -70,13 +74,14 @@ Our color system is **minimal and purposeful**. We use green sparingly to draw a
 ### Text
 
 ```css
---color-text-primary: #111827;   /* Near-black for headings */
+--color-text-primary: #111827; /* Near-black for headings */
 --color-text-secondary: #6b7280; /* Gray for metadata */
---color-text-tertiary: #9ca3af;  /* Lighter gray for hints */
---color-text-inverse: #ffffff;   /* White text on dark backgrounds */
+--color-text-tertiary: #9ca3af; /* Lighter gray for hints */
+--color-text-inverse: #ffffff; /* White text on dark backgrounds */
 ```
 
 **Contrast Ratios** (all on white):
+
 - Primary: **15.5:1** ✅
 - Secondary: **5.2:1** ✅
 - Tertiary: **3.2:1** ⚠️ (use for large text only or non-essential UI)
@@ -84,7 +89,7 @@ Our color system is **minimal and purposeful**. We use green sparingly to draw a
 ### Borders
 
 ```css
---color-border: #e5e7eb;       /* Subtle borders */
+--color-border: #e5e7eb; /* Subtle borders */
 --color-border-focus: #10b981; /* Focus outlines (green) */
 ```
 

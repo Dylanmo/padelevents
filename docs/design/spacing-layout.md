@@ -11,16 +11,16 @@
 
 ```css
 --space-0: 0;
---space-1: 0.25rem;  /* 4px */
---space-2: 0.5rem;   /* 8px */
---space-3: 0.75rem;  /* 12px */
---space-4: 1rem;     /* 16px */
---space-5: 1.25rem;  /* 20px */
---space-6: 1.5rem;   /* 24px */
---space-8: 2rem;     /* 32px */
---space-10: 2.5rem;  /* 40px */
---space-12: 3rem;    /* 48px */
---space-16: 4rem;    /* 64px */
+--space-1: 0.25rem; /* 4px */
+--space-2: 0.5rem; /* 8px */
+--space-3: 0.75rem; /* 12px */
+--space-4: 1rem; /* 16px */
+--space-5: 1.25rem; /* 20px */
+--space-6: 1.5rem; /* 24px */
+--space-8: 2rem; /* 32px */
+--space-10: 2.5rem; /* 40px */
+--space-12: 3rem; /* 48px */
+--space-16: 4rem; /* 64px */
 ```
 
 ---
@@ -30,6 +30,7 @@
 ### Tight Spacing (4–8px)
 
 **Use for**:
+
 - Icon + label pairs
 - Tag/badge padding
 - Related form elements (label + input)
@@ -45,6 +46,7 @@
 ### Default Spacing (12–16px)
 
 **Use for**:
+
 - Card padding
 - Button padding
 - Section margins
@@ -63,6 +65,7 @@
 ### Comfortable Spacing (20–24px)
 
 **Use for**:
+
 - Between major sections
 - Bottom margin of headings
 - Around CTAs
@@ -80,6 +83,7 @@ h2 {
 ### Generous Spacing (32–48px)
 
 **Use for**:
+
 - Page-level margins
 - Major section breaks
 - Hero spacing (desktop)
@@ -101,10 +105,10 @@ h2 {
 ## Container Widths
 
 ```css
---container-sm: 640px;   /* Single column content */
---container-md: 768px;   /* Tablet */
---container-lg: 1024px;  /* Desktop */
---container-xl: 1280px;  /* Wide desktop (max) */
+--container-sm: 640px; /* Single column content */
+--container-md: 768px; /* Tablet */
+--container-lg: 1024px; /* Desktop */
+--container-xl: 1280px; /* Wide desktop (max) */
 ```
 
 **Usage**:
