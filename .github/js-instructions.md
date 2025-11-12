@@ -205,7 +205,7 @@ function updateDate(isoString) {
 ```javascript
 async function onFilter() {
   const clubs = [...document.querySelectorAll("#clubs input:checked")].map(
-    (x) => x.value
+    (x) => x.value,
   );
   const res = await fetch(url);
   const data = await res.json();

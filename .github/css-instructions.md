@@ -278,5 +278,3 @@ References
 - MDN CSS: https://developer.mozilla.org/docs/Web/CSS
 - Stylelint: https://stylelint.io/
 - web.dev CSS tips: https://web.dev/css
-
-If you want, I can: add a `stylelint` config file tuned to this repo, or create a small CSS template header to paste into new versions (recommended). Ask if you'd like a preconfigured `.stylelintrc` added.
