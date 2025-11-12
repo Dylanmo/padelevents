@@ -15,9 +15,10 @@
 ✅ **Preview API call** — Returns `{ total, sample: [...] }`  
 ✅ **Event table** — Shows title, date, club, level, and a Google Calendar link per event  
 ✅ **Google Calendar export** — Per-event link with UTC-converted times  
-✅ **Footer** — Last-update placeholder and contact mailto links  
+✅ **Footer** — Last-update placeholder and contact mailto links
 
 **Gaps**:
+
 - Table layout is hard to read on mobile (horizontal scroll, cramped columns)
 - No touch-optimized buttons (small tap targets)
 - No filter persistence (users re-select clubs/levels on every visit)
@@ -36,6 +37,7 @@
 **User Story**: As a user arriving on the site, I want to immediately see upcoming events without having to select filters first.
 
 **Changes**:
+
 - On page load, automatically fetch and display events for the next 2 weeks
 - Group events by club (one section per club)
 - Sort events by date within each club section
@@ -43,6 +45,7 @@
 - Users can then refine with filters if needed
 
 **Acceptance**:
+
 - ✅ Events appear automatically on first load (no button click required)
 - ✅ Events grouped by club with clear section headers
 - ✅ Events within each club sorted chronologically (soonest first)
@@ -57,6 +60,7 @@
 **User Story**: As a mobile user, I want to quickly scan upcoming events without horizontal scrolling or zooming.
 
 **Changes**:
+
 - Replace `<table>` with a vertical list of event cards
 - Each card shows:
   - Event title (bold, primary text)
@@ -69,6 +73,7 @@
 - Group cards by club when showing auto-loaded or filtered results
 
 **Acceptance**:
+
 - ✅ Cards display correctly at 375px width (iPhone SE)
 - ✅ No horizontal scroll
 - ✅ Readable without zooming
@@ -83,6 +88,7 @@
 **User Story**: As a user on iPhone, Android, or desktop, I want to download events to my native calendar app (not just Google Calendar).
 
 **Changes**:
+
 - Generate `.ics` files dynamically in JavaScript for each event
 - Provide **two calendar options** per event:
   - "Add to Google Calendar" (existing link-based flow)
@@ -106,6 +112,7 @@
 - Works on iPhone (Apple Calendar), Android (default calendar), Outlook, Thunderbird
 
 **Acceptance**:
+
 - ✅ "Download ICS" button triggers file download
 - ✅ ICS file opens correctly in Apple Calendar on iPhone
 - ✅ ICS file opens correctly in Google Calendar app on Android
@@ -121,6 +128,7 @@
 **User Story**: As a mobile user, I want to tap buttons easily and clearly see which filters are selected.
 
 **Changes**:
+
 - Make all interactive elements >= 44px tall (iOS/Android touch guideline)
 - **Visually highlight selected filters**:
   - Club checkboxes: add background color + border to checked state
@@ -132,6 +140,7 @@
 - Ensure color contrast meets WCAG AA (4.5:1 for body text, 3:1 for UI elements)
 
 **Acceptance**:
+
 - ✅ Buttons pass 44px touch target test
 - ✅ Selected clubs have visible highlight (background + border)
 - ✅ Selected levels have visible active state (different from unselected)
@@ -149,11 +158,13 @@
 **Priority**: Nice to have — defer until core features (1.0–1.3, 1.5–1.6) are complete.
 
 **Changes**:
+
 - Save selected clubs and levels to `localStorage` on every change
 - On page load, read from `localStorage` and pre-check saved clubs/levels
 - If saved filters exist, apply them after showing default 2-week view
 
 **Acceptance**:
+
 - ✅ Select a club + level, reload page → filters remain selected
 - ✅ Works across sessions (localStorage persists until cleared)
 - ✅ Default 2-week view still loads first, then saved filters can be applied
@@ -167,6 +178,7 @@
 **User Story**: As a user, I want to know when event data was last refreshed and see a clear message if something goes wrong.
 
 **Changes**:
+
 - Populate `#lastUpdated` element with:
   - API timestamp if returned by the backend, OR
   - Current time when preview data loads (e.g., "Updated 2 mins ago")
@@ -176,6 +188,7 @@
   - Optionally show cached preview if available in `localStorage`
 
 **Acceptance**:
+
 - ✅ `#lastUpdated` shows readable time (e.g., "Last update: 14:32" or "2 mins ago")
 - ✅ Network error shows user-friendly message (not silent failure)
 - ✅ Cached results appear if API fails (optional for v1)
@@ -189,16 +202,17 @@
 **User Story**: As a user, I want the app to feel modern, clean, and trustworthy.
 
 **Changes**:
+
 - Add CSS custom properties for colors:
   ```css
   :root {
-    --brand-primary: #0E9F6E; /* padel green */
-    --brand-accent: #0B7285;  /* teal */
-    --bg-page: #F9FAFB;
-    --bg-card: #FFFFFF;
+    --brand-primary: #0e9f6e; /* padel green */
+    --brand-accent: #0b7285; /* teal */
+    --bg-page: #f9fafb;
+    --bg-card: #ffffff;
     --text-primary: #111827;
-    --text-secondary: #6B7280;
-    --border: #E5E7EB;
+    --text-secondary: #6b7280;
+    --border: #e5e7eb;
   }
   ```
 - Mobile-first responsive rules:
@@ -208,6 +222,7 @@
 - CTA button styled with `--brand-primary` background, white text, rounded corners, hover/active states
 
 **Acceptance**:
+
 - ✅ Visually clean on mobile (no clutter)
 - ✅ Primary CTA clearly stands out
 - ✅ Brand colors applied consistently
@@ -221,23 +236,103 @@
 **Defer these until Phase 1 is live and tested.**
 
 ### 2.1 Shareable Filter Links
+
 - Encode clubs/levels into URL (`?clubs=club1,club2&levels=3-4`)
 - Users can share a pre-filtered view with friends
 
 ### 2.2 "Add All Visible" / ICS Export
+
 - Download an `.ics` file with all filtered events for bulk calendar import
 - Or generate a multi-event Google Calendar flow (if feasible)
 
 ### 2.3 Date Range Filter
+
 - Let users filter by "Next 7 days", "Next 14 days", "Next 30 days"
 - Reduces noise for users planning ahead
 
 ### 2.4 Search by Event Title or Club
+
 - Quick text search to find specific events or clubs
 
 ### 2.5 Empty State & Onboarding
+
 - Show helpful message when no events match ("Try selecting more clubs or levels")
 - Brief first-visit tooltip explaining how filters work
+
+### 2.6 Dynamic Slot/Sign-up Tracking (Medium-Term)
+
+**Challenge**: Different clubs use different booking systems (CourtReserve, PlayTomic, custom apps)
+
+**Phase 1 (Current)**: No slot information displayed on site (data is static and out of date)
+
+**Medium-Term Solution** (Semi-Dynamic):
+
+- Build scraper scripts (Google Apps Script or Cloud Functions) to fetch availability from club websites/APIs
+- Cache results and refresh every 15-30 minutes
+- Store in Google Sheets or Firestore
+- Display availability badge on event cards (e.g., "🟢 Open", "🟡 Almost full", "🔴 Full")
+- Add registration link to each event
+
+**Long-Term Solution** (Fully Dynamic):
+
+- Partner with clubs to access their booking APIs directly
+- Build integrations per platform (PlayTomic, CourtReserve, etc.)
+- Display real-time slot availability
+- Potentially offer direct booking through the site
+
+**Database Schema (for when implemented)**:
+
+- `slotsTotal` (number) — Total available slots for event
+- `slotsAvailable` (number) — Current available slots
+- `registrationLink` (URL) — Link to club booking page
+
+**Implementation Notes**:
+
+- Keep slot tracking separate from core event display
+- Link to registration page rather than showing exact counts initially
+- Research club booking APIs before implementing scrapers
+
+### 2.7 Event Issue Reporting
+
+**Phase 1** (Current Implementation):
+
+- Add minimal mailto link to each event card
+- Pre-fill email with event details (title, club, date)
+- Email address: `report@padelevents.com` (or designated address)
+
+**Email Template**:
+
+```
+Subject: Issue with [Event Title]
+Body:
+Event: [Event Title]
+Club: [Club Name]
+Date: [Event Date/Time]
+
+Issue description:
+[User types here]
+```
+
+**Phase 2** (Future Enhancement):
+
+- Replace mailto with Google Sheets form submission
+- Capture: event ID, user email (optional), issue description, timestamp
+- Store reports in Google Sheets tab: "Event_Reports"
+- Send email notification to admin when report submitted
+
+**Phase 3** (Public Reports Page):
+
+- Create `/reports.html` page
+- Display all reported events publicly
+- Filter by club, status (pending/resolved)
+- Allow community validation ("I can confirm this issue")
+- Admin interface to mark reports as resolved
+
+**Files Involved**:
+
+- Phase 1: `assets/js/app.js` (add mailto link to event card rendering)
+- Phase 2: New Google Apps Script endpoint for form submission
+- Phase 3: `reports.html`, `assets/js/reports.js`, updated CSS
 
 ---
 
@@ -255,11 +350,13 @@
 ## Git Workflow & Branching Strategy
 
 **Branch naming convention**:
+
 - Feature branches: `feature/{task-number}-{short-description}` (e.g., `feature/1.0-auto-load-events`)
 - Bug fixes: `fix/{issue-description}` (e.g., `fix/calendar-timezone`)
 - Design/CSS: `design/{change-description}` (e.g., `design/mobile-card-layout`)
 
 **Recommended workflow**:
+
 1. Create a new branch from `main` for each task
    ```bash
    git checkout main
@@ -300,6 +397,7 @@ After Phase 1 is live, success looks like:
 6. **Visual trust**: Modern, clean UI with clear CTAs and readable text
 
 **How to measure**:
+
 - Manual testing on iPhone/Android (375px–414px widths)
 - Test ICS download on at least 2 platforms (iOS + Android or desktop)
 - Ask 2–3 padel players to test and observe friction points
@@ -311,12 +409,14 @@ After Phase 1 is live, success looks like:
 ## Technical Constraints & Non-Goals
 
 **Must keep**:
+
 - Frontend-only (no backend changes to this repo)
 - No build tools (inline JS, direct CSS link)
 - Firebase Hosting with cache headers in `firebase.json`
 - External API contract unchanged (Google Apps Script endpoint)
 
 **Out of scope for Phase 1**:
+
 - User accounts or authentication
 - Offline-first / Service Worker caching
 - Analytics or logging (can add later)
@@ -327,10 +427,10 @@ After Phase 1 is live, success looks like:
 
 ## Files to Change (Phase 1)
 
-| File | Changes |
-|------|---------|
-| `index.html` | Replace table with card list markup, add aria-labels, add localStorage save/restore logic, add error handling |
-| `assets/style.v1.css` | Add CSS variables, mobile-first card styles, larger touch targets, focus states, responsive layout |
+| File                  | Changes                                                                                                       |
+| --------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `index.html`          | Replace table with card list markup, add aria-labels, add localStorage save/restore logic, add error handling |
+| `assets/style.v1.css` | Add CSS variables, mobile-first card styles, larger touch targets, focus states, responsive layout            |
 
 **No new files needed.** Keep it simple.
 
@@ -344,6 +444,7 @@ After Phase 1 is live, success looks like:
 4. **Iterate in small PRs** — Ship each task independently, test on mobile, gather feedback
 
 **Questions?**
+
 - Do you want to adjust the order or defer any task?
 - Any specific brand color hex values to use?
 - Should we add "auto-filter on load" if filters are cached?

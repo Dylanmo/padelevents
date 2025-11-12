@@ -1,0 +1,495 @@
+/**
+ * Main application entry point
+ * Orchestrates all modules and initializes the app
+ */
+
+import { loadClubs, fetchEvents } from "./api.js";
+import {
+  generateGoogleCalendarLink,
+  generateICS,
+  downloadICS,
+} from "./calendar.js";
+import { buildFilterSummary, getSelectedClubs } from "./filters.js";
+import { qs, qsa, formatBangkokDate } from "./utils.js";
+
+// Application state
+const state = {
+  selectedLevels: [],
+  allClubs: [],
+  cachedEvents: null,
+};
+
+/**
+ * Initialize the application
+ */
+async function init() {
+  await initializeClubs();
+  await autoLoadEvents();
+  attachEventListeners();
+}
+
+/**
+ * Load clubs from API and render checkboxes
+ */
+async function initializeClubs() {
+  try {
+    const box = qs("#clubBox");
+    box.textContent = "Loading clubs...";
+
+    const clubs = await loadClubs();
+    state.allClubs = clubs;
+
+    box.innerHTML = clubs
+      .map(
+        (club) =>
+          `<label class="chip"><input type="checkbox" value="${club.value}" aria-label="Select ${club.label}"><span>${club.label}</span></label>`,
+      )
+      .join("");
+  } catch (error) {
+    console.error("Error loading clubs:", error);
+    qs("#clubBox").innerHTML =
+      '<span class="error">Unable to load clubs. Please refresh.</span>';
+  }
+}
+
+/**
+ * Auto-load default events (2 weeks, all clubs)
+ */
+async function autoLoadEvents() {
+  try {
+    qs("#status").textContent = "Loading upcoming events...";
+
+    const data = await fetchEvents([], []);
+    state.cachedEvents = data;
+
+    renderEvents(data, "All upcoming events");
+    updateLastUpdated();
+    qs("#status").textContent = "";
+  } catch (error) {
+    console.error("Error auto-loading events:", error);
+    qs("#status").innerHTML =
+      '<span class="error">⚠️ Unable to load events. Please try again.</span>';
+
+    if (state.cachedEvents) {
+      renderEvents(state.cachedEvents, "Cached events");
+    }
+  }
+}
+
+/**
+ * Apply filters manually
+ */
+async function applyFilters() {
+  try {
+    const clubs = getSelectedClubs(qsa("#clubBox input:checked"));
+    qs("#status").textContent = "Filtering events...";
+
+    const data = await fetchEvents(clubs, state.selectedLevels);
+    state.cachedEvents = data;
+
+    const summary = buildFilterSummary(
+      clubs,
+      state.selectedLevels,
+      state.allClubs,
+    );
+    renderEvents(data, summary);
+    updateLastUpdated();
+    qs("#status").textContent = "";
+  } catch (error) {
+    console.error("Error filtering events:", error);
+    qs("#status").innerHTML =
+      '<span class="error">⚠️ Unable to filter events. Please try again.</span>';
+
+    if (state.cachedEvents) {
+      renderEvents(state.cachedEvents, "Cached events");
+    }
+  }
+}
+
+/**
+ * Filter events by a specific club (show all events for that club)
+ * @param {string} clubDisplayName - Display name of the club to filter by
+ */
+async function filterByClub(clubDisplayName) {
+  try {
+    // Find the club value from display name
+    const club = state.allClubs.find((c) => c.label === clubDisplayName);
+    if (!club) {
+      console.error("Club not found:", clubDisplayName);
+      return;
+    }
+
+    const clubValue = club.value;
+
+    // Update status
+    const statusEl = qs("#status");
+    statusEl.textContent = `Loading all ${clubDisplayName} events...`;
+
+    try {
+      // Fetch all events for this club
+      const data = await fetchEvents([clubValue], []);
+
+      // Check and update the club checkbox in UI
+      const clubCheckboxes = qsa("#clubBox input");
+      for (const checkbox of clubCheckboxes) {
+        const label = checkbox.closest("label");
+        if (checkbox.value === clubValue) {
+          checkbox.checked = true;
+          label.classList.add("checked");
+        } else {
+          checkbox.checked = false;
+          label.classList.remove("checked");
+        }
+      }
+
+      // Clear level filters in UI
+      state.selectedLevels = [];
+      for (const btn of qsa(".level-btn")) {
+        btn.classList.remove("active");
+      }
+
+      // Store the data
+      state.cachedEvents = data;
+
+      // Render all events for this club
+      const summary = `Showing ${data.total} events for ${clubDisplayName}`;
+      renderEvents(data, summary, true, clubDisplayName); // Pass club name for header
+      updateLastUpdated();
+
+      // Scroll to events
+      qs("#eventsSection").scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+
+      statusEl.textContent = "";
+    } catch (fetchError) {
+      console.error("Error fetching club events:", fetchError);
+      statusEl.innerHTML =
+        '<span class="error">⚠️ Unable to load events. Please try again.</span>';
+      throw fetchError;
+    }
+  } catch (error) {
+    console.error("Error in filterByClub:", error);
+  }
+}
+
+/**
+ * Filter events happening within a time window
+ * @param {Array} events - Array of events
+ * @param {Date} cutoffDate - Cutoff date for filtering
+ * @returns {Array} Filtered and sorted events
+ */
+function filterHappeningSoon(events, cutoffDate) {
+  return events
+    .filter((event) => new Date(event.start) <= cutoffDate)
+    .sort((a, b) => new Date(a.start) - new Date(b.start));
+}
+
+/**
+ * Group events by club within a time range
+ * @param {Array} events - Array of events
+ * @param {Date} endDate - End date for filtering
+ * @returns {Object} Events grouped by club name
+ */
+function groupEventsByClub(events, endDate) {
+  const grouped = {};
+
+  for (const event of events) {
+    const eventDate = new Date(event.start);
+    if (eventDate <= endDate) {
+      const club = event.club || "Other";
+      if (!grouped[club]) {
+        grouped[club] = [];
+      }
+      grouped[club].push(event);
+    }
+  }
+
+  // Sort events within each club by date
+  for (const club of Object.keys(grouped)) {
+    grouped[club].sort((a, b) => new Date(a.start) - new Date(b.start));
+  }
+
+  return grouped;
+}
+
+/**
+ * Render the "Happening Soon" section HTML
+ * @param {Array} events - Events to render
+ * @returns {string} HTML string
+ */
+function renderHappeningSoonSection(events) {
+  if (events.length === 0) return "";
+
+  const eventCards = events.map((event) => renderEventCard(event)).join("");
+
+  return `<div class="happening-soon">
+		<h2 class="happening-header">⚡ HAPPENING SOON</h2>
+		<p class="happening-subtitle">Next events within 24 hours</p>
+		<ul class="events-list">${eventCards}</ul>
+	</div>`;
+}
+
+/**
+ * Render a club section with events
+ * @param {string} club - Club name
+ * @param {Array} events - Events for this club
+ * @param {number} initialLimit - Number of events to show initially
+ * @returns {string} HTML string
+ */
+function renderClubSection(club, events, initialLimit = 3) {
+  const hasMore = events.length > initialLimit;
+
+  // Render all events in a single list, hiding those beyond the initial limit
+  const allEvents = events
+    .map((event, index) => {
+      const isHidden = index >= initialLimit;
+      return renderEventCard(event, isHidden);
+    })
+    .join("");
+
+  let showMoreButton = "";
+  if (hasMore) {
+    const moreCount = events.length - initialLimit;
+    const plural = moreCount > 1 ? "s" : "";
+    showMoreButton = `<button class="btn-show-more" data-club="${club}" aria-label="Show ${moreCount} more events from ${club}">
+			Show ${moreCount} more event${plural} →
+		</button>`;
+  }
+
+  return `<div class="club-section" data-club="${club}">
+		<h2 class="club-header">
+			📍 ${club}
+			<a href="#" class="club-link" data-club="${club}" aria-label="View all ${club} events">View all →</a>
+		</h2>
+		<ul class="events-list">${allEvents}</ul>
+		${showMoreButton}
+	</div>`;
+}
+
+/**
+ * Render events grouped by club
+ * @param {object} data - Event data with total and sample
+ * @param {string} summaryText - Filter summary text
+ * @param {boolean} isSingleClubView - Whether viewing all events for a single club
+ * @param {string} clubName - Club display name for single club view
+ */
+function renderEvents(
+  data,
+  summaryText,
+  isSingleClubView = false,
+  clubName = "",
+) {
+  const { total, sample } = data;
+
+  if (!sample || sample.length === 0) {
+    qs("#previewHeader").style.display = "none";
+    qs("#eventsWrap").innerHTML =
+      '<div class="empty-state"><p>No events found. Try adjusting your filters.</p></div>';
+    return;
+  }
+
+  qs("#matchCount").textContent = `${total} events`;
+  qs("#filterSummary").textContent = summaryText;
+  qs("#previewHeader").style.display = "block";
+
+  // If viewing all events for a single club, show them all in chronological order
+  if (isSingleClubView) {
+    const sortedEvents = [...sample].sort(
+      (a, b) => new Date(a.start) - new Date(b.start),
+    );
+    const eventCards = sortedEvents
+      .map((event) => renderEventCard(event))
+      .join("");
+    const clubHeader = clubName
+      ? `<div class="club-section">
+			<h2 class="club-header">📍 ${clubName}</h2>
+			<ul class="events-list">${eventCards}</ul>
+		</div>`
+      : `<ul class="events-list">${eventCards}</ul>`;
+    qs("#eventsWrap").innerHTML = clubHeader;
+    return;
+  }
+
+  const now = new Date();
+  const next24h = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+  const next7days = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+
+  const happeningSoon = filterHappeningSoon(sample, next24h);
+  const grouped = groupEventsByClub(sample, next7days);
+
+  const happeningSoonHtml = renderHappeningSoonSection(happeningSoon);
+  const sortedClubs = Object.keys(grouped).sort((a, b) => a.localeCompare(b));
+  const clubSectionsHtml = sortedClubs
+    .map((club) => renderClubSection(club, grouped[club], 3))
+    .join("");
+
+  qs("#eventsWrap").innerHTML = happeningSoonHtml + clubSectionsHtml;
+}
+
+/**
+ * Render single event card
+ * @param {object} event - Event object
+ * @param {boolean} isHidden - Whether the event should be initially hidden
+ * @returns {string} HTML string
+ */
+function renderEventCard(event, isHidden = false) {
+  const start = new Date(event.start);
+  const end = new Date(event.end);
+  const now = new Date();
+  const isPast = end < now;
+
+  const day = formatBangkokDate(start, "weekday");
+  const date = formatBangkokDate(start, "date");
+  const timeStart = formatBangkokDate(start, "time");
+  const timeEnd = formatBangkokDate(end, "time");
+
+  const gcalLink = generateGoogleCalendarLink(event);
+  const icsData = generateICS(event);
+
+  // Build mailto link for reporting issues
+  const reportSubject = encodeURIComponent(`Issue with ${event.title}`);
+  const reportBody = encodeURIComponent(
+    `Event: ${event.title}\nClub: ${event.club || "N/A"}\nDate: ${formatBangkokDate(start, "date")} ${timeStart}\n\nIssue description:\n`,
+  );
+  const reportMailto = `mailto:mouthaan.dylan@gmail.com?subject=${reportSubject}&body=${reportBody}`;
+
+  const hiddenClass = isHidden ? " event-hidden" : "";
+  const hiddenStyle = isHidden ? ' style="display: none;"' : "";
+
+  return `<li class="event-card${isPast ? " event-past" : ""}${hiddenClass}"${hiddenStyle}>
+		<div class="event-title">${event.title}</div>
+		<div class="event-datetime">${day} ${date} • ${timeStart}–${timeEnd}</div>
+		<div class="event-details">
+			${event.club ? `<span class="detail-item detail-club">📍 ${event.club}</span>` : ""}
+			${event.level ? `<span class="detail-item"><strong>🥇 Padel level:</strong> ${event.level}</span>` : ""}
+		</div>
+		<div class="event-actions">
+			<a href="${gcalLink}" target="_blank" rel="noopener noreferrer" class="btn-calendar btn-google" aria-label="Add ${event.title} to Google Calendar">
+				<svg width="16" height="16" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+					<path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V9h14v10zM7 11h5v5H7z"/>
+				</svg>
+				Google Calendar
+			</a>
+			<button class="btn-calendar btn-ics" data-ics='${JSON.stringify(icsData)}' aria-label="Download ${event.title} as ICS file">
+				📅 Add to Calendar
+			</button>
+		</div>
+		<a href="${reportMailto}" class="report-link" aria-label="Report issue with ${event.title}">⚠️ Report issue</a>
+	</li>`;
+}
+
+/**
+ * Update last updated timestamp
+ */
+function updateLastUpdated() {
+  const now = new Date();
+  const formatted = new Intl.DateTimeFormat("en-GB", {
+    weekday: "short",
+    day: "2-digit",
+    month: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+    timeZone: "Asia/Bangkok",
+  }).format(now);
+
+  // Format: "Mon 10 Nov, 17:19" -> "Mon 10 Nov 17:19"
+  qs("#lastUpdated").textContent = formatted.replace(", ", " ");
+}
+
+/**
+ * Toggle show more events for a club
+ * @param {string} club - Club name
+ */
+function toggleClubEvents(club) {
+  // Find the section by iterating through all club sections
+  const sections = qsa(".club-section");
+  let section = null;
+
+  for (const sec of sections) {
+    if (sec.dataset.club === club) {
+      section = sec;
+      break;
+    }
+  }
+
+  if (!section) {
+    console.error("Club section not found:", club);
+    return;
+  }
+
+  // Find all hidden event cards and show them
+  const hiddenEvents = section.querySelectorAll(".event-hidden");
+  const button = section.querySelector(".btn-show-more");
+
+  if (hiddenEvents.length > 0 && button) {
+    for (const event of hiddenEvents) {
+      event.style.display = "";
+      event.classList.remove("event-hidden");
+    }
+    button.remove();
+  }
+}
+
+/**
+ * Attach event listeners
+ */
+function attachEventListeners() {
+  // Level button toggle
+  document.addEventListener("click", (event) => {
+    const button = event.target.closest(".level-btn");
+    if (button) {
+      const range = button.dataset.range;
+      button.classList.toggle("active");
+
+      const index = state.selectedLevels.indexOf(range);
+      if (index >= 0) {
+        state.selectedLevels.splice(index, 1);
+      } else {
+        state.selectedLevels.push(range);
+      }
+    }
+
+    // Club "View all" link
+    const clubLink = event.target.closest(".club-link");
+    if (clubLink) {
+      event.preventDefault();
+      const clubName = clubLink.dataset.club;
+      filterByClub(clubName);
+    }
+
+    // Show more button
+    const showMoreBtn = event.target.closest(".btn-show-more");
+    if (showMoreBtn) {
+      const club = showMoreBtn.dataset.club;
+      toggleClubEvents(club);
+    }
+
+    // ICS download button
+    const icsBtn = event.target.closest(".btn-ics");
+    if (icsBtn) {
+      const icsData = JSON.parse(icsBtn.dataset.ics);
+      downloadICS(icsData);
+    }
+  });
+
+  // Club checkbox change
+  document.addEventListener("change", (event) => {
+    if (event.target.matches('#clubBox input[type="checkbox"]')) {
+      const label = event.target.closest("label");
+      if (event.target.checked) {
+        label.classList.add("checked");
+      } else {
+        label.classList.remove("checked");
+      }
+    }
+  });
+
+  // Apply filters button
+  qs("#btnFilter").addEventListener("click", applyFilters);
+}
+
+// Initialize on DOM ready
+document.addEventListener("DOMContentLoaded", init);

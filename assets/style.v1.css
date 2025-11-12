@@ -275,6 +275,13 @@ button#btnFilter:active {
   backdrop-filter: blur(10px);
 }
 
+.happening-soon .event-card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--brand-primary);
+  background: rgb(255 255 255 / 100%);
+  transform: translateY(-2px);
+}
+
 /* Club Sections */
 .club-section {
   margin-bottom: 32px;
@@ -285,8 +292,24 @@ button#btnFilter:active {
   font-weight: 700;
   color: var(--text-primary);
   margin: 0 0 16px;
-  padding-bottom: 8px;
-  border-bottom: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.club-link {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--brand-accent);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.club-link:hover {
+  color: var(--brand-primary);
+  text-decoration: underline;
 }
 
 /* Events List */
@@ -297,6 +320,11 @@ button#btnFilter:active {
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+/* Hidden event cards */
+.event-hidden {
+  display: none;
 }
 
 /* Event Card */
@@ -412,6 +440,21 @@ button#btnFilter:active {
   box-shadow: var(--shadow-md);
 }
 
+/* Report Issue Link */
+.report-link {
+  display: inline-block;
+  margin-top: 12px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.report-link:hover {
+  color: var(--error);
+  text-decoration: underline;
+}
+
 /* Show More Button */
 
 /* Past Events */
@@ -430,7 +473,7 @@ button#btnFilter:active {
 .btn-show-more {
   width: 100%;
   padding: 12px 16px;
-  margin-top: 16px;
+  margin-top: 20px;
   background: var(--bg-page);
   border: 2px solid var(--border);
   border-radius: 8px;
