@@ -5,6 +5,117 @@
 
 ---
 
+## Happening Soon Section
+
+**Purpose**: Highlight urgent/upcoming events (next 48 hours) with visual prominence.
+
+### Visual Design
+
+**Mobile Layout**:
+
+```
+┌──────────────────────────────────────────┐
+│ [Gradient Background: Green → Teal]      │
+│                                          │
+│ ⚡ Happening Soon                        │
+│ Events starting in the next 48 hours    │
+│                                          │
+│ ┌─────────────────────────────────────┐  │
+│ │ [Event Card - White/Elevated]       │  │
+│ │ Mixed Doubles Tournament            │  │
+│ │ Tomorrow • 18:00–20:00              │  │
+│ │ 📍 Thonglor • 🥇 Level 3–4          │  │
+│ │ [Add to Calendar] [Download ICS]    │  │
+│ └─────────────────────────────────────┘  │
+│                                          │
+└──────────────────────────────────────────┘
+```
+
+### HTML Structure
+
+```html
+<section class="happening-soon" aria-labelledby="happening-header">
+  <h2 class="happening-header" id="happening-header">
+    <span class="happening-icon" aria-hidden="true">⚡</span>
+    Happening Soon
+  </h2>
+  <p class="happening-subtitle">Events starting in the next 48 hours</p>
+
+  <ul class="events-list">
+    <li>
+      <article class="event-card">
+        <!-- Standard event card structure -->
+      </article>
+    </li>
+  </ul>
+</section>
+```
+
+### CSS
+
+```css
+.happening-soon {
+  margin-bottom: var(--space-10); /* 40px */
+  padding: var(--space-5); /* 20px */
+  background: linear-gradient(135deg, #0e9f6e 0%, #0b7285 100%);
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.happening-header {
+  font-size: var(--text-2xl); /* 24px */
+  font-weight: var(--weight-bold);
+  color: var(--color-text-inverse);
+  margin: 0 0 var(--space-1); /* 4px */
+  display: flex;
+  align-items: center;
+  gap: var(--space-2); /* 8px */
+}
+
+.happening-icon {
+  font-size: var(--text-2xl);
+  line-height: 1;
+}
+
+.happening-subtitle {
+  font-size: var(--text-sm); /* 14px */
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0 0 var(--space-4); /* 16px */
+}
+
+/* Event cards inside Happening Soon */
+.happening-soon .events-list {
+  gap: var(--space-4); /* 16px */
+}
+
+.happening-soon .event-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+}
+
+.happening-soon .event-card:hover {
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+}
+```
+
+### Design Notes
+
+- **Gradient background**: Creates urgency without being aggressive
+- **White cards on gradient**: Ensures readability while maintaining brand feel
+- **⚡ Lightning icon**: Conveys immediacy (consider SVG replacement per icon guidelines)
+- **Only show if events exist**: Hide section when no upcoming events match filters
+
+### Accessibility
+
+- Use `aria-labelledby` to connect header to section
+- Lightning emoji has `aria-hidden="true"` (decorative)
+- Maintain WCAG AA contrast for white text on gradient (currently passes at 4.6:1)
+
+---
+
 ## Event Cards
 
 ### Mobile Layout (< 640px)

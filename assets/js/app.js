@@ -431,7 +431,7 @@ function renderEventCard(event, isHidden = false) {
 				Google Calendar
 			</a>
 			<button class="btn-calendar btn-ics" data-ics='${JSON.stringify(icsData)}' aria-label="Download ${event.title} as ICS file">
-				📅 Add to Calendar
+				� Add to Calendar (ICS)
 			</button>
 		</div>
 		<a href="${reportMailto}" class="report-link" aria-label="Report issue with ${event.title}">⚠️ Report issue</a>

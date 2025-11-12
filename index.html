@@ -6,6 +6,8 @@
   <link rel="stylesheet" href="/assets/style.v1.css" />
 
   <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
     <div class="container">
       <h1>🎾 Padel Events Calendar</h1>
       <p class="subtitle">
@@ -65,7 +67,7 @@
           <button id="btnFilter" aria-label="Apply filters to events">
             Apply Filters
           </button>
-          <span id="status" role="status" aria-live="polite"></span>
+          <output id="status" aria-live="polite"></output>
         </div>
       </div>
 
@@ -77,6 +79,10 @@
 
         <div id="eventsWrap"></div>
       </div>
+
+      <main id="main-content">
+        <!-- Main content area for skip link target -->
+      </main>
 
       <footer class="footer">
         <div class="footer-links">

@@ -1,7 +1,8 @@
 /* === Padel Events Calendar – Mobile-First Styles === */
 
-/* CSS Custom Properties (Brand Colors) */
+/* CSS Custom Properties (Design System Variables) */
 :root {
+  /* Brand Colors (legacy names for compatibility) */
   --brand-primary: #0e9f6e;
   --brand-accent: #0b7285;
   --bg-page: #f9fafb;
@@ -15,6 +16,70 @@
   --error: #dc2626;
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 5%);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 10%);
+
+  /* Design System Color Variables */
+  --color-primary: #10b981;
+  --color-primary-hover: #059669;
+  --color-primary-light: #d1fae5;
+  --color-accent: #0891b2;
+  --color-accent-hover: #0e7490;
+  --color-bg-page: #fafafa;
+  --color-bg-card: #fff;
+  --color-bg-elevated: #fff;
+  --color-text-primary: #111827;
+  --color-text-secondary: #6b7280;
+  --color-text-tertiary: #9ca3af;
+  --color-text-inverse: #fff;
+  --color-border: #e5e7eb;
+  --color-border-focus: #10b981;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --color-info: #3b82f6;
+
+  /* Spacing Scale (4px-based system) */
+  --space-0: 0;
+  --space-1: 0.25rem; /* 4px */
+  --space-2: 0.5rem; /* 8px */
+  --space-3: 0.75rem; /* 12px */
+  --space-4: 1rem; /* 16px */
+  --space-5: 1.25rem; /* 20px */
+  --space-6: 1.5rem; /* 24px */
+  --space-8: 2rem; /* 32px */
+  --space-10: 2.5rem; /* 40px */
+  --space-12: 3rem; /* 48px */
+  --space-16: 4rem; /* 64px */
+
+  /* Typography Scale */
+  --text-xs: 0.75rem; /* 12px */
+  --text-sm: 0.875rem; /* 14px */
+  --text-base: 1rem; /* 16px */
+  --text-lg: 1.125rem; /* 18px */
+  --text-xl: 1.25rem; /* 20px */
+  --text-2xl: 1.5rem; /* 24px */
+  --text-3xl: 1.875rem; /* 30px */
+
+  /* Line Heights */
+  --leading-tight: 1.25;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.75;
+
+  /* Font Weights */
+  --weight-normal: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  /* Font Stacks */
+  --font-sans:
+    -apple-system, blinkmacsystemfont, "Segoe UI", roboto, "Helvetica Neue",
+    arial, sans-serif;
+  --font-mono: "SF Mono", monaco, "Cascadia Code", "Courier New", monospace;
+
+  /* Transitions */
+  --transition-fast: 100ms ease;
+  --transition-base: 150ms ease;
+  --transition-slow: 300ms ease;
 }
 
 /* Base Styles */
@@ -22,15 +87,31 @@
   box-sizing: border-box;
 }
 
+/* Skip Navigation Link (Accessibility) */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+  padding: var(--space-2) var(--space-4);
+  text-decoration: none;
+  font-weight: var(--weight-medium);
+  z-index: 100;
+  border-radius: 0 0 4px;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
 body {
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
-    Arial, sans-serif;
+  font-family: var(--font-sans);
   margin: 0;
-  padding: 16px;
+  padding: var(--space-4); /* 16px - use design system */
   background: var(--bg-page);
   color: var(--text-primary);
-  line-height: 1.6;
+  line-height: var(--leading-normal); /* 1.5 */
 }
 
 .container {
@@ -38,33 +119,36 @@ body {
   margin: 0 auto;
 }
 
+/* Mobile-first typography (375px iPhone SE base) */
 h1 {
-  font-size: 1.75rem;
-  font-weight: 700;
-  margin: 0 0 8px;
+  font-size: var(--text-2xl); /* 24px - better for small screens */
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-tight);
+  margin: 0 0 var(--space-2); /* 8px */
   color: var(--text-primary);
 }
 
 .subtitle {
-  font-size: 0.95rem;
+  font-size: var(--text-base); /* 16px - improved readability */
   color: var(--text-secondary);
-  margin: 0 0 24px;
+  margin: 0 0 var(--space-6); /* 24px */
+  line-height: var(--leading-normal);
 }
 
 /* Filter Sections */
 .filters-section {
-  margin-bottom: 32px;
+  margin-bottom: var(--space-8); /* 32px */
 }
 
 .filter-group {
-  margin-bottom: 20px;
+  margin-bottom: var(--space-5); /* 20px */
 }
 
 .filter-label {
-  font-size: 0.875rem;
-  font-weight: 600;
+  font-size: var(--text-sm); /* 14px */
+  font-weight: var(--weight-semibold);
   color: var(--text-primary);
-  margin: 0 0 10px;
+  margin: 0 0 var(--space-3); /* 12px */
 }
 
 /* Club Chips */
@@ -84,23 +168,24 @@ h1 {
   align-items: center;
   justify-content: center;
   width: 100%;
-  padding: 20px;
-  gap: 12px;
+  padding: var(--space-5); /* 20px */
+  gap: var(--space-3); /* 12px */
 }
 
 .loading-gif {
-  width: 70%;
-  max-width: 290px;
+  width: 100%;
+  max-width: 240px; /* Optimized for iPhone SE 375px */
   height: auto;
   object-fit: contain;
   border-radius: 12px;
 }
 
 .loading-text {
-  font-size: 0.9375rem;
+  font-size: var(--text-base); /* 16px */
   color: var(--text-secondary);
-  font-weight: 500;
+  font-weight: var(--weight-medium);
   margin: 0;
+  text-align: center;
 }
 
 label.chip {
@@ -195,8 +280,9 @@ label.chip input {
 
 .level-btn:focus,
 label.chip:focus-within {
-  outline: 3px solid var(--brand-primary);
+  outline: 2px solid var(--color-border-focus);
   outline-offset: 2px;
+  border-radius: 4px;
 }
 
 /* Filter Bar */
@@ -584,18 +670,18 @@ button#btnFilter:active {
   color: var(--error);
 }
 
-/* Responsive Design */
+/* Responsive Design - Tablet & Desktop */
 @media (width >= 600px) {
   body {
-    padding: 24px;
+    padding: var(--space-6); /* 24px */
   }
 
   h1 {
-    font-size: 2rem;
+    font-size: var(--text-3xl); /* 30px on larger screens */
   }
 
   .loading-gif {
-    max-width: 300px;
+    max-width: 280px; /* Slightly larger on tablet */
   }
 
   .event-actions {
@@ -625,18 +711,23 @@ button#btnFilter:active {
   .events-list {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
+    gap: var(--space-4); /* 16px */
   }
 
   .club-header {
-    font-size: 1.375rem;
+    font-size: var(--text-xl); /* 20px */
+  }
+
+  body {
+    padding: var(--space-8); /* 32px on desktop */
   }
 }
 
 /* Focus Visible for Accessibility */
 :focus-visible {
-  outline: 3px solid var(--brand-primary);
+  outline: 2px solid var(--color-border-focus);
   outline-offset: 2px;
+  border-radius: 4px;
 }
 
 /* Print Styles */
