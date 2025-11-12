@@ -122,3 +122,41 @@ See individual guidelines files for complete rules:
 - `.github/HTML_GUIDELINES.md`
 - `.github/CSS_GUIDELINES.md`
 - `.github/JS_GUIDELINES.md`
+
+## Visual Design System (MANDATORY FOR ALL UI CHANGES)
+
+**All new features and UI changes MUST follow the visual design guidelines**. Before implementing any visual changes:
+
+1. **Review design system**: Read `docs/VISUAL_DESIGN_GUIDELINES.md` for overview
+2. **Use design tokens**: All colors, spacing, typography must use CSS variables defined in the guidelines
+3. **Follow component patterns**: Check `docs/design/components.md` for existing patterns before creating new ones
+4. **Mobile-first**: Design for 375px width first, enhance for larger screens
+5. **Accessibility**: Verify color contrast (4.5:1 for text), touch targets (44px min), keyboard navigation
+
+**Core Design Principles**:
+- **Restrained color palette**: Use primary green (#10b981) sparingly for CTAs only
+- **System fonts**: Never add custom web fonts (use system UI stack)
+- **4px spacing scale**: Use CSS variables (`--space-1` through `--space-16`)
+- **Touch-friendly**: Minimum 44×44px tap targets for all interactive elements
+- **WCAG AA compliance**: Required for all color contrast ratios
+
+**Design Documentation**:
+- `docs/VISUAL_DESIGN_GUIDELINES.md` - Main design system overview
+- `docs/design/color-system.md` - Color palette and usage rules
+- `docs/design/typography.md` - Font stack, type scale, hierarchy
+- `docs/design/spacing-layout.md` - Spacing system, breakpoints, grid
+- `docs/design/components.md` - Component specs (cards, buttons, filters)
+- `docs/design/accessibility.md` - WCAG compliance, ARIA, keyboard nav
+
+**Before implementing UI changes**:
+- [ ] Check if component exists in `docs/design/components.md`
+- [ ] Use CSS variables for colors, spacing, typography (never hardcoded values)
+- [ ] Verify mobile layout at 375px width
+- [ ] Test color contrast with browser dev tools
+- [ ] Ensure touch targets >= 44px
+- [ ] Add proper ARIA labels and semantic HTML
+
+**When proposing new visual patterns**:
+1. Document in appropriate design file first
+2. Get approval before implementing
+3. Update component specs after implementation
