@@ -157,6 +157,17 @@ async function applyFilters() {
     );
     renderEvents(data, summary);
     qs("#status").textContent = "";
+
+    // Scroll to results after rendering
+    setTimeout(() => {
+      const eventsSection = qs("#eventsSection");
+      if (eventsSection) {
+        eventsSection.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }
+    }, 100);
   } catch (error) {
     console.error("Error filtering events:", error);
     qs("#status").innerHTML =
@@ -299,13 +310,20 @@ function renderHappeningSoonSection(events, initialLimit = 6) {
     const moreCount = events.length - initialLimit;
     const plural = moreCount > 1 ? "s" : "";
     showMoreButton = `<button class="btn-show-more" data-section="happening-soon" aria-label="Show ${moreCount} more happening soon events">
-			Show ${moreCount} more event${plural} →
+			<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+				<path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+			</svg>
+			Show ${moreCount} more event${plural}
 		</button>`;
   }
 
   return `<div class="happening-soon">
-		<h2 class="happening-header">⚡ HAPPENING SOON</h2>
-		<p class="happening-subtitle">Next events within 24 hours</p>
+		<h2 class="happening-header">
+			<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+				<path d="M13 2L3 14h8l-1 8 10-12h-8l1-8z" fill="currentColor"/>
+			</svg>
+			Today &amp; Tomorrow
+		</h2>
 		<ul class="events-list">${allEvents}</ul>
 		${showMoreButton}
 	</div>`;
@@ -334,7 +352,10 @@ function renderClubSection(club, events, initialLimit = 3) {
     const moreCount = events.length - initialLimit;
     const plural = moreCount > 1 ? "s" : "";
     showMoreButton = `<button class="btn-show-more" data-club="${club}" aria-label="Show ${moreCount} more events from ${club}">
-			Show ${moreCount} more event${plural} →
+			<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+				<path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+			</svg>
+			Show ${moreCount} more event${plural}
 		</button>`;
   }
 
@@ -346,7 +367,12 @@ function renderClubSection(club, events, initialLimit = 3) {
 				</svg>
 				${club}
 			</span>
-			<a href="#" class="club-link" data-club="${club}" aria-label="View all ${club} events">View all →</a>
+			<a href="#" class="club-link" data-club="${club}" aria-label="View all ${club} events">
+				View all
+				<svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+					<path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+				</svg>
+			</a>
 		</h2>
 		<ul class="events-list">${allEvents}</ul>
 		${showMoreButton}
