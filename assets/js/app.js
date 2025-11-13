@@ -406,13 +406,6 @@ function renderEventCard(event, isHidden = false) {
   const gcalLink = generateGoogleCalendarLink(event);
   const icsData = generateICS(event);
 
-  // Build mailto link for reporting issues
-  const reportSubject = encodeURIComponent(`Issue with ${event.title}`);
-  const reportBody = encodeURIComponent(
-    `Event: ${event.title}\nClub: ${event.club || "N/A"}\nDate: ${formatBangkokDate(start, "date")} ${timeStart}\n\nIssue description:\n`,
-  );
-  const reportMailto = `mailto:mouthaan.dylan@gmail.com?subject=${reportSubject}&body=${reportBody}`;
-
   const hiddenClass = isHidden ? " event-hidden" : "";
   const hiddenStyle = isHidden ? ' style="display: none;"' : "";
 
@@ -425,16 +418,28 @@ function renderEventCard(event, isHidden = false) {
 		</div>
 		<div class="event-actions">
 			<a href="${gcalLink}" target="_blank" rel="noopener noreferrer" class="btn-calendar btn-google" aria-label="Add ${event.title} to Google Calendar">
-				<svg width="16" height="16" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-					<path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V9h14v10zM7 11h5v5H7z"/>
+				<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+					<rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+					<line x1="16" y1="2" x2="16" y2="6"></line>
+					<line x1="8" y1="2" x2="8" y2="6"></line>
+					<line x1="3" y1="10" x2="21" y2="10"></line>
+					<line x1="10" y1="16" x2="14" y2="16"></line>
+					<line x1="12" y1="14" x2="12" y2="18"></line>
 				</svg>
 				Google Calendar
 			</a>
 			<button class="btn-calendar btn-ics" data-ics='${JSON.stringify(icsData)}' aria-label="Download ${event.title} as ICS file">
-				� Add to Calendar (ICS)
+				<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+					<rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+					<line x1="16" y1="2" x2="16" y2="6"></line>
+					<line x1="8" y1="2" x2="8" y2="6"></line>
+					<line x1="3" y1="10" x2="21" y2="10"></line>
+					<line x1="10" y1="16" x2="14" y2="16"></line>
+					<line x1="12" y1="14" x2="12" y2="18"></line>
+				</svg>
+				Calendar (ICS)
 			</button>
 		</div>
-		<a href="${reportMailto}" class="report-link" aria-label="Report issue with ${event.title}">⚠️ Report issue</a>
 	</li>`;
 }
 

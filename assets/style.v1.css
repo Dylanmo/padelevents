@@ -282,7 +282,6 @@ label.chip input {
 label.chip:focus-within {
   outline: 2px solid var(--color-border-focus);
   outline-offset: 2px;
-  border-radius: 4px;
 }
 
 /* Filter Bar */
@@ -314,6 +313,11 @@ button#btnFilter:hover {
 
 button#btnFilter:active {
   transform: translateY(0);
+}
+
+button#btnFilter:focus-visible {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
 }
 
 #status {
@@ -381,11 +385,13 @@ button#btnFilter:active {
   backdrop-filter: blur(10px);
 }
 
-.happening-soon .event-card:hover {
-  box-shadow: var(--shadow-md);
-  border-color: var(--brand-primary);
-  background: rgb(255 255 255 / 100%);
-  transform: translateY(-2px);
+@media (hover: hover) {
+  .happening-soon .event-card:hover {
+    box-shadow: var(--shadow-md);
+    border-color: var(--brand-primary);
+    background: rgb(255 255 255 / 100%);
+    transform: translateY(-2px);
+  }
 }
 
 /* Club Sections */
@@ -443,9 +449,12 @@ button#btnFilter:active {
   transition: all 0.2s ease;
 }
 
-.event-card:hover {
-  box-shadow: var(--shadow-md);
-  border-color: var(--brand-primary);
+@media (hover: hover) {
+  .event-card:hover {
+    box-shadow: var(--shadow-md);
+    border-color: var(--brand-primary);
+    transform: translateY(-2px);
+  }
 }
 
 .event-title {
@@ -473,13 +482,6 @@ button#btnFilter:active {
 .detail-item {
   font-size: 0.875rem;
   color: var(--text-secondary);
-  background: var(--bg-page);
-  padding: 4px 10px;
-  border-radius: 6px;
-
-  .detail-club {
-    font-weight: 700;
-  }
 }
 
 /* Event Actions */
@@ -505,6 +507,7 @@ button#btnFilter:active {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
   min-height: 44px;
   padding: 12px 16px;
   border-radius: 8px;
@@ -516,6 +519,13 @@ button#btnFilter:active {
   transition: all 0.2s ease;
   border: none;
   font-family: inherit;
+  white-space: nowrap;
+}
+
+.btn-calendar svg {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
 }
 
 .btn-google {
@@ -524,40 +534,58 @@ button#btnFilter:active {
 }
 
 .btn-google:hover {
-  .btn-google svg {
-    flex-shrink: 0;
-  }
-
   background: #0d8f63;
   transform: translateY(-1px);
   box-shadow: var(--shadow-md);
 }
 
+.btn-google:active {
+  transform: scale(0.98);
+}
+
+.btn-google:focus-visible {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+
 .btn-ics {
-  background: white;
-  color: var(--brand-accent);
-  border: 2px solid var(--brand-accent);
+  background: transparent;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
 }
 
 .btn-ics:hover {
-  background: var(--brand-accent);
-  color: white;
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
+  background: var(--color-primary-light);
+  border-color: var(--color-primary-hover);
+}
+
+.btn-ics:active {
+  transform: scale(0.98);
+}
+
+.btn-ics:focus-visible {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
 }
 
 /* Report Issue Link */
 .report-link {
-  display: inline-block;
-  margin-top: 12px;
-  font-size: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  min-height: 44px;
+  font-size: var(--text-sm);
   color: var(--text-muted);
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: all var(--transition-base);
+  border-radius: 4px;
 }
 
 .report-link:hover {
-  color: var(--error);
+  color: var(--color-warning);
+  background: rgb(245 158 11 / 10%);
   text-decoration: underline;
 }
 
@@ -601,6 +629,11 @@ button#btnFilter:active {
 
 .btn-show-more:active {
   transform: translateY(0);
+}
+
+.btn-show-more:focus-visible {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
 }
 
 /* Empty State */
@@ -720,6 +753,34 @@ button#btnFilter:active {
 
   body {
     padding: var(--space-8); /* 32px on desktop */
+  }
+}
+
+@media (width >= 1024px) {
+  .events-list {
+    gap: var(--space-6); /* Increase gap to 24px on larger screens */
+  }
+
+  body {
+    padding: var(--space-10); /* 40px on wide desktop for more breathing room */
+  }
+}
+
+/* Wide Desktop - 3 Column Layout */
+@media (width >= 1280px) {
+  .container {
+    max-width: 1280px; /* Prevent cards from getting too wide */
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .events-list {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-6); /* 24px gap between cards */
+  }
+
+  body {
+    padding: var(--space-12); /* 48px on ultra-wide for generous margins */
   }
 }
 
