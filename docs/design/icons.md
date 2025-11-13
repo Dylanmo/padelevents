@@ -99,6 +99,20 @@ Consistent icon sizes across the UI:
 </svg>
 ```
 
+### Medal/Level Icon (Filled Star)
+
+**Usage**: Padel level indicator in event details
+
+**Size**: 16px (inline text)
+
+**Color**: `currentColor` (inherits `--color-warning` #f59e0b - amber/gold)
+
+```html
+<svg class="level-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="currentColor"/>
+</svg>
+```
+
 ### Calendar Icon (Outlined)
 
 **Usage**: Calendar action buttons (Google Calendar, ICS download)
@@ -165,6 +179,13 @@ When adding a new icon:
     <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="currentColor"/>
   </svg>
   Bangkok Padel Club
+</span>
+
+<span class="detail-item detail-level">
+  <svg class="level-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="currentColor"/>
+  </svg>
+  <strong>Level:</strong> 2.5–7
 </span>
 ```
 

@@ -278,17 +278,36 @@ function groupEventsByClub(events, endDate) {
 /**
  * Render the "Happening Soon" section HTML
  * @param {Array} events - Events to render
+ * @param {number} initialLimit - Number of events to show initially on desktop
  * @returns {string} HTML string
  */
-function renderHappeningSoonSection(events) {
+function renderHappeningSoonSection(events, initialLimit = 6) {
   if (events.length === 0) return "";
 
-  const eventCards = events.map((event) => renderEventCard(event)).join("");
+  const hasMore = events.length > initialLimit;
+
+  // Render all events, hiding those beyond the initial limit
+  const allEvents = events
+    .map((event, index) => {
+      const isHidden = index >= initialLimit;
+      return renderEventCard(event, isHidden);
+    })
+    .join("");
+
+  let showMoreButton = "";
+  if (hasMore) {
+    const moreCount = events.length - initialLimit;
+    const plural = moreCount > 1 ? "s" : "";
+    showMoreButton = `<button class="btn-show-more" data-section="happening-soon" aria-label="Show ${moreCount} more happening soon events">
+			Show ${moreCount} more event${plural} →
+		</button>`;
+  }
 
   return `<div class="happening-soon">
 		<h2 class="happening-header">⚡ HAPPENING SOON</h2>
 		<p class="happening-subtitle">Next events within 24 hours</p>
-		<ul class="events-list">${eventCards}</ul>
+		<ul class="events-list">${allEvents}</ul>
+		${showMoreButton}
 	</div>`;
 }
 
@@ -429,7 +448,7 @@ function renderEventCard(event, isHidden = false) {
 		<div class="event-datetime">${day} ${date} • ${timeStart}–${timeEnd}</div>
 		<div class="event-details">
 			${event.club ? `<span class="detail-item detail-club"><svg class="location-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="currentColor"/></svg> ${event.club}</span>` : ""}
-			${event.level ? `<span class="detail-item"><strong>🥇 Padel level:</strong> ${event.level}</span>` : ""}
+			${event.level ? `<span class="detail-item detail-level"><svg class="level-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="currentColor"/></svg> <strong>Level:</strong> ${event.level}</span>` : ""}
 		</div>
 		<div class="event-actions">
 			<a href="${gcalLink}" target="_blank" rel="noopener noreferrer" class="btn-calendar btn-google" aria-label="Add ${event.title} to Google Calendar">
@@ -459,23 +478,30 @@ function renderEventCard(event, isHidden = false) {
 }
 
 /**
- * Toggle show more events for a club
- * @param {string} club - Club name
+ * Toggle show more events for a club or section
+ * @param {string} club - Club name (for club sections)
+ * @param {string} sectionType - Section type ('happening-soon' for Happening Soon)
  */
-function toggleClubEvents(club) {
-  // Find the section by iterating through all club sections
-  const sections = qsa(".club-section");
+function toggleClubEvents(club, sectionType = null) {
   let section = null;
 
-  for (const sec of sections) {
-    if (sec.dataset.club === club) {
-      section = sec;
-      break;
+  if (sectionType === "happening-soon") {
+    // Find the happening-soon section
+    section = qs(".happening-soon");
+  } else {
+    // Find the club section by iterating through all club sections
+    const sections = qsa(".club-section");
+
+    for (const sec of sections) {
+      if (sec.dataset.club === club) {
+        section = sec;
+        break;
+      }
     }
   }
 
   if (!section) {
-    console.error("Club section not found:", club);
+    console.error("Section not found:", club || sectionType);
     return;
   }
 
@@ -523,7 +549,13 @@ function attachEventListeners() {
     const showMoreBtn = event.target.closest(".btn-show-more");
     if (showMoreBtn) {
       const club = showMoreBtn.dataset.club;
-      toggleClubEvents(club);
+      const section = showMoreBtn.dataset.section;
+
+      if (section === "happening-soon") {
+        toggleClubEvents(null, "happening-soon");
+      } else if (club) {
+        toggleClubEvents(club);
+      }
     }
 
     // ICS download button
