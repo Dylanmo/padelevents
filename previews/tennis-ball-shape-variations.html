@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Tennis Ball Shape Variations</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎾</text></svg>" />
+    <style>
+    body {
+      font-family: -apple-system, blinkmacsystemfont, "Segoe UI", roboto,
+        "Helvetica Neue", arial, sans-serif;
+      padding: 40px;
+      background: #fafafa;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 60px;
+      color: #111827;
+    }
+    .versions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 40px;
+      margin-bottom: 60px;
+    }
+    .version {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    .version h2 {
+      font-size: 18px;
+      margin-bottom: 20px;
+      color: #111827;
+    }
+    .version p {
+      font-size: 14px;
+      color: #6b7280;
+      margin-top: 15px;
+      line-height: 1.5;
+    }
+    svg {
+      width: 100px;
+      height: 100px;
+      display: block;
+      margin: 0 auto;
+    }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🎾 Tennis Ball Shape Variations</h1>
+      <p style="text-align: center; color: #6b7280; margin-bottom: 40px;">
+        Different shapes and seam styles to look more like a realistic tennis ball
+      </p>
+
+      <div class="versions">
+        <!-- Version 1: Realistic Curved Seams with Insets -->
+        <div class="version">
+          <h2>V1: Realistic Seams</h2>
+          <svg
+            viewBox="0 0 40 40"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <!-- Main ball -->
+            <circle cx="20" cy="20" r="16" fill="#10b981" stroke="#0891b2" stroke-width="1.5"/>
+            
+            <!-- Left seam curve with depth -->
+            <path
+              d="M 20 4 Q 15 12 14 20 Q 15 28 20 36"
+              stroke="white"
+              stroke-width="2.5"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            
+            <!-- Right seam curve -->
+            <path
+              d="M 20 4 Q 25 12 26 20 Q 25 28 20 36"
+              stroke="white"
+              stroke-width="2.5"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            
+            <!-- Center highlight line -->
+            <line x1="20" y1="4" x2="20" y2="36" stroke="white" stroke-width="0.8" opacity="0.6"/>
+          </svg>
+          <p>Classic curved seams with center line. Most recognizable.</p>
+        </div>
+
+        <!-- Version 2: Pinched Sides (Indentation) -->
+        <div class="version">
+          <h2>V2: Pinched Sides</h2>
+          <svg
+            viewBox="0 0 40 40"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <!-- Ball with pinched sides -->
+            <path
+              d="M 20 4 Q 28 12 28 20 Q 28 28 20 36 Q 12 28 12 20 Q 12 12 20 4"
+              fill="#10b981"
+              stroke="#0891b2"
+              stroke-width="1.5"
+            />
+            
+            <!-- Left seam -->
+            <path
+              d="M 20 4 Q 16 12 15 20 Q 16 28 20 36"
+              stroke="white"
+              stroke-width="2"
+              fill="none"
+              stroke-linecap="round"
+            />
+            
+            <!-- Right seam -->
+            <path
+              d="M 20 4 Q 24 12 25 20 Q 24 28 20 36"
+              stroke="white"
+              stroke-width="2"
+              fill="none"
+              stroke-linecap="round"
+            />
+            
+            <!-- Indentation marks -->
+            <ellipse cx="13" cy="20" rx="1.5" ry="6" fill="#0891b2" opacity="0.3"/>
+            <ellipse cx="27" cy="20" rx="1.5" ry="6" fill="#0891b2" opacity="0.3"/>
+          </svg>
+          <p>Pinched indented sides like a real tennis ball. More dimensional.</p>
+        </div>
+
+        <!-- Version 3: Wavy Seam Pattern -->
+        <div class="version">
+          <h2>V3: Wavy Seams</h2>
+          <svg
+            viewBox="0 0 40 40"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <!-- Main circle -->
+            <circle cx="20" cy="20" r="16" fill="#10b981" stroke="#0891b2" stroke-width="1.5"/>
+            
+            <!-- Wavy left seam -->
+            <path
+              d="M 20 4 Q 17 8 18 12 Q 17 16 19 20 Q 17 24 18 28 Q 17 32 20 36"
+              stroke="white"
+              stroke-width="2.2"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            
+            <!-- Wavy right seam -->
+            <path
+              d="M 20 4 Q 23 8 22 12 Q 23 16 21 20 Q 23 24 22 28 Q 23 32 20 36"
+              stroke="white"
+              stroke-width="2.2"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          <p>Organic wavy seams for a playful, dynamic look.</p>
+        </div>
+
+        <!-- Version 4: Fuzzy/Textured Surface -->
+        <div class="version">
+          <h2>V4: Fuzzy Texture</h2>
+          <svg
+            viewBox="0 0 40 40"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <!-- Main ball with texture -->
+            <circle cx="20" cy="20" r="16" fill="#10b981" stroke="#0891b2" stroke-width="1.5"/>
+            
+            <!-- Fuzz texture (small dashes around edge) -->
+            <circle cx="20" cy="20" r="15.5" fill="none" stroke="#0891b2" stroke-width="0.5" stroke-dasharray="1,2" opacity="0.4"/>
+            <circle cx="20" cy="20" r="14.5" fill="none" stroke="#0891b2" stroke-width="0.4" stroke-dasharray="1,2" opacity="0.3"/>
+            
+            <!-- Standard seams -->
+            <path
+              d="M 20 4 Q 15 12 14 20 Q 15 28 20 36"
+              stroke="white"
+              stroke-width="2.5"
+              fill="none"
+              stroke-linecap="round"
+            />
+            <path
+              d="M 20 4 Q 25 12 26 20 Q 25 28 20 36"
+              stroke="white"
+              stroke-width="2.5"
+              fill="none"
+              stroke-linecap="round"
+            />
+          </svg>
+          <p>Textured surface with fuzzy border. More tactile appearance.</p>
+        </div>
+
+        <!-- Version 5: Double Curved (More 3D) -->
+        <div class="version">
+          <h2>V5: Double Curved</h2>
+          <svg
+            viewBox="0 0 40 40"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <!-- Back shadow -->
+            <circle cx="20" cy="20" r="15" fill="#0891b2" opacity="0.2"/>
+            
+            <!-- Main circle -->
+            <circle cx="20" cy="20" r="16" fill="#10b981" stroke="#0891b2" stroke-width="2"/>
+            
+            <!-- Depth seams (curved inward) -->
+            <path
+              d="M 20 5 Q 16 12 15.5 20 Q 16 28 20 35"
+              stroke="white"
+              stroke-width="2.2"
+              fill="none"
+              stroke-linecap="round"
+            />
+            <path
+              d="M 20 5 Q 24 12 24.5 20 Q 24 28 20 35"
+              stroke="white"
+              stroke-width="2.2"
+              fill="none"
+              stroke-linecap="round"
+            />
+            
+            <!-- Inner depth lines -->
+            <path
+              d="M 20 6 Q 17.5 12 17 20 Q 17.5 28 20 34"
+              stroke="white"
+              stroke-width="1"
+              fill="none"
+              opacity="0.5"
+            />
+            <path
+              d="M 20 6 Q 22.5 12 23 20 Q 22.5 28 20 34"
+              stroke="white"
+              stroke-width="1"
+              fill="none"
+              opacity="0.5"
+            />
+          </svg>
+          <p>Double-curved seams with depth layers for 3D effect.</p>
+        </div>
+
+        <!-- Version 6: Organic/Squashed Shape -->
+        <div class="version">
+          <h2>V6: Organic Shape</h2>
+          <svg
+            viewBox="0 0 40 40"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <!-- Slightly deformed circle for character -->
+            <path
+              d="M 20 3 Q 30 10 31 20 Q 30 30 20 37 Q 10 30 9 20 Q 10 10 20 3"
+              fill="#10b981"
+              stroke="#0891b2"
+              stroke-width="1.5"
+            />
+            
+            <!-- Organic curved seams -->
+            <path
+              d="M 20 3 Q 14 10 12 20 Q 14 30 20 37"
+              stroke="white"
+              stroke-width="2.3"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M 20 3 Q 26 10 28 20 Q 26 30 20 37"
+              stroke="white"
+              stroke-width="2.3"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          <p>Playful slightly-deformed shape with character.</p>
+        </div>
+
+        <!-- Version 7: Stippled/Dotted Texture -->
+        <div class="version">
+          <h2>V7: Stippled Surface</h2>
+          <svg
+            viewBox="0 0 40 40"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <!-- Main circle -->
+            <circle cx="20" cy="20" r="16" fill="#10b981" stroke="#0891b2" stroke-width="1.5"/>
+            
+            <!-- Stippled texture (dots) -->
+            <g fill="#0891b2" opacity="0.15">
+              <circle cx="10" cy="12" r="0.8"/>
+              <circle cx="14" cy="8" r="0.8"/>
+              <circle cx="18" cy="6" r="0.8"/>
+              <circle cx="24" cy="7" r="0.8"/>
+              <circle cx="30" cy="12" r="0.8"/>
+              <circle cx="33" cy="18" r="0.8"/>
+              <circle cx="34" cy="24" r="0.8"/>
+              <circle cx="31" cy="30" r="0.8"/>
+              <circle cx="26" cy="34" r="0.8"/>
+              <circle cx="20" cy="36" r="0.8"/>
+              <circle cx="14" cy="34" r="0.8"/>
+              <circle cx="8" cy="30" r="0.8"/>
+              <circle cx="6" cy="24" r="0.8"/>
+              <circle cx="7" cy="18" r="0.8"/>
+            </g>
+            
+            <!-- Seams -->
+            <path
+              d="M 20 4 Q 15 12 14 20 Q 15 28 20 36"
+              stroke="white"
+              stroke-width="2.4"
+              fill="none"
+              stroke-linecap="round"
+            />
+            <path
+              d="M 20 4 Q 25 12 26 20 Q 25 28 20 36"
+              stroke="white"
+              stroke-width="2.4"
+              fill="none"
+              stroke-linecap="round"
+            />
+          </svg>
+          <p>Dotted surface pattern representing felt texture.</p>
+        </div>
+
+        <!-- Version 8: Crossed Seams (X Pattern) -->
+        <div class="version">
+          <h2>V8: Crossed Seams</h2>
+          <svg
+            viewBox="0 0 40 40"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <!-- Main circle -->
+            <circle cx="20" cy="20" r="16" fill="#10b981" stroke="#0891b2" stroke-width="1.5"/>
+            
+            <!-- Vertical seams -->
+            <path
+              d="M 20 4 Q 15 12 14 20 Q 15 28 20 36"
+              stroke="white"
+              stroke-width="2.2"
+              fill="none"
+              stroke-linecap="round"
+            />
+            <path
+              d="M 20 4 Q 25 12 26 20 Q 25 28 20 36"
+              stroke="white"
+              stroke-width="2.2"
+              fill="none"
+              stroke-linecap="round"
+            />
+            
+            <!-- Diagonal seams for depth -->
+            <path
+              d="M 10 13 Q 16 18 20 20 Q 16 22 10 27"
+              stroke="white"
+              stroke-width="1.2"
+              fill="none"
+              stroke-linecap="round"
+              opacity="0.7"
+            />
+            <path
+              d="M 30 13 Q 24 18 20 20 Q 24 22 30 27"
+              stroke="white"
+              stroke-width="1.2"
+              fill="none"
+              stroke-linecap="round"
+              opacity="0.7"
+            />
+          </svg>
+          <p>Crossed seam pattern adds visual interest and depth.</p>
+        </div>
+      </div>
+
+      <div style="text-align: center; padding: 40px; background: white; border-radius: 12px; margin-top: 20px;">
+        <h2>Shape Variation Summary</h2>
+        <p style="max-width: 700px; margin: 0 auto; color: #6b7280; line-height: 1.8; text-align: left;">
+          <strong>Most Recognizable:</strong> V1 (Realistic Seams) or V2 (Pinched Sides) — these clearly show the characteristic tennis ball form.<br><br>
+          <strong>Best for Icons:</strong> V1 or V3 — clean, simple, and instantly recognizable at any size.<br><br>
+          <strong>Most Character:</strong> V6 (Organic Shape) — playful and unique while still being a tennis ball.<br><br>
+          <strong>Most Realistic:</strong> V5 (Double Curved) — 3D effect makes it look tangible and dimensional.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

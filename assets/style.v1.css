@@ -1,5 +1,8 @@
 /* === Padel Events Calendar – Mobile-First Styles === */
 
+/* Google Fonts Import */
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&display=swap");
+
 /* CSS Custom Properties (Design System Variables) */
 :root {
   /* Brand Colors (legacy names for compatibility) */
@@ -123,25 +126,25 @@ body {
 /* App Header */
 .app-header {
   margin-bottom: var(--space-6);
-  padding-top: var(--space-4);
+  padding-top: var(--space-2);
 }
 
 .header-brand {
-  text-align: center;
+  text-align: left;
 }
 
 .app-title {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: var(--space-3);
   font-size: var(--text-3xl);
-  font-weight: var(--weight-bold);
+  font-weight: 700;
   line-height: var(--leading-tight);
   margin: 0 0 var(--space-2);
   color: var(--text-primary);
-  font-family: Georgia, "Times New Roman", serif;
-  letter-spacing: -0.5px;
+  font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+  letter-spacing: 0;
 }
 
 .app-tagline {
@@ -150,7 +153,8 @@ body {
   margin: 0 0 var(--space-6);
   line-height: var(--leading-normal);
   font-style: italic;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+  letter-spacing: 0;
 }
 
 .header-icon {
