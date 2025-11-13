@@ -1,6 +1,7 @@
 {
   "type": "module",
   "devDependencies": {
+    "@eslint/js": "^9.39.1",
     "eslint": "^9.39.1",
     "htmlhint": "^1.7.1",
     "prettier": "^3.6.2",

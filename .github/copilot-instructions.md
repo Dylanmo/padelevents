@@ -79,6 +79,7 @@ After EVERY code edit (HTML, CSS, JS modules) the assistant must automatically r
 2. CSS: `npx stylelint "assets/**/*.css" --fix` (apply safe auto-fixes)
 3. JS: `npx eslint assets/js/**/*.js --fix` (apply safe auto-fixes)
 4. Formatting: `npx prettier --check "*.html" "assets/**/*.css" "assets/js/**/*.js"` then, if issues, `npx prettier --write "*.html" "assets/**/*.css" "assets/js/**/*.js"`
+5. Code Quality: `npx sonarqube-scanner` (run static analysis to check for code quality and security issues)
 
 Rules:
 
@@ -87,7 +88,8 @@ Rules:
 - Apply only safe automatic fixes; do not introduce new dependencies beyond already added dev tools.
 - Summarize lint results (PASS/FAIL) per tool after each edit.
 - If a fix introduces new errors, revert that part or adjust until all critical errors are resolved.
-- Do not block deployment on non-critical stylistic warnings.
+- For SonarQube: Address critical and blocker issues immediately. High-priority issues should be resolved unless they conflict with project design decisions (document exceptions).
+- Do not block deployment on non-critical stylistic warnings or informational SonarQube findings.
 
 If linters are temporarily unavailable or configs missing, note the gap and propose minimal config creation before proceeding.
 
@@ -148,6 +150,7 @@ See individual guidelines files for complete rules:
 - `docs/design/typography.md` - Font stack, type scale, hierarchy
 - `docs/design/spacing-layout.md` - Spacing system, breakpoints, grid
 - `docs/design/components.md` - Component specs (cards, buttons, filters)
+- `docs/design/icons.md` - Icon guidelines (SVG format, sizing, accessibility)
 - `docs/design/accessibility.md` - WCAG compliance, ARIA, keyboard nav
 
 **Before implementing UI changes**:
