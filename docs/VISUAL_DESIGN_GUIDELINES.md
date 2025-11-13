@@ -547,6 +547,7 @@ When building a new feature:
 - [Typography System](design/typography.md)
 - [Spacing & Layout](design/spacing-layout.md)
 - [Accessibility Guidelines](design/accessibility.md)
+- [Icon Design Guidelines](design/icons.md)
 
 ---
 

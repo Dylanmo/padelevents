@@ -11,6 +11,7 @@ import {
 } from "./calendar.js";
 import { buildFilterSummary, getSelectedClubs } from "./filters.js";
 import { qs, qsa, formatBangkokDate, formatCommitDate } from "./utils.js";
+import { CITY_CONFIG } from "./config.js";
 
 // Application state
 const state = {
@@ -123,7 +124,8 @@ async function autoLoadEvents() {
     const data = await fetchEvents([], []);
     state.cachedEvents = data;
 
-    renderEvents(data, "All upcoming events");
+    const cityName = CITY_CONFIG.bangkok.name;
+    renderEvents(data, `All upcoming events in ${cityName}`);
     qs("#status").textContent = "";
   } catch (error) {
     console.error("Error auto-loading events:", error);
@@ -131,7 +133,8 @@ async function autoLoadEvents() {
       '<span class="error">⚠️ Unable to load events. Please try again.</span>';
 
     if (state.cachedEvents) {
-      renderEvents(state.cachedEvents, "Cached events");
+      const cityName = CITY_CONFIG.bangkok.name;
+      renderEvents(state.cachedEvents, `Cached events in ${cityName}`);
     }
   }
 }
@@ -318,7 +321,12 @@ function renderClubSection(club, events, initialLimit = 3) {
 
   return `<div class="club-section" data-club="${club}">
 		<h2 class="club-header">
-			📍 ${club}
+			<span class="club-header-text">
+				<svg class="location-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+					<path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="currentColor"/>
+				</svg>
+				${club}
+			</span>
 			<a href="#" class="club-link" data-club="${club}" aria-label="View all ${club} events">View all →</a>
 		</h2>
 		<ul class="events-list">${allEvents}</ul>
@@ -362,7 +370,14 @@ function renderEvents(
       .join("");
     const clubHeader = clubName
       ? `<div class="club-section">
-			<h2 class="club-header">📍 ${clubName}</h2>
+			<h2 class="club-header">
+				<span class="club-header-text">
+					<svg class="location-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+						<path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="currentColor"/>
+					</svg>
+					${clubName}
+				</span>
+			</h2>
 			<ul class="events-list">${eventCards}</ul>
 		</div>`
       : `<ul class="events-list">${eventCards}</ul>`;
@@ -413,7 +428,7 @@ function renderEventCard(event, isHidden = false) {
 		<div class="event-title">${event.title}</div>
 		<div class="event-datetime">${day} ${date} • ${timeStart}–${timeEnd}</div>
 		<div class="event-details">
-			${event.club ? `<span class="detail-item detail-club">📍 ${event.club}</span>` : ""}
+			${event.club ? `<span class="detail-item detail-club"><svg class="location-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="currentColor"/></svg> ${event.club}</span>` : ""}
 			${event.level ? `<span class="detail-item"><strong>🥇 Padel level:</strong> ${event.level}</span>` : ""}
 		</div>
 		<div class="event-actions">

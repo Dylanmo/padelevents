@@ -405,23 +405,61 @@ button#btnFilter:focus-visible {
   color: var(--text-primary);
   margin: 0 0 16px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
   gap: 12px;
+  align-items: flex-start;
+}
+
+.club-header-text {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.location-icon {
+  flex-shrink: 0;
+  color: var(--color-primary);
+}
+
+.club-header .location-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.detail-club .location-icon {
+  width: 16px;
+  height: 16px;
+  vertical-align: text-bottom;
 }
 
 .club-link {
   font-size: 0.875rem;
   font-weight: 500;
-  color: var(--brand-accent);
+  color: var(--text-secondary);
   text-decoration: none;
   white-space: nowrap;
   transition: all 0.2s ease;
+  display: inline-block;
+  padding: 6px 14px;
+  background: var(--bg-page);
+  border: 1px solid var(--border);
+  border-radius: 16px;
 }
 
 .club-link:hover {
-  color: var(--brand-primary);
-  text-decoration: underline;
+  background: var(--brand-primary);
+  color: white;
+  border-color: var(--brand-primary);
+  transform: translateY(-1px);
+}
+
+/* Desktop: horizontal layout with right-aligned link */
+@media (width >= 768px) {
+  .club-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
 }
 
 /* Events List */
@@ -482,6 +520,9 @@ button#btnFilter:focus-visible {
 .detail-item {
   font-size: 0.875rem;
   color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 /* Event Actions */
@@ -634,6 +675,18 @@ button#btnFilter:focus-visible {
 .btn-show-more:focus-visible {
   outline: 2px solid var(--color-border-focus);
   outline-offset: 2px;
+}
+
+/* Desktop: center and limit width for better visual hierarchy */
+@media (width >= 768px) {
+  .btn-show-more {
+    width: auto;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    padding: 12px 32px;
+  }
 }
 
 /* Empty State */
