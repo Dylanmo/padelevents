@@ -60,7 +60,7 @@
   --text-lg: 1.125rem; /* 18px */
   --text-xl: 1.25rem; /* 20px */
   --text-2xl: 1.5rem; /* 24px */
-  --text-3xl: 1.875rem; /* 30px */
+  --text-3xl: 1.7rem; /* 30px */
 
   /* Line Heights */
   --leading-tight: 1.25;
@@ -120,7 +120,7 @@ body {
 .container {
   max-width: 900px;
   margin: 0 auto;
-  padding: var(--space-4) var(--space-2);
+  padding: var(--space-0) var(--space-1);
 }
 
 /* App Header */
@@ -148,7 +148,7 @@ body {
 }
 
 .app-tagline {
-  font-size: var(--text-base);
+  font-size: var(--text-sm);
   color: var(--text-secondary);
   margin: 0 0 var(--space-6);
   line-height: var(--leading-normal);
@@ -170,7 +170,9 @@ body {
 }
 
 .filter-group {
-  margin-bottom: var(--space-5); /* 20px */
+  margin-bottom: var(
+    --space-4
+  ); /* Reduced from --space-5 (16px instead of 20px) */
 }
 
 .filter-label {
@@ -196,7 +198,7 @@ body {
   flex-wrap: wrap;
   gap: 8px;
   margin-bottom: 10px;
-  min-height: 100px;
+  min-height: 40px; /* Reduced from 100px */
   align-items: flex-start;
 }
 
@@ -207,20 +209,22 @@ body {
   align-items: center;
   justify-content: center;
   width: 100%;
-  padding: var(--space-5); /* 20px */
-  gap: var(--space-3); /* 12px */
+  gap: var(--space-2); /* Reduced from --space-3 to --space-2 (8px) */
 }
 
 .loading-gif {
   width: 100%;
-  max-width: 240px; /* Optimized for iPhone SE 375px */
+  max-width: 320px; /* Reduced from 240px for more compact loading */
   height: auto;
   object-fit: contain;
-  border-radius: 12px;
+  border-radius: 8px; /* Reduced from 12px */
 }
 
 .loading-text {
-  font-size: var(--text-base); /* 16px */
+  font-size: var(
+    --text-sm
+  ); /* Reduced from --text-base (14px instead of 16px) */
+
   color: var(--text-secondary);
   font-weight: var(--weight-medium);
   margin: 0;
@@ -350,13 +354,13 @@ button#btnFilter {
   align-items: center;
   gap: var(--space-2); /* 8px - icon + text spacing */
   min-height: 44px;
-  padding: var(--space-3) var(--space-6); /* 12px 24px */
+  padding: var(--space-3) var(--space-5); /* 12px 20px */
   border: none;
   border-radius: 999px; /* Full pill shape */
   background: var(--color-primary);
   color: white;
   font-size: var(--text-base); /* 16px */
-  font-weight: 600;
+  font-weight: var(--weight-medium);
   cursor: pointer;
   transition: all 0.2s ease;
   font-family: inherit;
@@ -367,6 +371,7 @@ button#btnFilter svg {
   width: 20px;
   height: 20px;
   flex-shrink: 0;
+  color: currentcolor;
 }
 
 button#btnFilter:hover {

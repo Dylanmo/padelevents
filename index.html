@@ -12,12 +12,10 @@
   </head>
 
   <body>
-    <a href="#main-content" class="skip-link">Skip to main content</a>
-
     <div class="container">
       <header class="app-header">
         <div class="header-brand">
-          <h1 class="app-title">🎾 Padel Events Calendar 2</h1>
+          <h1 class="app-title">🎾 Padel Events Calendar</h1>
           <p class="app-tagline">
             Find and add padel events in Bangkok to your calendar
           </p>
@@ -25,7 +23,16 @@
       </header>
 
       <div class="filters-section">
-        <div class="filter-group">
+        <div id="clubsLoading" class="clubs-loading" aria-live="polite">
+          <img
+            src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbTE2ZWhrMXQwYTF2aTZlZXVldmwweDFwNTlpNXBkdjUycTIweTlyayZlcD12MV9naWZzX3NlYXJjaCZjdD1n/PZ1yRtwjc1wLAvfMJZ/giphy.gif"
+            alt="Loading clubs animation"
+            class="loading-gif"
+          />
+          <p class="loading-text">Warming up, loading Padel events</p>
+        </div>
+
+        <div id="clubFilterGroup" class="filter-group" style="display: none">
           <p class="filter-label">
             <svg
               class="section-icon"
@@ -42,19 +49,10 @@
             </svg>
             Select Bangkok Padel Clubs
           </p>
-          <div id="clubBox" class="chips">
-            <div id="clubsLoading" class="clubs-loading" aria-live="polite">
-              <img
-                src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbTE2ZWhrMXQwYTF2aTZlZXVldmwweDFwNTlpNXBkdjUycTIweTlyayZlcD12MV9naWZzX3NlYXJjaCZjdD1n/PZ1yRtwjc1wLAvfMJZ/giphy.gif"
-                alt="Loading clubs animation"
-                class="loading-gif"
-              />
-              <p class="loading-text">Warming up, loading Padel Clubs</p>
-            </div>
-          </div>
+          <div id="clubBox" class="chips"></div>
         </div>
 
-        <div class="filter-group">
+        <div id="levelFilterGroup" class="filter-group" style="display: none">
           <p class="filter-label">
             <svg
               class="section-icon"
@@ -79,8 +77,25 @@
           </div>
         </div>
 
-        <div class="filter-bar">
-          <button id="btnFilter">Apply Filters</button>
+        <div id="filterBar" class="filter-bar" style="display: none">
+          <button id="btnFilter" aria-label="Filter events">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M3 6h18M6 12h12M9 18h6"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            Filter events
+          </button>
           <output id="status" aria-live="polite"></output>
         </div>
       </div>

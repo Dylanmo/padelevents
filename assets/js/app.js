@@ -82,6 +82,9 @@ async function initializeClubs() {
   try {
     const box = qs("#clubBox");
     const loadingEl = qs("#clubsLoading");
+    const clubFilterGroup = qs("#clubFilterGroup");
+    const levelFilterGroup = qs("#levelFilterGroup");
+    const filterBar = qs("#filterBar");
 
     // Show loading animation
     if (loadingEl) {
@@ -103,14 +106,29 @@ async function initializeClubs() {
           `<label class="chip"><input type="checkbox" value="${club.value}" aria-label="Select ${club.label}"><span>${club.label}</span></label>`,
       )
       .join("");
+
+    // Show all filter sections now that clubs are loaded
+    if (clubFilterGroup) {
+      clubFilterGroup.style.display = "block";
+    }
+    if (levelFilterGroup) {
+      levelFilterGroup.style.display = "block";
+    }
+    if (filterBar) {
+      filterBar.style.display = "flex";
+    }
   } catch (error) {
     console.error("Error loading clubs:", error);
     const loadingEl = qs("#clubsLoading");
+    const clubFilterGroup = qs("#clubFilterGroup");
     if (loadingEl) {
       loadingEl.style.display = "none";
     }
     qs("#clubBox").innerHTML =
       '<span class="error">Unable to load clubs. Please refresh.</span>';
+    if (clubFilterGroup) {
+      clubFilterGroup.style.display = "block";
+    }
   }
 }
 
