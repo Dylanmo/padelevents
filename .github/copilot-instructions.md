@@ -119,9 +119,9 @@ When generating new code, follow these patterns:
 
 See individual guidelines files for complete rules:
 
-- `.github/HTML_GUIDELINES.md`
-- `.github/CSS_GUIDELINES.md`
-- `.github/JS_GUIDELINES.md`
+- `.github/html-instructions.md`
+- `.github/css-instructions.md`
+- `.github/js-instructions.md`
 
 ## Visual Design System (MANDATORY FOR ALL UI CHANGES)
 

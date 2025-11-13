@@ -1,3 +1,8 @@
+---
+applyTo:
+  - "**/*.html"
+---
+
 HTML Guidelines — padel-events
 
 Purpose
@@ -7,7 +12,7 @@ Purpose
 
 Project constraints (follow these first)
 
-- This repo is frontend-only. `index.html` contains all UI + inline JS per project architecture.
+- This repo is frontend-only. `index.html` contains HTML markup only; JavaScript logic is in separate ES6 modules under `assets/js/`.
 - No build step. Do not introduce bundlers or new npm-based toolchains without prior agreement.
 - CSS file is versioned (e.g. `assets/style.v1.css`). When making breaking style changes increment the filename and update the link in `index.html`.
 
@@ -161,5 +166,3 @@ Notes & links
 - MDN HTML reference: https://developer.mozilla.org/docs/Web/HTML
 - WAI accessibility intro: https://www.w3.org/WAI/fundamentals/accessibility-intro
 - web.dev (Google) best practices: https://web.dev
-
-If you'd like, I can add a small HTML template snippet for this repo (a minimal, well-commented `index.html` header) or add a GitHub Action to run HTMLHint / Prettier on PRs — say the word.

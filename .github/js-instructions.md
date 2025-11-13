@@ -1,3 +1,8 @@
+---
+applyTo:
+  - "assets/js/**/*.js"
+---
+
 JavaScript Guidelines — padel-events
 
 Purpose
@@ -200,7 +205,7 @@ function updateDate(isoString) {
 ```javascript
 async function onFilter() {
   const clubs = [...document.querySelectorAll("#clubs input:checked")].map(
-    (x) => x.value
+    (x) => x.value,
   );
   const res = await fetch(url);
   const data = await res.json();
@@ -294,7 +299,7 @@ node.appendChild(p);
 
 - Keep UI updates respectful to screen readers: prefer element reflow over removing/recreating if it harms focus
 - Maintain focus order on updates (e.g., when opening a modal, move focus to it)
-- Use semantic HTML with proper ARIA labels (see HTML_GUIDELINES.md)
+- Use semantic HTML with proper ARIA labels (see html-instructions.md)
 - Ensure keyboard navigation works (tab order, escape to close)
 
 ## Function Naming Conventions
