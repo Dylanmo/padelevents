@@ -292,7 +292,7 @@ function groupEventsByClub(events, endDate) {
  * @param {number} initialLimit - Number of events to show initially on desktop
  * @returns {string} HTML string
  */
-function renderHappeningSoonSection(events, initialLimit = 6) {
+function renderHappeningSoonSection(events, initialLimit = 3) {
   if (events.length === 0) return "";
 
   const hasMore = events.length > initialLimit;

@@ -117,22 +117,47 @@ body {
 .container {
   max-width: 900px;
   margin: 0 auto;
+  padding: var(--space-4) var(--space-2);
 }
 
-/* Mobile-first typography (375px iPhone SE base) */
-h1 {
-  font-size: var(--text-2xl); /* 24px - better for small screens */
+/* App Header */
+.app-header {
+  margin-bottom: var(--space-6);
+  padding-top: var(--space-4);
+}
+
+.header-brand {
+  text-align: center;
+}
+
+.app-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  font-size: var(--text-3xl);
   font-weight: var(--weight-bold);
   line-height: var(--leading-tight);
-  margin: 0 0 var(--space-2); /* 8px */
+  margin: 0 0 var(--space-2);
   color: var(--text-primary);
+  font-family: Georgia, "Times New Roman", serif;
+  letter-spacing: -0.5px;
 }
 
-.subtitle {
-  font-size: var(--text-base); /* 16px - improved readability */
+.app-tagline {
+  font-size: var(--text-base);
   color: var(--text-secondary);
-  margin: 0 0 var(--space-6); /* 24px */
+  margin: 0 0 var(--space-6);
   line-height: var(--leading-normal);
+  font-style: italic;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.header-icon {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  color: var(--color-primary);
 }
 
 /* Filter Sections */
@@ -145,10 +170,20 @@ h1 {
 }
 
 .filter-label {
-  font-size: var(--text-sm); /* 14px */
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-lg); /* 18px - increased from 14px */
   font-weight: var(--weight-semibold);
   color: var(--text-primary);
   margin: 0 0 var(--space-3); /* 12px */
+}
+
+.section-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  color: var(--color-primary);
 }
 
 /* Club Chips */
@@ -198,7 +233,7 @@ label.chip {
   background: var(--bg-card);
   cursor: pointer;
   font-size: var(--text-base); /* 16px - consistent */
-  font-weight: 500;
+  font-weight: var(--weight-medium);
   transition: all 0.2s ease;
   user-select: none;
 }
@@ -212,7 +247,7 @@ label.chip.checked {
   background: var(--color-primary);
   color: white;
   border-color: var(--color-primary);
-  font-weight: 500;
+  font-weight: var(--weight-medium);
 }
 
 label.chip.checked input[type="checkbox"] {
@@ -254,17 +289,29 @@ label.chip input {
 }
 
 .level-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1); /* 4px */
   min-height: 44px;
   padding: var(--space-3) var(--space-5); /* 12px 20px */
-  border: 1px solid var(--border); /* Reduced from 2px */
-  border-radius: 999px; /* Full pill shape - was 8px */
+  border: 1px solid var(--border);
+  border-radius: 999px; /* Full pill shape */
   background: var(--bg-card);
   color: var(--text-primary);
-  font-size: var(--text-base); /* 16px - was 15px */
-  font-weight: 500;
+  font-size: var(--text-base); /* 16px */
+  font-weight: var(--weight-medium);
   cursor: pointer;
   transition: all 0.2s ease;
   user-select: none;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.level-btn svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
 }
 
 .level-btn:hover {
@@ -277,7 +324,7 @@ label.chip input {
   background: var(--color-primary); /* Use primary green instead of accent */
   color: white;
   border-color: var(--color-primary);
-  font-weight: 500;
+  font-weight: var(--weight-medium);
 }
 
 .level-btn:focus,
@@ -295,16 +342,27 @@ label.chip:focus-within {
 }
 
 button#btnFilter {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2); /* 8px - icon + text spacing */
   min-height: 44px;
   padding: var(--space-3) var(--space-6); /* 12px 24px */
   border: none;
-  border-radius: 999px; /* Full pill shape - was 8px */
+  border-radius: 999px; /* Full pill shape */
   background: var(--color-primary);
   color: white;
   font-size: var(--text-base); /* 16px */
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+button#btnFilter svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
 }
 
 button#btnFilter:hover {
@@ -454,21 +512,23 @@ button#btnFilter:focus-visible {
 }
 
 .club-link {
-  font-size: var(--text-sm); /* 14px - consistent */
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1); /* 4px - space for arrow */
+  min-height: 44px;
+  padding: var(--space-2) var(--space-4); /* 8px 16px - pill style */
+  border: 1px solid var(--border);
+  border-radius: 999px; /* Full pill shape */
+  background: var(--bg-card);
+  font-size: var(--text-sm); /* 14px */
   font-weight: 500;
   color: var(--text-secondary);
   text-decoration: none;
   white-space: nowrap;
   transition: all 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-1); /* 4px - space for arrow */
-  padding: var(--space-2) var(--space-4); /* 8px 16px - pill style */
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 999px; /* Full pill shape */
+  cursor: pointer;
   flex-shrink: 0;
-  min-height: 44px; /* Touch target */
+  font-family: inherit;
 }
 
 .club-link svg {
@@ -572,9 +632,10 @@ button#btnFilter:focus-visible {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-2); /* 8px - follows design system */
+  gap: var(--space-2); /* 8px - icon + text spacing */
   min-height: 44px;
-  padding: var(--space-3) var(--space-4); /* 12px 16px - follows design system */
+  padding: var(--space-3) var(--space-4); /* 12px 16px */
+  border: none;
   border-radius: 8px;
   font-size: 0.9375rem;
   font-weight: 600;
@@ -582,15 +643,14 @@ button#btnFilter:focus-visible {
   text-align: center;
   cursor: pointer;
   transition: all 0.2s ease;
-  border: none;
   font-family: inherit;
   white-space: nowrap;
 }
 
 .btn-calendar svg {
-  flex-shrink: 0;
   width: 18px;
   height: 18px;
+  flex-shrink: 0;
 }
 
 .btn-google {
@@ -658,26 +718,27 @@ button#btnFilter:focus-visible {
 .btn-show-more {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-2); /* 8px - space between icon and text */
-  padding: var(--space-3) var(--space-5); /* 12px 20px - balanced padding */
+  gap: var(--space-2); /* 8px - icon + text spacing */
+  min-height: 44px;
+  padding: var(--space-3) var(--space-5); /* 12px 20px */
   margin-top: var(--space-4); /* 16px top margin */
-  background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 999px; /* Full pill shape */
+  background: var(--bg-card);
   color: var(--text-secondary);
-  font-size: var(--text-sm); /* 14px - matches View all button */
+  font-size: var(--text-sm); /* 14px */
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
   white-space: nowrap;
-  min-height: 44px; /* Touch target accessibility */
+  font-family: inherit;
 }
 
 .btn-show-more svg {
   width: 20px;
   height: 20px;
   flex-shrink: 0;
-  color: var(--color-primary); /* Brand color for icon */
+  color: var(--color-primary);
 }
 
 .btn-show-more:hover {
@@ -784,6 +845,11 @@ button#btnFilter:focus-visible {
 
   h1 {
     font-size: var(--text-3xl); /* 30px on larger screens */
+  }
+
+  .header-icon {
+    width: 40px;
+    height: 40px;
   }
 
   .loading-gif {
