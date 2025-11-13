@@ -414,7 +414,7 @@ button#btnFilter:focus-visible {
 .club-header-text {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px; /* Reduced from 8px for tighter icon spacing */
 }
 
 .location-icon {
@@ -431,7 +431,7 @@ button#btnFilter:focus-visible {
 .detail-club .location-icon {
   width: 16px;
   height: 16px;
-  margin-right: 4px;
+  margin-right: 2px; /* Reduced from 4px for tighter spacing */
   vertical-align: text-bottom;
 }
 
@@ -440,7 +440,7 @@ button#btnFilter:focus-visible {
   height: 16px;
   flex-shrink: 0;
   color: var(--color-warning);
-  margin-right: 4px;
+  margin-right: 2px; /* Reduced from 4px for tighter spacing */
 }
 
 .club-link {
@@ -485,7 +485,7 @@ button#btnFilter:focus-visible {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 12px;
-  padding: 16px;
+  padding: var(--space-4); /* 16px - follows design system */
   box-shadow: var(--shadow-sm);
   transition: all 0.2s ease;
 }
@@ -502,22 +502,22 @@ button#btnFilter:focus-visible {
   font-size: 1.0625rem;
   font-weight: 600;
   color: var(--text-primary);
-  margin-bottom: 8px;
+  margin-bottom: var(--space-2); /* 8px - follows design system */
   line-height: 1.4;
 }
 
 .event-datetime {
   font-size: 0.9375rem;
   color: var(--text-secondary);
-  margin-bottom: 8px;
+  margin-bottom: var(--space-2); /* 8px - follows design system */
   font-weight: 500;
 }
 
 .event-details {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
-  margin-bottom: 12px;
+  gap: var(--space-3); /* 12px - follows design system */
+  margin-bottom: var(--space-3); /* 12px - follows design system */
 }
 
 .detail-item {
@@ -525,7 +525,7 @@ button#btnFilter:focus-visible {
   color: var(--text-secondary);
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: var(--space-1); /* 4px - tighter spacing for icon+text */
 }
 
 /* Event Actions */
@@ -533,27 +533,27 @@ button#btnFilter:focus-visible {
   font-size: 0.875rem;
   color: var(--text-secondary);
   font-weight: 600;
-  margin-top: 12px;
-  margin-bottom: 8px;
+  margin-top: var(--space-3); /* 12px - follows design system */
+  margin-bottom: var(--space-2); /* 8px - follows design system */
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--space-2); /* 8px - follows design system */
 }
 
 .event-actions {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-top: 12px;
+  gap: var(--space-2); /* 8px - follows design system */
+  margin-top: var(--space-3); /* 12px - follows design system */
 }
 
 .btn-calendar {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: var(--space-2); /* 8px - follows design system */
   min-height: 44px;
-  padding: 12px 16px;
+  padding: var(--space-3) var(--space-4); /* 12px 16px - follows design system */
   border-radius: 8px;
   font-size: 0.9375rem;
   font-weight: 600;
@@ -649,36 +649,35 @@ button#btnFilter:focus-visible {
 }
 
 .btn-show-more {
-  width: auto;
-  padding: 12px 24px;
-  margin-top: 20px;
-  background: var(--bg-page);
-  border: 2px solid var(--border);
-  border-radius: 8px;
-  color: var(--brand-primary);
+  background: none;
+  border: none;
+  padding: var(--space-3) 0; /* 12px vertical, no horizontal */
+  margin-top: var(--space-4); /* 16px top margin */
+  color: var(--color-primary);
   font-size: 0.9375rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-  text-align: center;
+  text-align: left;
   display: inline-block;
 }
 
 .btn-show-more:hover {
-  background: var(--brand-primary);
-  color: white;
-  border-color: var(--brand-primary);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-sm);
+  color: var(--color-primary-hover);
+  text-decoration: underline;
+  transform: none;
+  box-shadow: none;
+  background: none;
 }
 
 .btn-show-more:active {
-  transform: translateY(0);
+  transform: none;
 }
 
 .btn-show-more:focus-visible {
   outline: 2px solid var(--color-border-focus);
   outline-offset: 2px;
+  border-radius: 4px;
 }
 
 /* Empty State */
