@@ -21,6 +21,7 @@ export default [
         Array: "readonly",
         String: "readonly",
         JSON: "readonly",
+        setTimeout: "readonly",
       },
     },
     rules: {

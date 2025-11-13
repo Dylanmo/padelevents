@@ -4,6 +4,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>🎾 Padel Events Calendar</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎾</text></svg>"
+    />
     <link rel="stylesheet" href="/assets/style.css" />
   </head>
 
@@ -11,14 +15,33 @@
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
     <div class="container">
-      <h1>🎾 Padel Events Calendar</h1>
-      <p class="subtitle">
-        Find and add padel events in Bangkok to your calendar
-      </p>
+      <header class="app-header">
+        <div class="header-brand">
+          <h1 class="app-title">🎾 Padel Events Calendar</h1>
+          <p class="app-tagline">
+            Find and add padel events in Bangkok to your calendar
+          </p>
+        </div>
+      </header>
 
       <div class="filters-section">
         <div class="filter-group">
-          <p class="filter-label">Select Bangkok Padel Clubs</p>
+          <p class="filter-label">
+            <svg
+              class="section-icon"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
+                fill="currentColor"
+              />
+            </svg>
+            Select Bangkok Padel Clubs
+          </p>
           <div id="clubBox" class="chips">
             <div id="clubsLoading" class="clubs-loading" aria-live="polite">
               <img
@@ -32,7 +55,22 @@
         </div>
 
         <div class="filter-group">
-          <p class="filter-label">Select Padel Level</p>
+          <p class="filter-label">
+            <svg
+              class="section-icon"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
+                fill="currentColor"
+              />
+            </svg>
+            Select Padel Level
+          </p>
           <div class="level-filter">
             <button class="level-btn" data-range="0-2">Beginner 0–2</button>
             <button class="level-btn" data-range="2-3">Low-Inter 2–3</button>
