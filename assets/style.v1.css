@@ -649,35 +649,34 @@ button#btnFilter:focus-visible {
 }
 
 .btn-show-more {
-  background: none;
-  border: none;
-  padding: var(--space-3) 0; /* 12px vertical, no horizontal */
+  display: inline-block;
+  padding: 6px 14px;
   margin-top: var(--space-4); /* 16px top margin */
-  color: var(--color-primary);
-  font-size: 0.9375rem;
-  font-weight: 600;
+  background: var(--bg-page);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
-  text-align: left;
-  display: inline-block;
+  white-space: nowrap;
 }
 
 .btn-show-more:hover {
-  color: var(--color-primary-hover);
-  text-decoration: underline;
-  transform: none;
-  box-shadow: none;
-  background: none;
+  background: var(--brand-primary);
+  color: white;
+  border-color: var(--brand-primary);
+  transform: translateY(-1px);
 }
 
 .btn-show-more:active {
-  transform: none;
+  transform: translateY(0);
 }
 
 .btn-show-more:focus-visible {
   outline: 2px solid var(--color-border-focus);
   outline-offset: 2px;
-  border-radius: 4px;
 }
 
 /* Empty State */
