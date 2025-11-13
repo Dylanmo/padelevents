@@ -1,5 +1,9 @@
 {
   "type": "module",
+  "scripts": {
+    "hash-css": "node scripts/hash-css.js",
+    "predeploy": "npm run hash-css"
+  },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
     "eslint": "^9.39.1",

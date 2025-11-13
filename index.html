@@ -1,9 +1,11 @@
 <!doctype html>
 <html lang="en">
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>🎾 Padel Events Calendar</title>
-  <link rel="stylesheet" href="/assets/style.v1.css" />
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>🎾 Padel Events Calendar</title>
+    <link rel="stylesheet" href="/assets/style.css" />
+  </head>
 
   <body>
     <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -32,41 +34,15 @@
         <div class="filter-group">
           <p class="filter-label">Select Padel Level</p>
           <div class="level-filter">
-            <button
-              class="level-btn"
-              data-range="0-2"
-              aria-label="Beginner level 0 to 2"
-            >
-              Beginner 0–2
-            </button>
-            <button
-              class="level-btn"
-              data-range="2-3"
-              aria-label="Low intermediate level 2 to 3"
-            >
-              Low-Inter 2–3
-            </button>
-            <button
-              class="level-btn"
-              data-range="3-4"
-              aria-label="Mid intermediate level 3 to 4"
-            >
-              Mid-Inter 3–4
-            </button>
-            <button
-              class="level-btn"
-              data-range="4-5"
-              aria-label="High intermediate level 4 to 5"
-            >
-              High-Inter 4–5
-            </button>
+            <button class="level-btn" data-range="0-2">Beginner 0–2</button>
+            <button class="level-btn" data-range="2-3">Low-Inter 2–3</button>
+            <button class="level-btn" data-range="3-4">Mid-Inter 3–4</button>
+            <button class="level-btn" data-range="4-5">High-Inter 4–5</button>
           </div>
         </div>
 
         <div class="filter-bar">
-          <button id="btnFilter" aria-label="Apply filters to events">
-            Apply Filters
-          </button>
+          <button id="btnFilter">Apply Filters</button>
           <output id="status" aria-live="polite"></output>
         </div>
       </div>

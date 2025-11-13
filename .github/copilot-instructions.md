@@ -23,9 +23,11 @@ A single-page web app for creating personalized padel event calendars in Bangkok
 
 ## Key Files
 
-- `index.html` - HTML structure only (no inline JS)
+- `index.html` - HTML structure only (no inline JS); references `/assets/style.css` in dev
 - `assets/js/*.js` - ES6 modules (native, no bundler)
-- `assets/style.v1.css` - All styles; version number in filename for cache busting
+- `assets/style.css` - Source CSS file (edit this directly during development)
+- `assets/style.[hash].css` - Hashed CSS for production (auto-generated on deploy, never edit)
+- `scripts/hash-css.js` - Content hashing script for cache busting (runs automatically on predeploy)
 - `firebase.json` - Hosting config with explicit cache headers
 - `.firebaserc` - Firebase project: `padel-events-bangkok`
 
@@ -33,10 +35,26 @@ A single-page web app for creating personalized padel event calendars in Bangkok
 
 **No build step**: Edit files directly, test in browser, deploy with Firebase CLI.
 
-**Deploy**: `firebase deploy --only hosting`  
+**Local development**: 
+- `index.html` references `/assets/style.css` directly
+- Live Server watches for changes and refreshes instantly
+- Just edit `style.css` and see changes immediately in browser
+
+**Deploy to production/pre-staging**: 
+```bash
+npm run predeploy      # Automatically hashes CSS and updates index.html
+firebase deploy --only hosting
+```
+
+OR manually:
+```bash
+npm run hash-css       # Generate hashed CSS file and update index.html
+firebase deploy --only hosting
+```
+
 **Local preview**: `firebase serve` or use Live Server extension
 
-**CSS changes**: Increment version (`style.v1.css` → `style.v2.css`), update `<link>` in `index.html`
+**Cache busting**: The `predeploy` script automatically runs before Firebase deployment, computing a content hash of `style.css` and generating `style.[hash].css`. The hash only changes when CSS content changes, ensuring browsers get fresh styles on deploy while caching aggressively in production.
 
 ## Code Patterns
 
@@ -59,7 +77,7 @@ A single-page web app for creating personalized padel event calendars in Bangkok
 
 **Adding a club/filter**: Update Google Apps Script (not this repo). Frontend auto-loads from API.
 
-**Changing styles**: Edit `style.v1.css` in place OR version bump if deployed (to bust cache).
+**Changing styles**: Edit `style.css` in place OR version bump if deployed (to bust cache).
 
 **Updating event display**: Modify render logic in `app.js` or create new module.
 
@@ -79,7 +97,6 @@ After EVERY code edit (HTML, CSS, JS modules) the assistant must automatically r
 2. CSS: `npx stylelint "assets/**/*.css" --fix` (apply safe auto-fixes)
 3. JS: `npx eslint assets/js/**/*.js --fix` (apply safe auto-fixes)
 4. Formatting: `npx prettier --check "*.html" "assets/**/*.css" "assets/js/**/*.js"` then, if issues, `npx prettier --write "*.html" "assets/**/*.css" "assets/js/**/*.js"`
-5. Code Quality: `npx sonarqube-scanner` (run static analysis to check for code quality and security issues)
 
 Rules:
 
@@ -88,10 +105,11 @@ Rules:
 - Apply only safe automatic fixes; do not introduce new dependencies beyond already added dev tools.
 - Summarize lint results (PASS/FAIL) per tool after each edit.
 - If a fix introduces new errors, revert that part or adjust until all critical errors are resolved.
-- For SonarQube: Address critical and blocker issues immediately. High-priority issues should be resolved unless they conflict with project design decisions (document exceptions).
-- Do not block deployment on non-critical stylistic warnings or informational SonarQube findings.
+- Do not block deployment on non-critical stylistic warnings.
 
 If linters are temporarily unavailable or configs missing, note the gap and propose minimal config creation before proceeding.
+
+**Note on SonarQube**: Full SonarQube/SonarCloud integration requires a paid account or free online project. The current linting setup (ESLint, stylelint, htmlhint) provides comprehensive code quality checks without external services. If deeper static analysis is needed later, SonarCloud (free for public projects) can be configured with a GitHub account.
 
 ## Code Generation Guidelines
 

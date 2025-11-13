@@ -30,4 +30,11 @@ export default [
       "no-var": "error",
     },
   },
+  // Allow console.log in build scripts
+  {
+    files: ["scripts/**/*.js"],
+    rules: {
+      "no-console": "off",
+    },
+  },
 ];
