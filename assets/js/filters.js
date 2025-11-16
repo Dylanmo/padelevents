@@ -62,3 +62,13 @@ export function buildFilterSummary(clubs, levels, allClubs) {
 
   return parts.join(" • ");
 }
+
+/**
+ * Check if any filters are currently active
+ * @param {string[]} clubs - Selected club values
+ * @param {string[]} levels - Selected level ranges
+ * @returns {boolean}
+ */
+export function hasActiveFilters(clubs, levels) {
+  return clubs.length > 0 || levels.length > 0;
+}

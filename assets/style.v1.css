@@ -385,7 +385,56 @@ button#btnFilter:active {
 }
 
 button#btnFilter:focus-visible {
-  outline: 2px solid var(--color-border-focus);
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Reset Filters Button - Pill Style Matching Filter Button */
+.btn-reset {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding: var(--space-3) var(--space-5);
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-text-secondary);
+  border: 1.5px solid var(--color-border);
+  font-family: inherit;
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-reset svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.btn-reset:hover {
+  background: var(--color-bg-hover);
+  border-color: var(--color-text);
+  color: var(--color-text);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-reset:hover svg {
+  transform: rotate(-180deg);
+}
+
+.btn-reset:active {
+  transform: translateY(0);
+}
+
+.btn-reset:focus-visible {
+  outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
 
@@ -401,11 +450,34 @@ button#btnFilter:focus-visible {
 
 /* Preview Header */
 #previewHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
   margin-bottom: 20px;
   padding: 16px;
   background: var(--bg-card);
   border-radius: 8px;
   border: 1px solid var(--border);
+}
+
+.preview-header-content {
+  flex: 1;
+}
+
+/* Mobile: stack vertically */
+@media (width < 768px) {
+  #previewHeader {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-4);
+  }
+
+  .btn-back {
+    align-self: flex-start;
+    margin-left: 0 !important;
+  }
 }
 
 #matchCount {
@@ -418,6 +490,57 @@ button#btnFilter:focus-visible {
 #filterSummary {
   font-size: 0.9375rem;
   color: var(--text-secondary);
+}
+
+/* Back Button - Pill Style */
+.btn-back {
+  display: none;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding: var(--space-3) var(--space-5);
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-text-secondary);
+  border: 1.5px solid var(--color-border);
+  font-family: inherit;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+  margin-left: auto; /* Push to right on desktop */
+  margin-top: 14px;
+}
+
+.btn-back svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.btn-back:hover {
+  background: var(--color-bg-hover);
+  border-color: var(--color-text);
+  color: var(--color-text);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-back:hover svg {
+  transform: translateX(-2px);
+}
+
+.btn-back:active {
+  transform: translateY(0);
+}
+
+.btn-back:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
 }
 
 /* Happening Soon Section */

@@ -18,6 +18,7 @@ const state = {
   selectedLevels: [],
   allClubs: [],
   cachedEvents: null,
+  previousView: null, // Stores previous view state for back navigation
 };
 
 /**
@@ -233,6 +234,16 @@ async function filterByClub(clubDisplayName) {
         }
       }
 
+      // Save previous view state before switching to single club view
+      const previousClubs = getSelectedClubs(
+        qsa('#clubBox input[type="checkbox"]:checked'),
+      );
+      state.previousView = {
+        clubs: previousClubs,
+        levels: [...state.selectedLevels],
+        events: state.cachedEvents,
+      };
+
       // Clear level filters in UI
       state.selectedLevels = [];
       for (const btn of qsa(".level-btn")) {
@@ -245,6 +256,12 @@ async function filterByClub(clubDisplayName) {
       // Render all events for this club
       const summary = `Showing ${data.total} events for ${clubDisplayName}`;
       renderEvents(data, summary, true, clubDisplayName); // Pass club name for header
+
+      // Show back button
+      const backBtn = qs("#btnBack");
+      if (backBtn) {
+        backBtn.style.display = "flex";
+      }
 
       // Scroll to events
       qs("#eventsSection").scrollIntoView({
@@ -262,6 +279,67 @@ async function filterByClub(clubDisplayName) {
   } catch (error) {
     console.error("Error in filterByClub:", error);
   }
+}
+
+/**
+ * Go back to previous view before clicking "View all"
+ */
+function goBackToPreviousView() {
+  if (!state.previousView) {
+    console.warn("No previous view to restore");
+    return;
+  }
+
+  const { clubs, levels, events } = state.previousView;
+
+  // Restore club checkboxes
+  const clubCheckboxes = qsa("#clubBox input");
+  for (const checkbox of clubCheckboxes) {
+    const label = checkbox.closest("label");
+    if (clubs.includes(checkbox.value)) {
+      checkbox.checked = true;
+      label.classList.add("checked");
+    } else {
+      checkbox.checked = false;
+      label.classList.remove("checked");
+    }
+  }
+
+  // Restore level filters
+  state.selectedLevels = [...levels];
+  const levelButtons = qsa(".level-btn");
+  for (const button of levelButtons) {
+    if (levels.includes(button.dataset.range)) {
+      button.classList.add("active");
+    } else {
+      button.classList.remove("active");
+    }
+  }
+
+  // Restore previous events
+  state.cachedEvents = events;
+  const summary = buildFilterSummary(clubs, levels, state.allClubs);
+  renderEvents(events, summary);
+
+  // Hide back button
+  const backBtn = qs("#btnBack");
+  if (backBtn) {
+    backBtn.style.display = "none";
+  }
+
+  // Clear previous view state
+  state.previousView = null;
+
+  // Scroll to results
+  setTimeout(() => {
+    const eventsSection = qs("#eventsSection");
+    if (eventsSection) {
+      eventsSection.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }, 100);
 }
 
 /**
@@ -531,6 +609,61 @@ function renderEventCard(event, isHidden = false) {
 }
 
 /**
+ * Reset all filters to default state
+ */
+async function resetFilters() {
+  try {
+    // Clear all club checkboxes
+    const clubCheckboxes = qsa("#clubBox input[type='checkbox']");
+    for (const checkbox of clubCheckboxes) {
+      checkbox.checked = false;
+      const label = checkbox.closest("label");
+      if (label) {
+        label.classList.remove("checked");
+      }
+    }
+
+    // Clear all level buttons
+    state.selectedLevels = [];
+    const levelButtons = qsa(".level-btn");
+    for (const button of levelButtons) {
+      button.classList.remove("active");
+    }
+
+    // Hide back button and clear previous view
+    const backBtn = qs("#btnBack");
+    if (backBtn) {
+      backBtn.style.display = "none";
+    }
+    state.previousView = null;
+
+    // Reload default events
+    qs("#status").textContent = "Loading all events...";
+    const data = await fetchEvents([], []);
+    state.cachedEvents = data;
+
+    const cityName = CITY_CONFIG.bangkok.name;
+    renderEvents(data, `All upcoming events in ${cityName}`);
+    qs("#status").textContent = "";
+
+    // Scroll to results
+    setTimeout(() => {
+      const eventsSection = qs("#eventsSection");
+      if (eventsSection) {
+        eventsSection.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }
+    }, 100);
+  } catch (error) {
+    console.error("Error resetting filters:", error);
+    qs("#status").innerHTML =
+      '<span class="error">⚠️ Unable to reset filters. Please try again.</span>';
+  }
+}
+
+/**
  * Toggle show more events for a club or section
  * @param {string} club - Club name (for club sections)
  * @param {string} sectionType - Section type ('happening-soon' for Happening Soon)
@@ -633,6 +766,18 @@ function attachEventListeners() {
 
   // Apply filters button
   qs("#btnFilter").addEventListener("click", applyFilters);
+
+  // Reset filters button
+  const resetBtn = qs("#btnReset");
+  if (resetBtn) {
+    resetBtn.addEventListener("click", resetFilters);
+  }
+
+  // Back button
+  const backBtn = qs("#btnBack");
+  if (backBtn) {
+    backBtn.addEventListener("click", goBackToPreviousView);
+  }
 }
 
 // Initialize on DOM ready
