@@ -22,6 +22,8 @@ import { CITY_CONFIG } from "./config.js";
 // Application state
 const state = {
   selectedLevels: [],
+  selectedTypes: [],
+  selectedCategories: [],
   allClubs: [],
   cachedEvents: null,
 };
@@ -129,6 +131,8 @@ async function initializeClubs() {
     const loadingEl = qs("#clubsLoading");
     const clubFilterGroup = qs("#clubFilterGroup");
     const levelFilterGroup = qs("#levelFilterGroup");
+    const typeFilterGroup = qs("#typeFilterGroup");
+    const categoryFilterGroup = qs("#categoryFilterGroup");
     const filterBar = qs("#filterBar");
 
     // Show loading animation
@@ -159,6 +163,12 @@ async function initializeClubs() {
     if (levelFilterGroup) {
       levelFilterGroup.style.display = "block";
     }
+    if (typeFilterGroup) {
+      typeFilterGroup.style.display = "block";
+    }
+    if (categoryFilterGroup) {
+      categoryFilterGroup.style.display = "block";
+    }
     if (filterBar) {
       filterBar.style.display = "flex";
     }
@@ -184,7 +194,8 @@ async function autoLoadEvents() {
   try {
     qs("#status").textContent = "Loading upcoming events...";
 
-    const data = await fetchEvents([], []);
+    // Load initial events (all clubs, all levels, all types, all categories)
+    const data = await fetchEvents([], [], [], []);
     state.cachedEvents = data;
 
     const cityName = CITY_CONFIG.bangkok.name;
@@ -210,13 +221,20 @@ async function applyFilters() {
     const clubs = getSelectedClubs(qsa("#clubBox input:checked"));
     qs("#status").textContent = "Filtering events...";
 
-    const data = await fetchEvents(clubs, state.selectedLevels);
+    const data = await fetchEvents(
+      clubs,
+      state.selectedLevels,
+      state.selectedTypes,
+      state.selectedCategories,
+    );
     state.cachedEvents = data;
 
     const summary = buildFilterSummary(
       clubs,
       state.selectedLevels,
       state.allClubs,
+      state.selectedTypes,
+      state.selectedCategories,
     );
     renderEvents(data, summary);
     qs("#status").textContent = "";
@@ -263,7 +281,8 @@ async function filterByClub(clubDisplayName) {
 
     try {
       // Fetch all events for this club
-      const data = await fetchEvents([clubValue], []);
+      // Fetch events for this specific club (all levels, all types, all categories)
+      const data = await fetchEvents([clubValue], [], [], []);
 
       // Check and update the club checkbox in UI
       const clubCheckboxes = qsa("#clubBox input");
@@ -683,6 +702,34 @@ function attachEventListeners() {
         state.selectedLevels.splice(index, 1);
       } else {
         state.selectedLevels.push(range);
+      }
+    }
+
+    // Type button toggle
+    const typeButton = event.target.closest(".type-btn");
+    if (typeButton) {
+      const type = typeButton.dataset.type;
+      typeButton.classList.toggle("active");
+
+      const index = state.selectedTypes.indexOf(type);
+      if (index >= 0) {
+        state.selectedTypes.splice(index, 1);
+      } else {
+        state.selectedTypes.push(type);
+      }
+    }
+
+    // Category button toggle
+    const categoryButton = event.target.closest(".category-btn");
+    if (categoryButton) {
+      const category = categoryButton.dataset.category;
+      categoryButton.classList.toggle("active");
+
+      const index = state.selectedCategories.indexOf(category);
+      if (index >= 0) {
+        state.selectedCategories.splice(index, 1);
+      } else {
+        state.selectedCategories.push(category);
       }
     }
 

@@ -21,9 +21,16 @@ export async function loadClubs() {
  * Fetch events with optional filters
  * @param {string[]} clubs - Array of club values to filter by
  * @param {string[]} levels - Array of level ranges to filter by
+ * @param {string[]} types - Array of event types to filter by
+ * @param {string[]} categories - Array of categories to filter by
  * @returns {Promise<{total: number, sample: Array}>}
  */
-export async function fetchEvents(clubs = [], levels = []) {
+export async function fetchEvents(
+  clubs = [],
+  levels = [],
+  types = [],
+  categories = [],
+) {
   let url = `${API_CONFIG.endpoint}?action=preview`;
 
   if (clubs.length > 0) {
@@ -32,6 +39,14 @@ export async function fetchEvents(clubs = [], levels = []) {
 
   if (levels.length > 0) {
     url += `&levels=${levels.join(",")}`;
+  }
+
+  if (types.length > 0) {
+    url += `&types=${types.join(",")}`;
+  }
+
+  if (categories.length > 0) {
+    url += `&categories=${categories.join(",")}`;
   }
 
   const response = await fetch(url);

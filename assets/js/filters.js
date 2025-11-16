@@ -8,18 +8,25 @@ import { STORAGE_KEY } from "./config.js";
  * Save filters to localStorage
  * @param {string[]} clubs - Selected club values
  * @param {string[]} levels - Selected level ranges
+ * @param {string[]} types - Selected event types
+ * @param {string[]} categories - Selected categories
  */
-export function saveFilters(clubs, levels) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({ clubs, levels }));
+export function saveFilters(clubs, levels, types, categories) {
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify({ clubs, levels, types, categories }),
+  );
 }
 
 /**
  * Load filters from localStorage
- * @returns {{clubs: string[], levels: string[]}}
+ * @returns {{clubs: string[], levels: string[], types: string[], categories: string[]}}
  */
 export function loadFilters() {
   const data = localStorage.getItem(STORAGE_KEY);
-  return data ? JSON.parse(data) : { clubs: [], levels: [] };
+  return data
+    ? JSON.parse(data)
+    : { clubs: [], levels: [], types: [], categories: [] };
 }
 
 /**
@@ -38,9 +45,17 @@ export function getSelectedClubs(checkboxes) {
  * @param {string[]} clubs - Selected club values
  * @param {string[]} levels - Selected level ranges
  * @param {Array<{value: string, label: string}>} allClubs - All available clubs
+ * @param {string[]} types - Selected event types
+ * @param {string[]} categories - Selected categories
  * @returns {string}
  */
-export function buildFilterSummary(clubs, levels, allClubs) {
+export function buildFilterSummary(
+  clubs,
+  levels,
+  allClubs,
+  types = [],
+  categories = [],
+) {
   const parts = [];
 
   if (clubs.length === 0) {
@@ -58,6 +73,22 @@ export function buildFilterSummary(clubs, levels, allClubs) {
     parts.push(`Level ${levels[0]}`);
   } else {
     parts.push(`${levels.length} levels`);
+  }
+
+  if (types.length === 0) {
+    parts.push("All types");
+  } else if (types.length === 1) {
+    parts.push(types[0]);
+  } else {
+    parts.push(`${types.length} types`);
+  }
+
+  if (categories.length === 0) {
+    parts.push("All categories");
+  } else if (categories.length === 1) {
+    parts.push(categories[0]);
+  } else {
+    parts.push(`${categories.length} categories`);
   }
 
   return parts.join(" • ");

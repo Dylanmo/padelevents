@@ -341,6 +341,98 @@ label.chip:focus-within {
   outline-offset: 2px;
 }
 
+/* Type Filter Buttons */
+.type-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.type-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1); /* 4px */
+  min-height: 44px;
+  padding: var(--space-3) var(--space-5); /* 12px 20px */
+  border: 1px solid var(--border);
+  border-radius: 999px; /* Full pill shape */
+  background: var(--bg-card);
+  color: var(--text-primary);
+  font-size: var(--text-base); /* 16px */
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.type-btn:hover {
+  background: var(--bg-hover);
+  border-color: var(--color-primary);
+  color: var(--text-primary);
+}
+
+.type-btn.active {
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+  font-weight: var(--weight-medium);
+}
+
+.type-btn:focus {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+
+/* Category Filter Buttons */
+.category-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.category-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1); /* 4px */
+  min-height: 44px;
+  padding: var(--space-3) var(--space-5); /* 12px 20px */
+  border: 1px solid var(--border);
+  border-radius: 999px; /* Full pill shape */
+  background: var(--bg-card);
+  color: var(--text-primary);
+  font-size: var(--text-base); /* 16px */
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.category-btn:hover {
+  background: var(--bg-hover);
+  border-color: var(--color-primary);
+  color: var(--text-primary);
+}
+
+.category-btn.active {
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+  font-weight: var(--weight-medium);
+}
+
+.category-btn:focus {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+
 /* Filter Bar */
 .filter-bar {
   display: flex;
