@@ -709,6 +709,26 @@ button#btnFilter:focus-visible {
   outline-offset: 2px;
 }
 
+.btn-signup {
+  background: var(--brand-primary);
+  color: white;
+}
+
+.btn-signup:hover {
+  background: #0d8f63;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-signup:active {
+  transform: scale(0.98);
+}
+
+.btn-signup:focus-visible {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+
 /* Report Issue Link */
 .report-link {
   display: inline-flex;
