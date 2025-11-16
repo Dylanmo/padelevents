@@ -45,10 +45,24 @@ function getSignupUrlForDevice(event, device) {
   if (device === "android") {
     return event.signupAndroid || event.signupWeb || null;
   }
-  // desktop
-  return (
-    event.signupWeb || event.signupIosFallback || event.signupAndroid || null
-  );
+  // desktop - prioritize web signup
+  return event.signupWeb || null;
+}
+
+/**
+ * Get signup URLs and descriptions for desktop display
+ * Returns web signup and fallback mobile options
+ * For iOS, always use signupIosFallback for desktop users
+ * @param {object} event - Event object with signup fields
+ * @returns {object} { webUrl, iosUrl, androidUrl, hasWebUrl }
+ */
+function getDesktopSignupOptions(event) {
+  return {
+    webUrl: event.signupWeb || null,
+    iosUrl: event.signupIosFallback || null,
+    androidUrl: event.signupAndroid || null,
+    hasWebUrl: !!event.signupWeb,
+  };
 }
 
 /**
@@ -518,24 +532,63 @@ function renderEventCard(event, isHidden = false) {
   const hiddenClass = isHidden ? " event-hidden" : "";
   const hiddenStyle = isHidden ? ' style="display: none;"' : "";
 
-  // Get signup URL based on device
-  const signupUrl = getSignupUrlForDevice(event, DEVICE);
-
-  // Build signup button HTML if URL exists
+  // Build signup button HTML
   let signupButtonHtml = "";
-  if (signupUrl) {
-    const platformLabel = event.signupPlatform || "App";
-    signupButtonHtml = `<div class="event-signup">
-			<a href="${signupUrl}" target="_blank" rel="noopener noreferrer" class="btn-calendar btn-signup" aria-label="Sign up for ${event.title}">
-				<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-					<path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-					<circle cx="12" cy="7" r="4"></circle>
-					<line x1="12" y1="12" x2="12" y2="18"></line>
-					<line x1="9" y1="15" x2="15" y2="15"></line>
-				</svg>
-				Open ${platformLabel}
+  if (DEVICE === "desktop") {
+    // For desktop: show web signup with mobile fallback option as pill buttons
+    const options = getDesktopSignupOptions(event);
+    if (options.webUrl || options.iosUrl || options.androidUrl) {
+      const buttons = [];
+
+      if (options.webUrl) {
+        buttons.push(`<a href="${options.webUrl}" target="_blank" rel="noopener noreferrer" class="signup-pill">
+			Web
+		</a>`);
+      }
+
+      if (options.iosUrl) {
+        buttons.push(`<a href="${options.iosUrl}" target="_blank" rel="noopener noreferrer" class="signup-pill">
+			<img src="/assets/svg/icon-apple.svg" alt="Apple" class="signup-icon" width="16" height="16" />
+			iOS
+		</a>`);
+      }
+
+      if (options.androidUrl) {
+        buttons.push(`<a href="${options.androidUrl}" target="_blank" rel="noopener noreferrer" class="signup-pill">
+			<img src="/assets/svg/icon-android.svg" alt="Android" class="signup-icon" width="16" height="16" />
+			Android
+		</a>`);
+      }
+
+      signupButtonHtml = `<div class="event-signup">
+		<div class="signup-row">
+			<p class="signup-text">Join event:</p>
+			<div class="signup-pills">
+				${buttons.join("")}
+			</div>
+		</div>
+	</div>`;
+    }
+  } else {
+    // For mobile: show single signup button with relevant icon
+    const signupUrl = getSignupUrlForDevice(event, DEVICE);
+    if (signupUrl) {
+      const platformLabel = event.signupPlatform || "App";
+      let iconHtml = "";
+
+      if (DEVICE === "ios") {
+        iconHtml = `<img src="/assets/svg/icon-apple.svg" alt="Apple" class="signup-icon-mobile" width="18" height="18" />`;
+      } else if (DEVICE === "android") {
+        iconHtml = `<img src="/assets/svg/icon-android.svg" alt="Android" class="signup-icon-mobile" width="18" height="18" />`;
+      }
+
+      signupButtonHtml = `<div class="event-signup">
+			<a href="${signupUrl}" target="_blank" rel="noopener noreferrer" class="btn-calendar btn-signup" aria-label="Join event via ${platformLabel}">
+				${iconHtml}
+				Join event ${platformLabel}
 			</a>
 		</div>`;
+    }
   }
 
   return `<li class="event-card${isPast ? " event-past" : ""}${hiddenClass}"${hiddenStyle}>

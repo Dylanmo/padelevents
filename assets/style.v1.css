@@ -644,6 +644,84 @@ button#btnFilter:focus-visible {
   margin-top: var(--space-2); /* 8px - follows design system */
 }
 
+.signup-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3); /* 12px gap between label and pills */
+  flex-wrap: wrap;
+}
+
+.signup-text {
+  font-size: var(--text-sm); /* 14px - consistent */
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: var(--leading-normal);
+  white-space: nowrap;
+}
+
+.signup-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2); /* 8px gap between pills */
+}
+
+.signup-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1); /* 4px - icon + text spacing */
+  min-height: 36px;
+  padding: var(--space-2) var(--space-3); /* 8px 12px */
+  border: 1px solid var(--color-border);
+  border-radius: 999px; /* Full pill shape */
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  font-size: var(--text-sm); /* 14px */
+  font-weight: var(--weight-medium);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: all var(--transition-base);
+  font-family: inherit;
+}
+
+.signup-icon {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  opacity: 0.6;
+}
+
+.signup-pill:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+  border-color: var(--color-primary);
+  transform: translateY(-1px);
+}
+
+.signup-pill:focus-visible {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+
+.signup-link {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: var(--weight-medium);
+  transition: all var(--transition-base);
+  border-radius: 2px;
+  padding: 0 2px;
+}
+
+.signup-link:hover {
+  color: var(--color-primary-hover);
+  text-decoration: underline;
+}
+
+.signup-link:focus-visible {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+
 .btn-calendar {
   display: inline-flex;
   align-items: center;
@@ -727,6 +805,11 @@ button#btnFilter:focus-visible {
 .btn-signup:focus-visible {
   outline: 2px solid var(--color-border-focus);
   outline-offset: 2px;
+}
+
+.signup-icon-mobile {
+  flex-shrink: 0;
+  opacity: 0.8;
 }
 
 /* Report Issue Link */
