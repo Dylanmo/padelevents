@@ -495,15 +495,6 @@ function renderEventCard(event, isHidden = false) {
 			${event.level ? `<span class="detail-item detail-level"><svg class="level-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="currentColor"/></svg> <strong>Level:</strong> ${event.level}</span>` : ""}
 		</div>
 		<div class="event-actions">
-			<a href="https://thepadelsociety.app.link/n3Kv4wxl2Xb" target="_blank" rel="noopener noreferrer" class="btn-calendar btn-signup" aria-label="Sign up for ${event.title}">
-				<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-					<path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-					<circle cx="12" cy="7" r="4"></circle>
-					<line x1="12" y1="12" x2="12" y2="18"></line>
-					<line x1="9" y1="15" x2="15" y2="15"></line>
-				</svg>
-				Sign Up
-			</a>
 			<a href="${gcalLink}" target="_blank" rel="noopener noreferrer" class="btn-calendar btn-google" aria-label="Add ${event.title} to Google Calendar">
 				<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
 					<rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
@@ -526,6 +517,17 @@ function renderEventCard(event, isHidden = false) {
 				</svg>
 				Calendar (ICS)
 			</button>
+		</div>
+		<div class="event-signup">
+			<a href="https://thepadelsociety.app.link/n3Kv4wxl2Xb" target="_blank" rel="noopener noreferrer" class="btn-calendar btn-signup" aria-label="Sign up for ${event.title}">
+				<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+					<path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+					<circle cx="12" cy="7" r="4"></circle>
+					<line x1="12" y1="12" x2="12" y2="18"></line>
+					<line x1="9" y1="15" x2="15" y2="15"></line>
+				</svg>
+				Sign Up
+			</a>
 		</div>
 	</li>`;
 }

@@ -637,6 +637,13 @@ button#btnFilter:focus-visible {
   margin-top: var(--space-3); /* 12px - follows design system */
 }
 
+.event-signup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2); /* 8px - follows design system */
+  margin-top: var(--space-2); /* 8px - follows design system */
+}
+
 .btn-calendar {
   display: inline-flex;
   align-items: center;
@@ -870,6 +877,14 @@ button#btnFilter:focus-visible {
   }
 
   .btn-calendar {
+    flex: 1;
+  }
+
+  .event-signup {
+    flex-direction: row;
+  }
+
+  .btn-signup {
     flex: 1;
   }
 
