@@ -77,3 +77,17 @@ export function formatCommitDate(isoDate) {
   const minutes = String(date.getMinutes()).padStart(2, "0");
   return `${year}-${month}-${day} ${hours}:${minutes}`;
 }
+
+/**
+ * Detect device type based on user agent
+ * @returns {string} 'ios' | 'android' | 'desktop'
+ */
+export function detectDevice() {
+  if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+    return "ios";
+  }
+  if (/Android/.test(navigator.userAgent)) {
+    return "android";
+  }
+  return "desktop";
+}

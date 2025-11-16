@@ -10,7 +10,13 @@ import {
   downloadICS,
 } from "./calendar.js";
 import { buildFilterSummary, getSelectedClubs } from "./filters.js";
-import { qs, qsa, formatBangkokDate, formatCommitDate } from "./utils.js";
+import {
+  qs,
+  qsa,
+  formatBangkokDate,
+  formatCommitDate,
+  detectDevice,
+} from "./utils.js";
 import { CITY_CONFIG } from "./config.js";
 
 // Application state
@@ -19,6 +25,31 @@ const state = {
   allClubs: [],
   cachedEvents: null,
 };
+
+// Detect device type on app initialization
+const DEVICE = detectDevice();
+
+/**
+ * Get the appropriate signup URL for the user's device
+ * Implements fallback logic based on device type
+ * @param {object} event - Event object with signup fields
+ * @param {string} device - Device type ('ios' | 'android' | 'desktop')
+ * @returns {string|null} Signup URL or null if none available
+ */
+function getSignupUrlForDevice(event, device) {
+  if (device === "ios") {
+    return (
+      event.signupIos || event.signupIosFallback || event.signupWeb || null
+    );
+  }
+  if (device === "android") {
+    return event.signupAndroid || event.signupWeb || null;
+  }
+  // desktop
+  return (
+    event.signupWeb || event.signupIosFallback || event.signupAndroid || null
+  );
+}
 
 /**
  * Initialize the application
@@ -487,6 +518,26 @@ function renderEventCard(event, isHidden = false) {
   const hiddenClass = isHidden ? " event-hidden" : "";
   const hiddenStyle = isHidden ? ' style="display: none;"' : "";
 
+  // Get signup URL based on device
+  const signupUrl = getSignupUrlForDevice(event, DEVICE);
+
+  // Build signup button HTML if URL exists
+  let signupButtonHtml = "";
+  if (signupUrl) {
+    const platformLabel = event.signupPlatform || "App";
+    signupButtonHtml = `<div class="event-signup">
+			<a href="${signupUrl}" target="_blank" rel="noopener noreferrer" class="btn-calendar btn-signup" aria-label="Sign up for ${event.title}">
+				<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+					<path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+					<circle cx="12" cy="7" r="4"></circle>
+					<line x1="12" y1="12" x2="12" y2="18"></line>
+					<line x1="9" y1="15" x2="15" y2="15"></line>
+				</svg>
+				Open ${platformLabel}
+			</a>
+		</div>`;
+  }
+
   return `<li class="event-card${isPast ? " event-past" : ""}${hiddenClass}"${hiddenStyle}>
 		<div class="event-title">${event.title}</div>
 		<div class="event-datetime">${day} ${date} • ${timeStart}–${timeEnd}</div>
@@ -518,17 +569,7 @@ function renderEventCard(event, isHidden = false) {
 				Calendar (ICS)
 			</button>
 		</div>
-		<div class="event-signup">
-			<a href="https://thepadelsociety.app.link/n3Kv4wxl2Xb" target="_blank" rel="noopener noreferrer" class="btn-calendar btn-signup" aria-label="Sign up for ${event.title}">
-				<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-					<path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-					<circle cx="12" cy="7" r="4"></circle>
-					<line x1="12" y1="12" x2="12" y2="18"></line>
-					<line x1="9" y1="15" x2="15" y2="15"></line>
-				</svg>
-				Sign Up
-			</a>
-		</div>
+		${signupButtonHtml}
 	</li>`;
 }
 
