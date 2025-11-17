@@ -5,11 +5,13 @@ The frontend is ready, but the Google Apps Script backend needs these updates:
 ## 1. Update `previewByClubs` function signature
 
 **Current (line 161):**
+
 ```javascript
 const { clubs, limit, levels } = payload;
 ```
 
 **Required:**
+
 ```javascript
 const { clubs, limit, levels, types, categories } = payload;
 ```
@@ -17,10 +19,17 @@ const { clubs, limit, levels, types, categories } = payload;
 ## 2. Update `doGet` router to parse new parameters
 
 **Current (lines 13-21):**
+
 ```javascript
 if (action === "preview") {
-  const clubs = String(p.clubs || "").split(",").map((s) => s.trim()).filter(Boolean);
-  const levels = String(p.levels || "").split(",").map((s) => s.trim()).filter(Boolean);
+  const clubs = String(p.clubs || "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+  const levels = String(p.levels || "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
   const limit = Math.min(Number(p.limit || 200), 1000);
   const res = previewByClubs({ clubs, levels, limit });
   return _json(res);
@@ -28,12 +37,25 @@ if (action === "preview") {
 ```
 
 **Required:**
+
 ```javascript
 if (action === "preview") {
-  const clubs = String(p.clubs || "").split(",").map((s) => s.trim()).filter(Boolean);
-  const levels = String(p.levels || "").split(",").map((s) => s.trim()).filter(Boolean);
-  const types = String(p.types || "").split(",").map((s) => s.trim()).filter(Boolean);
-  const categories = String(p.categories || "").split(",").map((s) => s.trim()).filter(Boolean);
+  const clubs = String(p.clubs || "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+  const levels = String(p.levels || "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+  const types = String(p.types || "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+  const categories = String(p.categories || "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
   const limit = Math.min(Number(p.limit || 200), 1000);
   const res = previewByClubs({ clubs, levels, types, categories, limit });
   return _json(res);
@@ -43,6 +65,7 @@ if (action === "preview") {
 ## 3. Add type and category filters to `previewByClubs`
 
 **Add after level filter (after line 181):**
+
 ```javascript
 .filter((r) => {
   if (!types || types.length === 0) return true;
@@ -59,6 +82,7 @@ if (action === "preview") {
 ## 4. Fix event object mapping to return BOTH type and category
 
 **Current (lines 185-218):**
+
 ```javascript
 const category = r.category || r.type || r.format || "";
 
@@ -70,7 +94,7 @@ return {
   club: prettyClubLabelFromClub(clubCode),
   level: lvl.min != null && lvl.max != null ? `${lvl.min}–${lvl.max}` : "",
   price,
-  category,  // ❌ Only one field
+  category, // ❌ Only one field
   total,
   available,
   location,
@@ -80,6 +104,7 @@ return {
 ```
 
 **Required:**
+
 ```javascript
 const eventType = String(r.type || "").trim();
 const eventCategory = String(r.category || "").trim();
@@ -92,7 +117,7 @@ return {
   club: prettyClubLabelFromClub(clubCode),
   level: lvl.min != null && lvl.max != null ? `${lvl.min}–${lvl.max}` : "",
   price,
-  type: eventType,       // ✅ Separate type field
+  type: eventType, // ✅ Separate type field
   category: eventCategory, // ✅ Separate category field
   total,
   available,
@@ -105,23 +130,49 @@ return {
 ## 5. Update ICS action as well (optional but recommended)
 
 **Current (lines 37-45):**
+
 ```javascript
 if (action === "ics") {
-  const clubs = String(p.clubs || "").split(",").map((s) => s.trim()).filter(Boolean);
-  const levels = String(p.levels || "").split(",").map((s) => s.trim()).filter(Boolean);
+  const clubs = String(p.clubs || "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+  const levels = String(p.levels || "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
   const { sample } = previewByClubs({ clubs, levels, limit: 800 });
   // ...
 }
 ```
 
 **Required:**
+
 ```javascript
 if (action === "ics") {
-  const clubs = String(p.clubs || "").split(",").map((s) => s.trim()).filter(Boolean);
-  const levels = String(p.levels || "").split(",").map((s) => s.trim()).filter(Boolean);
-  const types = String(p.types || "").split(",").map((s) => s.trim()).filter(Boolean);
-  const categories = String(p.categories || "").split(",").map((s) => s.trim()).filter(Boolean);
-  const { sample } = previewByClubs({ clubs, levels, types, categories, limit: 800 });
+  const clubs = String(p.clubs || "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+  const levels = String(p.levels || "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+  const types = String(p.types || "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+  const categories = String(p.categories || "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+  const { sample } = previewByClubs({
+    clubs,
+    levels,
+    types,
+    categories,
+    limit: 800,
+  });
   // ...
 }
 ```
@@ -139,6 +190,7 @@ if (action === "ics") {
 ## Data Validation
 
 Based on spreadsheet screenshot, verify these exact values exist:
+
 - **Types**: "Americano", "Social", "King of the court"
 - **Categories**: "Mixed", "Men only", "Women only"
 
