@@ -772,18 +772,61 @@ button#btnFilter:focus-visible {
   }
 }
 
+/* Event Card Header with Availability Badge */
+.event-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3); /* 12px - space between title and badge */
+  margin-bottom: var(--space-2); /* 8px - follows design system */
+  flex-wrap: wrap;
+}
+
+.event-availability {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1); /* 4px - icon + text spacing */
+  padding: var(--space-1) var(--space-3); /* 4px 12px - compact badge */
+  border-radius: 999px; /* Full pill shape */
+  font-size: var(--text-xs); /* 12px - badge typography */
+  font-weight: var(--weight-medium);
+  border: 1px solid;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Availability Badge States */
+.avail-open {
+  background: #ecfdf3; /* Light green */
+  color: #166534; /* Dark green */
+  border-color: #bbf7d0; /* Medium green */
+}
+
+.avail-almost {
+  background: #fffbeb; /* Light amber */
+  color: #92400e; /* Dark amber */
+  border-color: #fed7aa; /* Medium amber */
+}
+
+.avail-full {
+  background: #fef2f2; /* Light red */
+  color: #b91c1c; /* Dark red */
+  border-color: #fecaca; /* Medium red */
+}
+
 .event-title {
   font-size: var(--text-lg); /* 18px - consistent */
   font-weight: 700; /* Bold for titles */
   color: var(--text-primary);
-  margin-bottom: var(--space-2); /* 8px - follows design system */
   line-height: 1.4;
+  flex: 1;
 }
 
 .event-datetime {
   font-size: var(--text-base); /* 16px - consistent */
   color: var(--text-secondary);
-  margin-bottom: var(--space-2); /* 8px - follows design system */
+  margin-bottom: var(--space-3); /* 12px - space after header */
   font-weight: 400; /* Regular weight */
 }
 

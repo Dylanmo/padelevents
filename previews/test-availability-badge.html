@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Availability Badge Test</title>
+  <link rel="stylesheet" href="assets/style.v1.css">
+  <style>
+    body {
+      padding: 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    h1 {
+      margin-bottom: 2rem;
+    }
+    .test-section {
+      margin-bottom: 2rem;
+    }
+    .test-label {
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <h1>Availability Badge Component Test</h1>
+
+  <div class="test-section">
+    <div class="test-label">State: OPEN (Many spots available)</div>
+    <ul class="events-list">
+      <li class="event-card">
+        <div class="event-card-header">
+          <div class="event-title">Morning Americano Match</div>
+          <span class="event-availability avail-open">5 spots left</span>
+        </div>
+        <div class="event-datetime">Wed 20 Nov • 09:00–11:00</div>
+        <div class="event-details">
+          <span class="detail-item detail-club">📍 Bangkok Padel Club</span>
+          <span class="detail-item detail-level">🥇 <strong>Level:</strong> 3.5–5.0</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="test-section">
+    <div class="test-label">State: ALMOST FULL (≤25% capacity remaining)</div>
+    <ul class="events-list">
+      <li class="event-card">
+        <div class="event-card-header">
+          <div class="event-title">Evening Compete Session</div>
+          <span class="event-availability avail-almost">2 spots left</span>
+        </div>
+        <div class="event-datetime">Thu 21 Nov • 19:00–21:00</div>
+        <div class="event-details">
+          <span class="detail-item detail-club">📍 Bel Club 22</span>
+          <span class="detail-item detail-level">🥇 <strong>Level:</strong> 4.0–6.0</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="test-section">
+    <div class="test-label">State: FULL (No spots remaining)</div>
+    <ul class="events-list">
+      <li class="event-card">
+        <div class="event-card-header">
+          <div class="event-title">Beginner Fundamentals Workshop</div>
+          <span class="event-availability avail-full">Full</span>
+        </div>
+        <div class="event-datetime">Fri 22 Nov • 14:00–16:00</div>
+        <div class="event-details">
+          <span class="detail-item detail-club">📍 Pad Thai Padel</span>
+          <span class="detail-item detail-level">🥇 <strong>Level:</strong> 0.0–2.5</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="test-section">
+    <div class="test-label">No Badge (When availStatus is missing)</div>
+    <ul class="events-list">
+      <li class="event-card">
+        <div class="event-card-header">
+          <div class="event-title">Private Court Rental</div>
+        </div>
+        <div class="event-datetime">Sat 23 Nov • 10:00–12:00</div>
+        <div class="event-details">
+          <span class="detail-item detail-club">📍 Bangkok Padel Club</span>
+          <span class="detail-item detail-level">🥇 <strong>Level:</strong> All levels</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="test-section">
+    <div class="test-label">Long Title with Badge (Responsive Test)</div>
+    <ul class="events-list">
+      <li class="event-card">
+        <div class="event-card-header">
+          <div class="event-title">Advanced Tournament Preparation and Strategy Session</div>
+          <span class="event-availability avail-almost">1 spot left</span>
+        </div>
+        <div class="event-datetime">Sun 24 Nov • 08:00–10:00</div>
+        <div class="event-details">
+          <span class="detail-item detail-club">📍 Bangkok Padel Club</span>
+          <span class="detail-item detail-level">🥇 <strong>Level:</strong> 5.0–7.0</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <h2 style="margin-top: 3rem; margin-bottom: 1rem;">Badge Colors Reference</h2>
+  <div style="display: flex; flex-direction: column; gap: 12px;">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <span class="event-availability avail-open">Open</span>
+      <span style="font-size: 14px; color: #6b7280;">Background: #ecfdf3 | Text: #166534 | Border: #bbf7d0</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <span class="event-availability avail-almost">Almost Full</span>
+      <span style="font-size: 14px; color: #6b7280;">Background: #fffbeb | Text: #92400e | Border: #fed7aa</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <span class="event-availability avail-full">Full</span>
+      <span style="font-size: 14px; color: #6b7280;">Background: #fef2f2 | Text: #b91c1c | Border: #fecaca</span>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Availability Badge Demo - Padel Events</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎾</text></svg>"
+    />
+    <link rel="stylesheet" href="/assets/style.v1.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <header class="app-header">
+        <div class="header-brand">
+          <h1 class="app-title">🎾 Availability Badge Demo</h1>
+          <p class="app-tagline">
+            Testing availability status badges with mock event data
+          </p>
+        </div>
+      </header>
+
+      <div id="eventsSection">
+        <div id="previewHeader">
+          <strong id="matchCount">6 events</strong>
+          <span id="filterSummary">Mock data with availability badges</span>
+        </div>
+
+        <div id="eventsWrap"></div>
+      </div>
+
+      <footer class="footer">
+        <div class="footer-links">
+          <a href="index.html" class="footer-pill">← Back to Calendar</a>
+        </div>
+        <div class="version">Demo Mode</div>
+      </footer>
+    </div>
+
+    <script type="module">
+      import {
+        generateGoogleCalendarLink,
+        generateICS,
+        downloadICS,
+      } from "./assets/js/calendar.js";
+      import { formatBangkokDate } from "./assets/js/utils.js";
+
+      // Mock event data with availability statuses
+      const mockEvents = [
+        {
+          id: "evt1",
+          title: "Morning Americano Session",
+          start: "2025-11-20T09:00:00+07:00",
+          end: "2025-11-20T11:00:00+07:00",
+          club: "Bangkok Padel Club",
+          level: "3.5–5.0",
+          availStatus: "open",
+          availText: "8 spots left",
+          slotsLeft: 8,
+          total: 12,
+          available: 8,
+          signupWeb: "https://example.com/signup",
+        },
+        {
+          id: "evt2",
+          title: "Beginner Fundamentals",
+          start: "2025-11-20T14:00:00+07:00",
+          end: "2025-11-20T16:00:00+07:00",
+          club: "Pad Thai Padel",
+          level: "0.0–2.5",
+          availStatus: "open",
+          availText: "5 spots left",
+          slotsLeft: 5,
+          total: 8,
+          available: 5,
+          signupWeb: "https://example.com/signup",
+        },
+        {
+          id: "evt3",
+          title: "Evening Compete Night",
+          start: "2025-11-20T19:00:00+07:00",
+          end: "2025-11-20T21:30:00+07:00",
+          club: "Bel Club 22",
+          level: "4.0–6.0",
+          availStatus: "almost",
+          availText: "2 spots left",
+          slotsLeft: 2,
+          total: 8,
+          available: 2,
+          signupWeb: "https://example.com/signup",
+        },
+        {
+          id: "evt4",
+          title: "Intermediate Tournament Prep",
+          start: "2025-11-21T10:00:00+07:00",
+          end: "2025-11-21T12:00:00+07:00",
+          club: "Bangkok Padel Club",
+          level: "4.5–6.5",
+          availStatus: "almost",
+          availText: "1 spot left",
+          slotsLeft: 1,
+          total: 6,
+          available: 1,
+          signupWeb: "https://example.com/signup",
+        },
+        {
+          id: "evt5",
+          title: "Advanced King of the Court",
+          start: "2025-11-21T18:00:00+07:00",
+          end: "2025-11-21T20:00:00+07:00",
+          club: "Sabai Sabai Padel",
+          level: "5.0–7.0",
+          availStatus: "full",
+          availText: "Full",
+          slotsLeft: 0,
+          total: 8,
+          available: 0,
+          signupWeb: "https://example.com/signup",
+        },
+        {
+          id: "evt6",
+          title: "Weekend Social Play",
+          start: "2025-11-23T15:00:00+07:00",
+          end: "2025-11-23T17:00:00+07:00",
+          club: "Bangkok Padel Club",
+          level: "2.0–4.0",
+          // No availability data - badge should not appear
+          signupWeb: "https://example.com/signup",
+        },
+      ];
+
+      function renderEventCard(event) {
+        const start = new Date(event.start);
+        const end = new Date(event.end);
+
+        const day = formatBangkokDate(start, "weekday");
+        const date = formatBangkokDate(start, "date");
+        const timeStart = formatBangkokDate(start, "time");
+        const timeEnd = formatBangkokDate(end, "time");
+
+        const gcalLink = generateGoogleCalendarLink(event);
+        const icsData = generateICS(event);
+
+        // Render availability badge if availStatus exists
+        let badgeHtml = "";
+        if (event.availStatus) {
+          const badgeClass = `avail-${event.availStatus.toLowerCase()}`;
+          const badgeText = event.availText || event.availStatus;
+          badgeHtml = `<span class="event-availability ${badgeClass}">${badgeText}</span>`;
+        }
+
+        return `<li class="event-card">
+          <div class="event-card-header">
+            <div class="event-title">${event.title}</div>
+            ${badgeHtml}
+          </div>
+          <div class="event-datetime">${day} ${date} • ${timeStart}–${timeEnd}</div>
+          <div class="event-details">
+            ${event.club ? `<span class="detail-item detail-club"><svg class="location-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="currentColor"/></svg> ${event.club}</span>` : ""}
+            ${event.level ? `<span class="detail-item detail-level"><svg class="level-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="currentColor"/></svg> <strong>Level:</strong> ${event.level}</span>` : ""}
+          </div>
+          <div class="event-actions">
+            <a href="${gcalLink}" target="_blank" rel="noopener noreferrer" class="btn-calendar btn-google" aria-label="Add ${event.title} to Google Calendar">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+                <line x1="10" y1="16" x2="14" y2="16"></line>
+                <line x1="12" y1="14" x2="12" y2="18"></line>
+              </svg>
+              Google Calendar
+            </a>
+            <button class="btn-calendar btn-ics" data-ics='${JSON.stringify(icsData)}' aria-label="Download ${event.title} as ICS file">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+                <line x1="10" y1="16" x2="14" y2="16"></line>
+                <line x1="12" y1="14" x2="12" y2="18"></line>
+              </svg>
+              Calendar (ICS)
+            </button>
+          </div>
+        </li>`;
+      }
+
+      function renderEvents() {
+        const eventsWrap = document.getElementById("eventsWrap");
+        const eventCards = mockEvents.map(renderEventCard).join("");
+        eventsWrap.innerHTML = `<ul class="events-list">${eventCards}</ul>`;
+
+        // Add ICS download listeners
+        document.addEventListener("click", (event) => {
+          const icsBtn = event.target.closest(".btn-ics");
+          if (icsBtn) {
+            const icsData = JSON.parse(icsBtn.dataset.ics);
+            downloadICS(icsData);
+          }
+        });
+      }
+
+      // Render on page load
+      document.addEventListener("DOMContentLoaded", renderEvents);
+    </script>
+  </body>
+</html>

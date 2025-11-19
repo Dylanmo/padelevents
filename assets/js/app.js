@@ -658,8 +658,19 @@ function renderEventCard(event, isHidden = false) {
     }
   }
 
+  // Render availability badge if availStatus exists
+  let badgeHtml = "";
+  if (event.availStatus) {
+    const badgeClass = `avail-${event.availStatus.toLowerCase()}`;
+    const badgeText = event.availText || event.availStatus;
+    badgeHtml = `<span class="event-availability ${badgeClass}">${badgeText}</span>`;
+  }
+
   return `<li class="event-card${isPast ? " event-past" : ""}${hiddenClass}"${hiddenStyle}>
-		<div class="event-title">${event.title}</div>
+		<div class="event-card-header">
+			<div class="event-title">${event.title}</div>
+			${badgeHtml}
+		</div>
 		<div class="event-datetime">${day} ${date} • ${timeStart}–${timeEnd}</div>
 		<div class="event-details">
 			${event.club ? `<span class="detail-item detail-club"><svg class="location-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="currentColor"/></svg> ${event.club}</span>` : ""}
