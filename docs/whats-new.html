@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>What's New — Padel Events</title>
+    <link rel="stylesheet" href="/assets/style.v1.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <header class="app-header" style="padding-top:28px;padding-bottom:18px;">
+        <div class="header-brand">
+          <h1 class="app-title">What's New — Padel Events</h1>
+          <p class="app-tagline">Recent enhancements to help you find and add padel events faster.</p>
+        </div>
+      </header>
+
+      <main>
+        <section aria-labelledby="summary" style="margin-bottom:20px;">
+          <h2 id="summary">At a glance</h2>
+          <p>We've focused on mobile usability, reliable calendar exports, and better filters so you can find matches that fit your level and schedule.</p>
+        </section>
+
+        <section aria-labelledby="features" style="margin-bottom:16px;">
+          <h3 id="features">New & Improved Features</h3>
+          <ul>
+            <li><strong>Quick Event Preview:</strong> Upcoming events load on page open so you see matches immediately. (<code>assets/js/app.js</code>)</li>
+            <li><strong>Club Filter Chips:</strong> Dynamic club pills loaded from the API for fast selection. (<code>assets/js/api.js</code> + <code>assets/js/app.js</code>)</li>
+            <li><strong>Multi-dimensional Filters:</strong> Level, type, time-of-day and weekday filters to find the right games. (<code>assets/js/filters.js</code>)</li>
+            <li><strong>Mobile-first Card UI:</strong> Touch-optimized event cards and responsive layout for phones. (<code>assets/style.v1.css</code>, <code>assets/js/app.js</code>)</li>
+            <li><strong>Happening Soon:</strong> Today &amp; Tomorrow events surfaced to join immediate matches. (<code>assets/js/app.js</code>)</li>
+            <li><strong>Google Calendar Links:</strong> One-click adds with correct UTC timestamps. (<code>assets/js/calendar.js</code>)</li>
+            <li><strong>ICS Export:</strong> Download .ics files for Apple/Outlook imports. (<code>assets/js/calendar.js</code>)</li>
+            <li><strong>Timezone-safe dates:</strong> Bangkok → UTC conversion to ensure calendar accuracy. (<code>assets/js/calendar.js</code>, <code>assets/js/utils.js</code>)</li>
+            <li><strong>Filter persistence helpers:</strong> Ready to save your selections across visits. (<code>assets/js/utils.js</code>)</li>
+            <li><strong>Device-aware links:</strong> Platform-specific signup flow for better join experience. (<code>assets/js/app.js</code>)</li>
+          </ul>
+        </section>
+
+        <section aria-labelledby="solutions" style="margin-bottom:16px;">
+          <h3 id="solutions">Major problems we solved</h3>
+          <ul>
+            <li><strong>Better mobile scanning:</strong> Card layout and larger touch targets reduce friction on phones. (<code>assets/style.v1.css</code>)</li>
+            <li><strong>Correct calendar times:</strong> Timezone handling prevents mismatched event times in user calendars. (<code>assets/js/calendar.js</code>)</li>
+            <li><strong>Cross-platform support:</strong> ICS files and Google links make adding events universal. (<code>assets/js/calendar.js</code>)</li>
+            <li><strong>Faster, safer deploys:</strong> Firebase cache rules keep HTML fresh while serving versioned assets quickly. (<code>firebase.json</code>)</li>
+          </ul>
+        </section>
+
+        <section aria-labelledby="verify" style="margin-top:18px;">
+          <h4 id="verify">Where to verify</h4>
+          <p>See implementation details in the listed files. For player-facing previews, open <a href="/docs/players.html">Players page</a> or the main app at <a href="/index.html">Browse Events</a>.</p>
+        </section>
+      </main>
+
+      <footer class="footer" style="margin-top:28px;padding-bottom:28px;">
+        <div class="footer-links">
+          <a class="footer-pill" href="/docs/FEATURES_SUMMARY.md">Full Summary</a>
+          <a class="footer-pill" href="/docs/players.html">Players page</a>
+        </div>
+        <div class="version">Updated: What's New</div>
+      </footer>
+    </div>
+  </body>
+</html>
