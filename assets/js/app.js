@@ -16,14 +16,18 @@ import {
   formatBangkokDate,
   formatCommitDate,
   detectDevice,
+  getTimeBucket,
+  getWeekdayIndex,
 } from "./utils.js";
-import { CITY_CONFIG } from "./config.js";
+import { CITY_CONFIG, TIMEZONE_OFFSET } from "./config.js";
 
 // Application state
 const state = {
   selectedLevels: [],
   selectedTypes: [],
   selectedCategories: [],
+  selectedTimeBuckets: [],
+  selectedWeekdays: [],
   allClubs: [],
   cachedEvents: null,
 };
@@ -133,6 +137,8 @@ async function initializeClubs() {
     const levelFilterGroup = qs("#levelFilterGroup");
     const typeFilterGroup = qs("#typeFilterGroup");
     const categoryFilterGroup = qs("#categoryFilterGroup");
+    const timeFilterGroup = qs("#timeFilterGroup");
+    const weekdayFilterGroup = qs("#weekdayFilterGroup");
     const filterBar = qs("#filterBar");
 
     // Show loading animation
@@ -169,6 +175,12 @@ async function initializeClubs() {
     if (categoryFilterGroup) {
       categoryFilterGroup.style.display = "block";
     }
+    if (timeFilterGroup) {
+      timeFilterGroup.style.display = "block";
+    }
+    if (weekdayFilterGroup) {
+      weekdayFilterGroup.style.display = "block";
+    }
     if (filterBar) {
       filterBar.style.display = "flex";
     }
@@ -176,6 +188,8 @@ async function initializeClubs() {
     console.error("Error loading clubs:", error);
     const loadingEl = qs("#clubsLoading");
     const clubFilterGroup = qs("#clubFilterGroup");
+    const timeFilterGroup = qs("#timeFilterGroup");
+    const weekdayFilterGroup = qs("#weekdayFilterGroup");
     if (loadingEl) {
       loadingEl.style.display = "none";
     }
@@ -183,6 +197,12 @@ async function initializeClubs() {
       '<span class="error">Unable to load clubs. Please refresh.</span>';
     if (clubFilterGroup) {
       clubFilterGroup.style.display = "block";
+    }
+    if (timeFilterGroup) {
+      timeFilterGroup.style.display = "block";
+    }
+    if (weekdayFilterGroup) {
+      weekdayFilterGroup.style.display = "block";
     }
   }
 }
@@ -227,14 +247,34 @@ async function applyFilters() {
       state.selectedTypes,
       state.selectedCategories,
     );
+
+    // Apply time bucket filter (AND logic)
+    if (state.selectedTimeBuckets.length > 0) {
+      data.sample = data.sample.filter((event) => {
+        const bucket = getTimeBucket(event.start, TIMEZONE_OFFSET);
+        return state.selectedTimeBuckets.includes(bucket);
+      });
+      data.total = data.sample.length;
+    }
+
+    // Apply weekday filter (AND logic)
+    if (state.selectedWeekdays.length > 0) {
+      data.sample = data.sample.filter((event) => {
+        const weekday = getWeekdayIndex(event.start, TIMEZONE_OFFSET);
+        return state.selectedWeekdays.includes(weekday);
+      });
+      data.total = data.sample.length;
+    }
+
     state.cachedEvents = data;
 
     const summary = buildFilterSummary(
       clubs,
       state.selectedLevels,
-      state.allClubs,
       state.selectedTypes,
       state.selectedCategories,
+      state.selectedTimeBuckets,
+      state.selectedWeekdays,
     );
     renderEvents(data, summary);
     qs("#status").textContent = "";
@@ -297,9 +337,17 @@ async function filterByClub(clubDisplayName) {
         }
       }
 
-      // Clear level filters in UI
+      // Clear level and time filters in UI
       state.selectedLevels = [];
       for (const btn of qsa(".level-btn")) {
+        btn.classList.remove("active");
+      }
+      state.selectedTimeBuckets = [];
+      for (const btn of qsa(".time-btn")) {
+        btn.classList.remove("active");
+      }
+      state.selectedWeekdays = [];
+      for (const btn of qsa(".weekday-btn")) {
         btn.classList.remove("active");
       }
 
@@ -730,6 +778,34 @@ function attachEventListeners() {
         state.selectedCategories.splice(index, 1);
       } else {
         state.selectedCategories.push(category);
+      }
+    }
+
+    // Time bucket button toggle
+    const timeButton = event.target.closest(".time-btn");
+    if (timeButton) {
+      const time = timeButton.dataset.time;
+      timeButton.classList.toggle("active");
+
+      const index = state.selectedTimeBuckets.indexOf(time);
+      if (index >= 0) {
+        state.selectedTimeBuckets.splice(index, 1);
+      } else {
+        state.selectedTimeBuckets.push(time);
+      }
+    }
+
+    // Weekday button toggle (multi-select)
+    const weekdayButton = event.target.closest(".weekday-btn");
+    if (weekdayButton) {
+      const weekday = parseInt(weekdayButton.dataset.weekday, 10);
+      weekdayButton.classList.toggle("active");
+
+      const index = state.selectedWeekdays.indexOf(weekday);
+      if (index >= 0) {
+        state.selectedWeekdays.splice(index, 1);
+      } else {
+        state.selectedWeekdays.push(weekday);
       }
     }
 

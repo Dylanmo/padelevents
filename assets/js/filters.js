@@ -10,23 +10,46 @@ import { STORAGE_KEY } from "./config.js";
  * @param {string[]} levels - Selected level ranges
  * @param {string[]} types - Selected event types
  * @param {string[]} categories - Selected categories
+ * @param {string[]} timeBuckets - Selected time buckets
+ * @param {number[]} weekdays - Selected weekdays (0-6) or empty array
  */
-export function saveFilters(clubs, levels, types, categories) {
+export function saveFilters(
+  clubs,
+  levels,
+  types,
+  categories,
+  timeBuckets = [],
+  weekdays = [],
+) {
   localStorage.setItem(
     STORAGE_KEY,
-    JSON.stringify({ clubs, levels, types, categories }),
+    JSON.stringify({
+      clubs,
+      levels,
+      types,
+      categories,
+      timeBuckets,
+      weekdays,
+    }),
   );
 }
 
 /**
  * Load filters from localStorage
- * @returns {{clubs: string[], levels: string[], types: string[], categories: string[]}}
+ * @returns {{clubs: string[], levels: string[], types: string[], categories: string[], timeBuckets: string[], weekdays: number[]}}
  */
 export function loadFilters() {
   const data = localStorage.getItem(STORAGE_KEY);
   return data
     ? JSON.parse(data)
-    : { clubs: [], levels: [], types: [], categories: [] };
+    : {
+        clubs: [],
+        levels: [],
+        types: [],
+        categories: [],
+        timeBuckets: [],
+        weekdays: [],
+      };
 }
 
 /**
@@ -41,55 +64,58 @@ export function getSelectedClubs(checkboxes) {
 }
 
 /**
- * Build filter summary text for display
- * @param {string[]} clubs - Selected club values
- * @param {string[]} levels - Selected level ranges
- * @param {Array<{value: string, label: string}>} allClubs - All available clubs
- * @param {string[]} types - Selected event types
+ * Build a human-readable summary of active filters
+ * @param {string[]} clubs - Selected clubs
+ * @param {string[]} levels - Selected levels
+ * @param {string[]} types - Selected types
  * @param {string[]} categories - Selected categories
- * @returns {string}
+ * @param {string[]} timeBuckets - Selected time buckets
+ * @param {number[]} weekdays - Selected weekdays (0-6, 0=Sunday)
+ * @returns {string} Filter summary text
  */
 export function buildFilterSummary(
-  clubs,
-  levels,
-  allClubs,
+  clubs = [],
+  levels = [],
   types = [],
   categories = [],
+  timeBuckets = [],
+  weekdays = [],
 ) {
   const parts = [];
 
-  if (clubs.length === 0) {
-    parts.push("All clubs");
-  } else if (clubs.length === 1) {
-    const club = allClubs.find((c) => c.value === clubs[0]);
-    parts.push(club ? club.label : clubs[0]);
-  } else {
-    parts.push(`${clubs.length} clubs`);
+  if (clubs.length > 0) {
+    parts.push(clubs.join(", "));
   }
 
-  if (levels.length === 0) {
-    parts.push("All levels");
-  } else if (levels.length === 1) {
-    parts.push(`Level ${levels[0]}`);
-  } else {
-    parts.push(`${levels.length} levels`);
+  if (levels.length > 0) {
+    parts.push(levels.join(", "));
   }
 
-  if (types.length === 0) {
-    parts.push("All types");
-  } else if (types.length === 1) {
-    parts.push(types[0]);
-  } else {
-    parts.push(`${types.length} types`);
+  if (types.length > 0) {
+    parts.push(types.join(", "));
   }
 
-  if (categories.length === 0) {
-    parts.push("All categories");
-  } else if (categories.length === 1) {
-    parts.push(categories[0]);
-  } else {
-    parts.push(`${categories.length} categories`);
+  if (categories.length > 0) {
+    parts.push(categories.join(", "));
   }
 
-  return parts.join(" • ");
+  if (timeBuckets.length > 0) {
+    parts.push(timeBuckets.join(", "));
+  }
+
+  if (weekdays.length > 0) {
+    const dayNames = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
+    const selectedDays = weekdays.map((d) => dayNames[d]).join(", ");
+    parts.push(selectedDays);
+  }
+
+  return parts.length > 0 ? parts.join(" · ") : "No filters applied";
 }

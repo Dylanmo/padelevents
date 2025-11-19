@@ -433,6 +433,99 @@ label.chip:focus-within {
   outline-offset: 2px;
 }
 
+/* Time of Day Filter Buttons */
+.time-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.time-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1); /* 4px */
+  min-height: 44px;
+  padding: var(--space-3) var(--space-5); /* 12px 20px */
+  border: 1px solid var(--border);
+  border-radius: 999px; /* Full pill shape */
+  background: var(--bg-card);
+  color: var(--text-primary);
+  font-size: var(--text-base); /* 16px */
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.time-btn:hover {
+  background: var(--bg-hover);
+  border-color: var(--color-primary);
+  color: var(--text-primary);
+}
+
+.time-btn.active {
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+  font-weight: var(--weight-medium);
+}
+
+.time-btn:focus {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+
+/* Weekday Filter Buttons */
+.weekday-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.weekday-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  min-height: 44px;
+  width: 44px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-card);
+  color: var(--text-primary);
+  font-size: var(--text-sm); /* 14px */
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.weekday-btn:hover {
+  background: var(--bg-hover);
+  border-color: var(--color-primary);
+  color: var(--text-primary);
+}
+
+.weekday-btn.active {
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+  font-weight: var(--weight-bold);
+}
+
+.weekday-btn:focus {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+
 /* Filter Bar */
 .filter-bar {
   display: flex;

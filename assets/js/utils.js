@@ -91,3 +91,48 @@ export function detectDevice() {
   }
   return "desktop";
 }
+
+/**
+ * Get time bucket for an event based on local start time
+ * @param {string} isoDateString - ISO date string (e.g., "2025-11-18T18:00:00Z")
+ * @param {number} timezoneOffset - Timezone offset in hours from UTC (e.g., 7 for Bangkok)
+ * @returns {string} 'Morning' | 'Afternoon' | 'Evening' | null
+ */
+export function getTimeBucket(isoDateString, timezoneOffset = 7) {
+  if (!isoDateString) return null;
+
+  const date = new Date(isoDateString);
+  // Convert UTC to local time by adding timezone offset
+  const utcHours = date.getUTCHours();
+  const localHours = (utcHours + timezoneOffset) % 24;
+
+  // Morning: 05:00–11:59
+  if (localHours >= 5 && localHours < 12) {
+    return "Morning";
+  }
+  // Afternoon: 12:00–16:59
+  if (localHours >= 12 && localHours < 17) {
+    return "Afternoon";
+  }
+  // Evening: 17:00–23:59
+  if (localHours >= 17 && localHours < 24) {
+    return "Evening";
+  }
+  // Late night (00:00–04:59) - no bucket
+  return null;
+}
+
+/**
+ * Get weekday index for an event based on local start date
+ * @param {string} isoDateString - ISO date string (e.g., "2025-11-18T18:00:00Z")
+ * @param {number} timezoneOffset - Timezone offset in hours from UTC (e.g., 7 for Bangkok)
+ * @returns {number} Weekday index 0-6 (0=Sunday, 6=Saturday)
+ */
+export function getWeekdayIndex(isoDateString, timezoneOffset = 7) {
+  if (!isoDateString) return null;
+
+  const date = new Date(isoDateString);
+  // Adjust UTC date by timezone offset to get local date
+  const localDate = new Date(date.getTime() + timezoneOffset * 60 * 60 * 1000);
+  return localDate.getUTCDay();
+}

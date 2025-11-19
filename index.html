@@ -132,6 +132,107 @@
           </div>
         </div>
 
+        <div id="timeFilterGroup" class="filter-group" style="display: none">
+          <p class="filter-label">
+            <svg
+              class="section-icon"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"
+                fill="currentColor"
+              />
+            </svg>
+            Select Time(s) of Day
+          </p>
+          <div class="time-filter">
+            <button class="time-btn" data-time="Morning">Morning</button>
+            <button class="time-btn" data-time="Afternoon">Afternoon</button>
+            <button class="time-btn" data-time="Evening">Evening</button>
+          </div>
+        </div>
+
+        <div id="weekdayFilterGroup" class="filter-group" style="display: none">
+          <p class="filter-label">
+            <svg
+              class="section-icon"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"
+                fill="currentColor"
+              />
+            </svg>
+            Select Day(s)
+          </p>
+          <div class="weekday-filter">
+            <button
+              class="weekday-btn"
+              data-weekday="1"
+              title="Monday"
+              aria-label="Filter by Monday"
+            >
+              Mon
+            </button>
+            <button
+              class="weekday-btn"
+              data-weekday="2"
+              title="Tuesday"
+              aria-label="Filter by Tuesday"
+            >
+              Tue
+            </button>
+            <button
+              class="weekday-btn"
+              data-weekday="3"
+              title="Wednesday"
+              aria-label="Filter by Wednesday"
+            >
+              Wed
+            </button>
+            <button
+              class="weekday-btn"
+              data-weekday="4"
+              title="Thursday"
+              aria-label="Filter by Thursday"
+            >
+              Thu
+            </button>
+            <button
+              class="weekday-btn"
+              data-weekday="5"
+              title="Friday"
+              aria-label="Filter by Friday"
+            >
+              Fri
+            </button>
+            <button
+              class="weekday-btn"
+              data-weekday="6"
+              title="Saturday"
+              aria-label="Filter by Saturday"
+            >
+              Sat
+            </button>
+            <button
+              class="weekday-btn"
+              data-weekday="0"
+              title="Sunday"
+              aria-label="Filter by Sunday"
+            >
+              Sun
+            </button>
+          </div>
+        </div>
+
         <div id="filterBar" class="filter-bar" style="display: none">
           <button id="btnFilter" aria-label="Filter events">
             <svg

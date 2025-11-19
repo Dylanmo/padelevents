@@ -19,5 +19,8 @@ export const CITY_CONFIG = {
 
 export const STORAGE_KEY = "padel.filters";
 
+// Timezone offset in hours from UTC (Bangkok = UTC+7)
+export const TIMEZONE_OFFSET = 7;
+
 export const GITHUB_API_URL =
   "https://api.github.com/repos/Dylanmo/padelevents/commits/main";
