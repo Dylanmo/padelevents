@@ -775,7 +775,7 @@ button#btnFilter:focus-visible {
 /* Event Card Header with Availability Badge */
 .event-card-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start; /* Changed from center to flex-start for top alignment */
   justify-content: space-between;
   gap: var(--space-3); /* 12px - space between title and badge */
   margin-bottom: var(--space-2); /* 8px - follows design system */

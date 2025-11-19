@@ -658,11 +658,28 @@ function renderEventCard(event, isHidden = false) {
     }
   }
 
-  // Render availability badge if availStatus exists
+  // Render availability badge only for future events and skip if "0 of 0 available" (fallback)
   let badgeHtml = "";
-  if (event.availStatus) {
+  if (event.availStatus && !isPast) {
+    let badgeText = event.availText || event.availStatus;
+
+    // Skip rendering badge if it's the fallback "0 of 0 available" state
+    if (badgeText === "0 of 0 available") {
+      return badgeHtml; // Skip this badge entirely
+    }
+
+    // Transform "X of Y available" to "X spots left" or "Full"
+    const availMatch = badgeText.match(/^(\d+) of \d+ available$/);
+    if (availMatch) {
+      const spotsLeft = parseInt(availMatch[1], 10);
+      if (spotsLeft === 0) {
+        badgeText = "Full";
+      } else {
+        badgeText = `${spotsLeft} spot${spotsLeft === 1 ? "" : "s"} left`;
+      }
+    }
+
     const badgeClass = `avail-${event.availStatus.toLowerCase()}`;
-    const badgeText = event.availText || event.availStatus;
     badgeHtml = `<span class="event-availability ${badgeClass}">${badgeText}</span>`;
   }
 
