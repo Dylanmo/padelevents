@@ -1,12 +1,10 @@
 # Padel Events — Player-Focused Feature Summary
 
-Short summary
-----------------
+## Short summary
 
 Mobile-first, player-focused frontend that helps Bangkok padel players find, filter, and add local events to their calendars quickly — with reliable time handling, cross-platform exports, and fast page loads.
 
-Key features (what players get)
--------------------------------
+## Key features (what players get)
 
 - **Quick Event Preview:** Shows upcoming padel events on page load so players see matches immediately. (Implemented in `assets/js/app.js` — auto-load + render flow.)
 - **Club Filter Chips:** Dynamic, pill-style club filters fetched from the API so you can pick clubs quickly. (Implemented in `assets/js/api.js` + rendering in `assets/js/app.js` — populates `#clubBox`.)
@@ -20,8 +18,7 @@ Key features (what players get)
 - **Device-aware Signup Links:** Platform-aware signup / join links so iOS/Android/desktop users get the best flow. (Implemented in `assets/js/app.js`.)
 - **Version Info & Status Messages:** Footer shows latest commit/version; `aria-live` status messages keep players informed during loading or errors. (Implemented in `index.html` + `assets/js/api.js` / `app.js`.)
 
-Biggest solutions that fix player pains
--------------------------------------
+## Biggest solutions that fix player pains
 
 - **Pain: Hard to scan events on mobile.**
   - Solution: Mobile-first card list and larger touch targets make scanning and tapping easier. Files: `assets/style.v1.css`, `assets/js/app.js`.
@@ -43,8 +40,7 @@ Biggest solutions that fix player pains
   - Solution: Firebase hosting cache rules (no-cache for `index.html`, long immutable cache for versioned assets) to keep HTML fresh while speeding static assets. Files: `firebase.json`.
   - Why it helps players: Faster loads and fewer broken experiences after updates.
 
-Where to verify quickly
------------------------
+## Where to verify quickly
 
 - Open `index.html` to review the main UI and `aria-live` regions.
 - Check `assets/js/app.js` for render & filter wiring and the auto-load flow.
@@ -52,11 +48,11 @@ Where to verify quickly
 - Confirm `assets/style.v1.css` for mobile styles and touch-target rules.
 - `firebase.json` contains the hosting cache headers used on deploy.
 
-Notes / Next steps (optional)
-----------------------------
+## Notes / Next steps (optional)
 
 - I can add a short "How to use — quick tips" section for players (3 bullets) inside this file if you want. Say `yes` and I'll append it.
 - If you want this file committed to a different branch or modified language/tone for sharing with clubs, tell me the preferred audience and I'll adapt.
 
 ---
+
 _Generated summary for padel players. File: `docs/FEATURES_SUMMARY.md`_
