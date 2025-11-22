@@ -609,6 +609,7 @@ function renderEventCard(event, isHidden = false) {
 
       if (options.webUrl) {
         buttons.push(`<a href="${options.webUrl}" target="_blank" rel="noopener noreferrer" class="signup-pill">
+			<img src="/assets/svg/icon-laptop.svg" alt="Web" class="signup-icon" width="16" height="16" />
 			Web
 		</a>`);
       }
